@@ -18,9 +18,9 @@ public class MainFrame extends FractalGUI
     @Override
     public void init() {
         Container pane = this.getContentPane();
-        pane.add(fractal,BorderLayout.SOUTH);
+        pane.add(fractal,BorderLayout.CENTER);
         //pane.add(getSettings(),BorderLayout.SOUTH);
         getLastPoint().setHorizontalAlignment(SwingConstants.CENTER);
-        add(getLastPoint(),BorderLayout.NORTH);
+        add(getLastPoint(),BorderLayout.SOUTH);
     }
 }

@@ -8,6 +8,7 @@ public class Complex
 {
     private double x,y;
 
+    //construct complex with 2 double type coordinates
     public Complex(double x,double y){
         this.x = x; //set real part
         this.y = y; //set imaginary part
@@ -30,6 +31,11 @@ public class Complex
         double real = this.getX() + z.getX();
         double imaginary = this.getY() + z.getY();
         return new Complex(real,imaginary);
+    }
+
+    //compare two complex numbers, return true if they are the same
+    public boolean equals(Complex c){
+        return this.getX()==c.getX() && this.getY() == c.getY();
     }
 
     /*
