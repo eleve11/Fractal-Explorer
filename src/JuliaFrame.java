@@ -24,12 +24,15 @@ public class JuliaFrame extends FractalGUI
         this(new Complex(0,0));
     }
 
-    public void init(){
+    public void init()
+    {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         Container pane = this.getContentPane();
+        JPanel favPanel = new JPanel();
+        favPanel.add(fav);
+        pane.add(favPanel,BorderLayout.NORTH);
         pane.add(julia,BorderLayout.CENTER);
-        pane.add(fav,BorderLayout.NORTH);
         //pane.add(getSettings(),BorderLayout.SOUTH);
         //add(getLastPoint(),BorderLayout.NORTH);
         this.setSize(getWidth(),getHeight());

@@ -18,16 +18,8 @@ public class FavButton extends JToggleButton {
     {
         this.juliaSet = juliaSet;
         this.addActionListener(new StateListener());
-        this.setIcon(getStarIcon());
         updateStatus();
-
-        //set color background when selected
-        this.setUI(new MetalToggleButtonUI() {
-            @Override
-            protected Color getSelectColor() {
-                return Color.YELLOW;
-            }
-        });
+        this.setSize(32,32);
     }
 
     /*
@@ -35,16 +27,19 @@ public class FavButton extends JToggleButton {
      */
     private void updateStatus() {
         setSelected(Favourites.getInstance().contains(juliaSet.getC()));
+        updateIcon();
     }
 
     /*
-     * return the adjusted icon
+     * set the right icon when status chacnges
      */
-    private Icon getStarIcon()
+    private void updateIcon()
     {
-        Image star = new ImageIcon("star.png").getImage();
-        Image scaled = star.getScaledInstance(30,30,Image.SCALE_SMOOTH);
-        return new ImageIcon(scaled);
+        String file = isSelected() ? "star.png" : "star_unfilled.png";
+        Image star = new ImageIcon(file).getImage();
+        Image scaled = star.getScaledInstance(20,20,Image.SCALE_SMOOTH);
+        Icon ico = new ImageIcon(scaled);
+        setIcon(ico);
     }
 
     /*
@@ -70,6 +65,7 @@ public class FavButton extends JToggleButton {
                 } catch (IOException e1) {
                     System.err.println(e1.getMessage() + "\nCannot add to favourites");
                 }
+
             }
 
             //Remove from favourites if deselected
@@ -80,6 +76,8 @@ public class FavButton extends JToggleButton {
                     System.err.println(e1.getMessage() + "\n Cannot remove from favourites");
                 }
             }
+
+            updateIcon();
         }
     }
 }

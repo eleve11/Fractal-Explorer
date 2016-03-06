@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -12,12 +10,18 @@ import java.text.DecimalFormat;
 public abstract class Fractal extends JPanel
 {
     private Double realLow, realUp, imagLow, imagUp; //imaglow and up represent the inverse of what they are
-    private int MAX_ITER = 100;
+    private int maxIterations = 100;
     private int[][] palette;
+    private FractalGUI gui ;
     private JLabel cLabel;
     private Rectangle zoomRect;
     private boolean isHovering = false;
-    private FractalGUI gui ;
+
+    //default values
+    public static final double REAL_LOW = -2.0;
+    public static final double REAL_UP = 2.0;
+    public static final double IMAG_LOW = -1.6;
+    public static final double IMAG_UP = 1.6;
 
     //construct using complex plane constraints
     public Fractal(double realLower, double realUpper, double imagLower, double imagUpper)
@@ -33,13 +37,12 @@ public abstract class Fractal extends JPanel
         this.addMouseListener(fl);
         this.addMouseMotionListener(fl);
         this.setFocusable(true);
-        this.requestFocusInWindow();
-        this.addKeyListener(new KeyLis());
+        //this.addKeyListener(new KeyLis());
     }
 
     //default constructor
     public Fractal(){
-        this(-2,2,-1.6,1.6);
+        this(REAL_LOW,REAL_UP,IMAG_LOW,IMAG_UP);
     }
 
     /*
@@ -139,7 +142,7 @@ public abstract class Fractal extends JPanel
     }
 
     public Integer getMaxIterations() {
-        return MAX_ITER;
+        return maxIterations;
     }
 
     public int[][] getPalette() {
@@ -166,13 +169,16 @@ public abstract class Fractal extends JPanel
     }
 
     public void setMaxIterations(int maxIterations) {
-        this.MAX_ITER = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     public void setPalette(int[][] palette) {
         this.palette = palette;
     }
 
+    public void setHovering(boolean hovering) {
+        isHovering = hovering;
+    }
     //TODO: inner classes are huge, do something!
     /**
      * mouse adapter that zooms
@@ -228,7 +234,7 @@ public abstract class Fractal extends JPanel
             Complex start = getComplex(a);
             Complex end = getComplex(b);
 
-            // ZOOM ANIMATION NOT WORKING
+            /* ZOOM ANIMATION NOT WORKING
             Complex topBound = new Complex(getRealLow(),getImagLow());
             Complex botBound = new Complex(getRealUp(),getImagUp());
             double horShiftStart = Math.abs(start.getX() - topBound.getX())/10;
@@ -256,7 +262,7 @@ public abstract class Fractal extends JPanel
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             //finalise zoom
             setRealLow(start.getX());
             setRealUp(end.getX());
@@ -281,71 +287,6 @@ public abstract class Fractal extends JPanel
                 tmp.y = endDrag.y;
                 endDrag.y = startDrag.y;
                 startDrag.y = tmp.y;
-            }
-        }
-    }
-
-    private class KeyLis extends KeyAdapter
-    {
-
-        public void  keyPressed(KeyEvent e)
-        {
-            //shift 5% of current range
-            double horizontalShift = (getRealUp()-getRealLow()) /20;
-            double verticalShift = (getImagUp()-getImagLow()) /20;
-            int iterationShift = 100;
-            gui = (FractalGUI) SwingUtilities.getWindowAncestor(Fractal.this);
-
-            switch (e.getKeyCode())
-            {
-                case KeyEvent.VK_ESCAPE:
-                    setRealLow(-2);
-                    setRealUp(2);
-                    setImagLow(-1.6);
-                    setImagUp(1.6);
-                    setMaxIterations(100);
-                    gui.getSettings().updateSet();
-                    repaint();
-                    break;
-
-                case KeyEvent.VK_LEFT:
-                    horizontalShift = -horizontalShift;
-                case KeyEvent.VK_RIGHT:
-                    setRealLow(getRealLow() + horizontalShift);
-                    setRealUp(getRealUp() + horizontalShift);
-                    gui.getSettings().updateSet();
-                    repaint();
-                    break;
-
-                case KeyEvent.VK_DOWN:
-                    verticalShift = -verticalShift;
-                case KeyEvent.VK_UP:
-                    setImagLow(getImagLow() + verticalShift);
-                    setImagUp(getImagUp() + verticalShift);
-                    gui.getSettings().updateSet();
-                    repaint();
-                    break;
-
-                case KeyEvent.VK_SHIFT:
-                    isHovering = true;
-                    break;
-
-                case KeyEvent.VK_MINUS:
-                    iterationShift = -iterationShift;
-                    if(getMaxIterations()==100) //prevent user from going under 100 iterations
-                        break;
-                case KeyEvent.VK_EQUALS: //using equals instead of plus
-                    setMaxIterations(getMaxIterations() + iterationShift);
-                    gui.getSettings().updateSet();
-                    repaint();
-                    break;
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                isHovering = false;
             }
         }
     }

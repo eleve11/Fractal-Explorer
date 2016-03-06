@@ -19,7 +19,7 @@ public class MainFrame extends FractalGUI
     public void init() {
         Container pane = this.getContentPane();
         pane.add(fractal,BorderLayout.CENTER);
-        //pane.add(getSettings(),BorderLayout.SOUTH);
+        pane.add(getSettings(),BorderLayout.SOUTH);
         getLastPoint().setHorizontalAlignment(SwingConstants.CENTER);
         add(getLastPoint(),BorderLayout.SOUTH);
     }
