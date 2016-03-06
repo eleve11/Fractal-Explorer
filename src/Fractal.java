@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 
 /**
@@ -13,7 +14,6 @@ public abstract class Fractal extends JPanel
     private int maxIterations = 100;
     private int[][] palette;
     private JLabel cLabel; //TODO: shouldn't have the label in this class?
-    private Rectangle zoomRect;
     private boolean isHovering = false;
 
     //default values
@@ -211,7 +211,6 @@ public abstract class Fractal extends JPanel
                 zoom(startDrag,endDrag);
             startDrag = null;
             endDrag = null;
-            zoomRect = null;
             getGUI().getSettings().updateSet();
         }
 
@@ -221,15 +220,16 @@ public abstract class Fractal extends JPanel
             endDrag = new Point(e.getX(),e.getY());
 
             //draw the transparent  rectangle
-            int width = startDrag.x - endDrag.x;
-            int height = startDrag.y - endDrag.x;
-            int x = width < 0 ? startDrag.x : endDrag.x;
-            int y = height > 0 ? startDrag.x : startDrag.y;
-            Graphics g = getGraphics();
-            zoomRect = new Rectangle(x,y,Math.abs(width),Math.abs(height));
-            g.setColor(Color.BLACK);
-            g.drawRect(zoomRect.x,zoomRect.y,zoomRect.width+1,zoomRect.height+1);
-            repaint(zoomRect);
+            int width = Math.abs(startDrag.x - endDrag.x);
+            int height = Math.abs(startDrag.y - endDrag.y);
+            int x = Math.min(startDrag.x, endDrag.x);
+            int y = Math.min(startDrag.y, endDrag.y);
+            Graphics2D g = (Graphics2D) getGraphics();
+            g.setColor(Color.WHITE);
+            Rectangle r = new Rectangle(x,y,width, height);
+            g.setStroke(new BasicStroke(2));
+            g.draw(r);
+            repaint(r);
         }
 
         //zoom
