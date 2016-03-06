@@ -26,7 +26,7 @@ public abstract class Fractal extends JPanel
         this.realUp = realUpper;
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
-        cLabel = new JLabel();
+        cLabel = new JLabel(); //TODO: shouldn't have the label here?
 
 
         FractMouseListener fl = new FractMouseListener();
@@ -43,7 +43,8 @@ public abstract class Fractal extends JPanel
     }
 
     /*
-     * draw the Mandelbrot set on the complex plane
+     * draw the Fractal set on the complex plane
+     * according to the function called by FunctionOfZ
      */
     //TODO: document how i calculate the colours -- see wikipedia for mandelbrot
     @Override
@@ -83,13 +84,14 @@ public abstract class Fractal extends JPanel
         return new Complex(cx,cy);
     }
 
+    //method overload
     public Complex getComplex(Point p){
         return getComplex(p.x,p.y);
     }
 
     public JLabel getCLabel(){
         return cLabel;
-    }
+    } //TODO: see top
 
     //z should be the value of it escapes the mandelbrot
     public double getColorConstant(double iterations, Complex z)
@@ -123,42 +125,55 @@ public abstract class Fractal extends JPanel
     public Double getRealLow() {
         return realLow;
     }
+
     public Double getRealUp() {
         return realUp;
     }
+
     public Double getImagUp() {
         return imagUp;
     }
+
     public Double getImagLow() {
         return imagLow;
     }
+
     public Integer getMaxIterations() {
         return MAX_ITER;
     }
+
     public int[][] getPalette() {
         return palette;
     }
+
     public boolean isHovering() {return isHovering;}
+
     //TODO: throw exceptions for edge cases in these settings
     public void setRealLow(double realLow) {
         this.realLow = realLow;
     }
+
     public void setRealUp(double realUp) {
         this.realUp = realUp;
     }
+
     public void setImagLow(double imagLow) {
         this.imagLow = imagLow;
     }
+
     public void setImagUp(double imagUp) {
         this.imagUp = imagUp;
     }
+
     public void setMaxIterations(int maxIterations) {
         this.MAX_ITER = maxIterations;
     }
+
     public void setPalette(int[][] palette) {
         this.palette = palette;
     }
 
+    //TODO: inner classes are huge, do something!
     /**
      * mouse adapter that zooms
      */

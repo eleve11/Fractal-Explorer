@@ -8,12 +8,15 @@ import java.text.DecimalFormat;
 public class JuliaFrame extends FractalGUI
 {
     private JuliaSet julia;
-    //this frame is a singleton
+    private FavButton fav;
+
+    //this frame is a singleton you can only have one instance of it
     private static final JuliaFrame juliaFrame = new JuliaFrame();
 
     public JuliaFrame(Complex c){
         super("Filled Julia Set", new JuliaSet(c),400,360);
         julia  = (JuliaSet) getFractal();
+        fav = new FavButton(julia);
     }
 
     //default constructor only used to have it as a singleton
@@ -26,6 +29,7 @@ public class JuliaFrame extends FractalGUI
 
         Container pane = this.getContentPane();
         pane.add(julia,BorderLayout.CENTER);
+        pane.add(fav,BorderLayout.NORTH);
         //pane.add(getSettings(),BorderLayout.SOUTH);
         //add(getLastPoint(),BorderLayout.NORTH);
         this.setSize(getWidth(),getHeight());
@@ -37,6 +41,7 @@ public class JuliaFrame extends FractalGUI
     public void updateJulia(Complex c){
         setFractal(new JuliaSet(c));
         julia = (JuliaSet) getFractal();
+        fav.setJuliaSet(julia);
         DecimalFormat df = new DecimalFormat("#.##");
         setTitle("Filled Julia Set ("+df.format(c.getX())+", "+df.format(c.getY())+")");
         init();

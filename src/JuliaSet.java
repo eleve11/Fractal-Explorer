@@ -3,8 +3,9 @@
  */
 public class JuliaSet extends Fractal
 {
-    private Complex c;
-    //complec plane bounds constructor
+    private Complex c; //constant value
+
+    //complex plane bounds constructor
     public JuliaSet(double realLower, double realUpper, double imagLower, double imagUpper, Complex c){
         super(realLower,realUpper,imagLower,imagUpper);
         setPalette(new int[][]{{70, 0, 20}, {100, 0, 100}, {255, 0, 0}, {255, 200, 0} });
@@ -20,8 +21,8 @@ public class JuliaSet extends Fractal
      * draw the Julia Set on the Complex plane
      */
     @Override
-    public double functionOfZ(Complex c) {
-        return julia(c);
+    public double functionOfZ(Complex z) {
+        return julia(z);
     }
 
     /*
@@ -37,5 +38,10 @@ public class JuliaSet extends Fractal
         }
 
         return getColorConstant(iterations,z);
+    }
+
+    //Getter method for the constant
+    public Complex getC() {
+        return c;
     }
 }
