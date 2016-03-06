@@ -10,8 +10,9 @@ import java.awt.event.ActionListener;
 public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
+    private JLabel lastClicked;
     private Fractal fractal;
-    GridBagConstraints c;
+    private GridBagConstraints c;
 
     public SettingsPanel(Fractal fractal){
         this.fractal = fractal;
@@ -27,6 +28,7 @@ public class SettingsPanel extends JPanel
         imagUp = new JTextField(fractal.getImagUp().toString(),5);
         imagLow = new JTextField(fractal.getImagLow().toString(),5);
         iterations = new JTextField(fractal.getMaxIterations().toString(),3);
+        lastClicked = new JLabel();
 
         //layout components
         this.setLayout(new GridBagLayout());
@@ -47,6 +49,9 @@ public class SettingsPanel extends JPanel
         //can only show favourites if not on a JuliaSet
         if(!(fractal instanceof JuliaSet))
             addFavourites();
+
+        c.gridy = 7;
+        this.add(lastClicked,c);
 
         //add listener to update image
         SettingsListener setListener = new SettingsListener();
@@ -113,6 +118,13 @@ public class SettingsPanel extends JPanel
         constr.gridx = 1;
         panel.add(value,constr);
         return panel;
+    }
+
+    public void updatePointLabel(Complex lastPoint){
+        //nasty label text is using HTML tags because
+        //JLabels don't like going to a new line :(
+        if(lastPoint!=null)
+            lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
     }
 
     //update the settings panel when someone interacts with the fractal

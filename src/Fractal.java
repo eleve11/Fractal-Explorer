@@ -13,7 +13,7 @@ public abstract class Fractal extends JPanel
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
-    private JLabel cLabel; //TODO: shouldn't have the label in this class?
+    private Complex lastClickedPoint; //TODO: shouldn't have the label in this class?
     private boolean isHovering = false;
 
     //default values
@@ -29,7 +29,6 @@ public abstract class Fractal extends JPanel
         this.realUp = realUpper;
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
-        cLabel = new JLabel();
 
 
         FractMouseListener fl = new FractMouseListener();
@@ -71,6 +70,12 @@ public abstract class Fractal extends JPanel
         }
     }
 
+    /**
+     * this method calls the function of Z that graphically represents
+     * the fractal on the complex plane.
+     * @param c is the complex variable
+     * @return the color constant according to the number of iterations
+     */
     public abstract double functionOfZ(Complex c);
 
     /*
@@ -90,10 +95,6 @@ public abstract class Fractal extends JPanel
         return getComplex(p.x,p.y);
     }
 
-    public JLabel getCLabel(){
-        return cLabel;
-    } //TODO: see top
-
     //z should be the value of it escapes the mandelbrot
     public double getColorConstant(double iterations, Complex z)
     {
@@ -107,7 +108,9 @@ public abstract class Fractal extends JPanel
         return iterations;
     }
 
-    //interpolate formula taken from wikipedia
+    /**
+     * interpolate formula inspired from wikipedia
+     */
     public static Color RgbLinearInterpolate(int[] start, int[] end, double count)
     {
         // linear interpolation lerp (r,a,b) = (1-r)*a + r*b = (1-r)*(ax,ay,az) + r*(bx,by,bz)
@@ -191,9 +194,8 @@ public abstract class Fractal extends JPanel
         @Override
         public void mouseClicked(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
-                Complex c = getComplex(e.getX(), e.getY());
-                DecimalFormat df = new DecimalFormat("#.##");
-                getCLabel().setText("Last selected point: (" + df.format(c.getX()) + ", " + df.format(c.getY()) + ")");
+                lastClickedPoint = getComplex(e.getX(), e.getY());
+                getGUI().getSettings().updatePointLabel(lastClickedPoint);
                 setHovering(false);
             }else
                 setHovering(!isHovering);
@@ -214,7 +216,6 @@ public abstract class Fractal extends JPanel
             getGUI().getSettings().updateSet();
         }
 
-        //TODO zoom rectangle sucks
         @Override
         public void mouseDragged(MouseEvent e) {
             endDrag = new Point(e.getX(),e.getY());

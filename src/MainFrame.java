@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -20,7 +19,5 @@ public class MainFrame extends FractalGUI
         Container pane = this.getContentPane();
         pane.add(fractal,BorderLayout.CENTER);
         pane.add(getSettings(),BorderLayout.WEST);
-        getLastPoint().setHorizontalAlignment(SwingConstants.CENTER);
-        add(getLastPoint(),BorderLayout.SOUTH);
     }
 }

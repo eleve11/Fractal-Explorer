@@ -10,7 +10,6 @@ public abstract class FractalGUI extends JFrame
 {
     private Fractal fractal;
     private JPanel settings;
-    private JLabel lastPoint;
     public static final Dimension DEFAULT_SIZE = new Dimension(750,500);
 
     public FractalGUI(String title, Fractal fractal,int width,int height)
@@ -19,7 +18,6 @@ public abstract class FractalGUI extends JFrame
 
         this.fractal = fractal;
         this.settings = new SettingsPanel(fractal);
-        this.lastPoint = fractal.getCLabel();
         setFocusable(true);
         this.addKeyListener(new FractKeyLis());
 
@@ -45,10 +43,6 @@ public abstract class FractalGUI extends JFrame
 
     public SettingsPanel getSettings() {
         return (SettingsPanel) settings;
-    }
-
-    public JLabel getLastPoint() {
-        return lastPoint;
     }
 
 
