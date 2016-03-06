@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ public class Favourites
     private List<Complex> fav;
     private BufferedReader br;
     private File file;
-    private JComboBox comboBox;
     //it's a singleton
     public static final Favourites instance = new Favourites();
 
