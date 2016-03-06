@@ -9,11 +9,10 @@ import java.text.DecimalFormat;
  */
 public abstract class Fractal extends JPanel
 {
-    private Double realLow, realUp, imagLow, imagUp; //imaglow and up represent the inverse of what they are
+    private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
-    private FractalGUI gui ;
-    private JLabel cLabel;
+    private JLabel cLabel; //TODO: shouldn't have the label in this class?
     private Rectangle zoomRect;
     private boolean isHovering = false;
 
@@ -30,14 +29,13 @@ public abstract class Fractal extends JPanel
         this.realUp = realUpper;
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
-        cLabel = new JLabel(); //TODO: shouldn't have the label here?
+        cLabel = new JLabel();
 
 
         FractMouseListener fl = new FractMouseListener();
         this.addMouseListener(fl);
         this.addMouseMotionListener(fl);
         this.setFocusable(true);
-        //this.addKeyListener(new KeyLis());
     }
 
     //default constructor
@@ -151,6 +149,8 @@ public abstract class Fractal extends JPanel
 
     public boolean isHovering() {return isHovering;}
 
+    public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(Fractal.this);}
+
     //TODO: throw exceptions for edge cases in these settings
     public void setRealLow(double realLow) {
         this.realLow = realLow;
@@ -179,6 +179,7 @@ public abstract class Fractal extends JPanel
     public void setHovering(boolean hovering) {
         isHovering = hovering;
     }
+
     //TODO: inner classes are huge, do something!
     /**
      * mouse adapter that zooms
@@ -207,8 +208,7 @@ public abstract class Fractal extends JPanel
             startDrag = null;
             endDrag = null;
             zoomRect = null;
-            gui = (FractalGUI) SwingUtilities.getWindowAncestor(Fractal.this);
-            gui.getSettings().updateSet();
+            getGUI().getSettings().updateSet();
         }
 
         //TODO zoom rectangle sucks

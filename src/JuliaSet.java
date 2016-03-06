@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Filled Julia Set
  */
@@ -43,5 +45,10 @@ public class JuliaSet extends Fractal
     //Getter method for the constant
     public Complex getC() {
         return c;
+    }
+
+    @Override
+    public Graphics getGraphics() {
+        return super.getGraphics();
     }
 }
