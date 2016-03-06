@@ -47,6 +47,24 @@ public class Mandelbrot extends Fractal
         return getColorConstant(iterations,z);
     }
 
+    public void startJulia(Complex c) {
+        Point location = new Point(MainFrame.DEFAULT_SIZE.width, 0);
+        Dimension d = JuliaFrame.DEFAULT_SIZE;
+
+        //if a julia already exists close it
+        // but save it's location on the screen and dimension
+        if (juliaFrame != null) {
+            juliaFrame.dispose();
+            location = juliaFrame.getLocation();
+            d = juliaFrame.getSize();
+        }
+
+        //create a new JuliaFrame on C with the set location
+        juliaFrame = new JuliaFrame(c);
+        juliaFrame.setSize(d);
+        juliaFrame.setLocation(location);
+    }
+
     /**
      * Listener class
      * click on set and create a new JuliaFrame
@@ -56,36 +74,17 @@ public class Mandelbrot extends Fractal
         public void mouseClicked(MouseEvent e) {
             Complex c = getComplex(e.getX(), e.getY());
             startJulia(c);
-            setHovering(false);
-        }
-
-        private void startJulia(Complex c) {
-            Point location = new Point(getWidth(), 0);
-            Dimension d = JuliaFrame.DEFAULT_SIZE;
-
-            //if a julia already exists close it
-            // but save it's location on the screen and dimension
-            if (juliaFrame != null) {
-                juliaFrame.dispose();
-                location = juliaFrame.getLocation();
-                d = juliaFrame.getSize();
-            }
-
-            //create a new JuliaFrame on C with the set location
-            juliaFrame = new JuliaFrame(c);
-            juliaFrame.setSize(d);
-            juliaFrame.setLocation(location);
-        }
-
-        private void showJulia(Complex c) {
-            if (juliaFrame == null) startJulia(c);
-            juliaFrame.liveJulia(c);
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
             if (isHovering())
                 showJulia(getComplex(e.getX(), e.getY()));
+        }
+
+        private void showJulia(Complex c) {
+            if (juliaFrame == null) startJulia(c);
+            juliaFrame.liveJulia(c);
         }
     }
 }

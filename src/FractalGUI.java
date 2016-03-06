@@ -11,9 +11,10 @@ public abstract class FractalGUI extends JFrame
     private Fractal fractal;
     private JPanel settings;
     private JLabel lastPoint;
-    public static final Dimension DEFAULT_SIZE = new Dimension(600,500);
+    public static final Dimension DEFAULT_SIZE = new Dimension(750,500);
 
-    public FractalGUI(String title, Fractal fractal,int width,int height){
+    public FractalGUI(String title, Fractal fractal,int width,int height)
+    {
         super(title);
 
         this.fractal = fractal;

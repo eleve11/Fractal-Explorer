@@ -20,6 +20,7 @@ public class FavButton extends JToggleButton {
         this.addActionListener(new StateListener());
         updateStatus();
         this.setSize(32,32);
+        setFocusable(false);
     }
 
     /*

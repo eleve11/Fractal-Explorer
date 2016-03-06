@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 /**
  * Complex numbers are two dimensional number
  * thus they have x,y coordinates
@@ -38,11 +40,12 @@ public class Complex
         return this.getX()==c.getX() && this.getY() == c.getY();
     }
 
-    //returns a string that represents the Complex Number
+    //returns a readable string that represents the Complex Number
     @Override
     public String toString()
     {
-        return "("+this.getX()+", "+this.getY()+")";
+        DecimalFormat df = new DecimalFormat("#.###");
+        return "("+df.format(getX())+", "+df.format(getY())+")";
     }
 
     /*

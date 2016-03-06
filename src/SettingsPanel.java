@@ -11,7 +11,7 @@ public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
     private Fractal fractal;
-    private GridBagConstraints panConstr; //don't really like this one here
+    GridBagConstraints c;
 
     public SettingsPanel(Fractal fractal){
         this.fractal = fractal;
@@ -30,17 +30,23 @@ public class SettingsPanel extends JPanel
 
         //layout components
         this.setLayout(new GridBagLayout());
-        JPanel realaxis = getSetPanel(new JLabel("R-axis bounds:"),realLow,realUp);
-        JPanel imagaxis = getSetPanel(new JLabel("I-axis bounds:"),imagLow,imagUp);
-        JPanel iterbox = getSetPanel(new JLabel("Iterations:"),iterations);
+        JPanel realaxis = getBoundPanel(new JLabel("R-axis bounds:"),realLow,realUp);
+        JPanel imagaxis = getBoundPanel(new JLabel("I-axis bounds:"),imagLow,imagUp);
+        JPanel iterbox = getIterPanel(new JLabel("Iterations:"),iterations);
 
         //GridBagLayout settings
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 0.4;
+        c = new GridBagConstraints();
+
+        c.gridy = 0;
         this.add(realaxis, c);
+        c.gridy = 2;
         this.add(imagaxis, c);
-        c.weightx = 0.2;
+        c.gridy = 4;
         this.add(iterbox, c);
+
+        //can only show favourites if not on a JuliaSet
+        if(!(fractal instanceof JuliaSet))
+            addFavourites();
 
         //add listener to update image
         SettingsListener setListener = new SettingsListener();
@@ -52,11 +58,27 @@ public class SettingsPanel extends JPanel
         iterations.addActionListener(setListener);
     }
 
-    private JPanel getSetPanel(JLabel label, JTextField textbox){
+    private void addFavourites(){
+        //Display favourites
+        JLabel favLabel = new JLabel("Favourites:");
+        favLabel.setFont(favLabel.getFont().deriveFont(Font.BOLD));
+        JComboBox favList = new FavComboBox(fractal);
+
+        c.gridy = 5;
+        c.weightx = 0.5;
+        this.add(favLabel,c);
+        c.weightx = 1;
+        c.gridy = 6;
+        this.add(favList,c);
+    }
+
+    private JPanel getBoundPanel(JLabel label, JTextField lower, JTextField upper){
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        panConstr = new GridBagConstraints();
-        label.setHorizontalAlignment(SwingConstants.CENTER);
+        GridBagConstraints panConstr = new GridBagConstraints();
+        label.setFont(label.getFont().deriveFont(Font.BOLD,14.0f));
+        JLabel min = new JLabel("Min:");
+        JLabel max = new JLabel("Max:");
 
         //set GridBagLayouot Constraints
         panConstr.gridwidth = 2;
@@ -64,19 +86,32 @@ public class SettingsPanel extends JPanel
         panConstr.gridy = 0;
         panel.add(label,panConstr);
 
-        panConstr.gridwidth = 1;
+        panConstr.gridwidth =1;
         panConstr.weightx = 0.5;
         panConstr.gridy = 1;
         panConstr.gridx = 0;
-        panel.add(textbox,panConstr);
+        panel.add(min,panConstr);
+        panConstr.gridx = 1;
+        panel.add(lower,panConstr);
+
+        panConstr.gridy = 2;
+        panConstr.gridx = 0;
+        panel.add(max,panConstr);
+        panConstr.gridx = 1;
+        panel.add(upper,panConstr);
         return panel;
     }
 
-    private JPanel getSetPanel(JLabel label,JTextField lower, JTextField upper){
-        JPanel panel = getSetPanel(label, lower);
-        //use previews constraints plus this
-        panConstr.gridx = 1;
-        panel.add(upper,panConstr);
+    private JPanel getIterPanel(JLabel label,JTextField value){
+        GridBagConstraints constr = new GridBagConstraints();
+        JPanel panel = new JPanel();
+        label.setFont(label.getFont().deriveFont(Font.BOLD));
+        constr.gridy = 0;
+        constr.gridx = 0;
+        constr.weightx = 0.5;
+        panel.add(label,constr);
+        constr.gridx = 1;
+        panel.add(value,constr);
         return panel;
     }
 
@@ -93,8 +128,8 @@ public class SettingsPanel extends JPanel
     private class SettingsListener implements ActionListener
     {
         @Override
-        public void actionPerformed(ActionEvent e) {
-
+        public void actionPerformed(ActionEvent e)
+        {
             fractal.setRealLow(Double.parseDouble(realLow.getText()));
             fractal.setRealUp(Double.parseDouble(realUp.getText()));
             fractal.setImagLow(Double.parseDouble(imagLow.getText()));

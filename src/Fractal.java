@@ -190,9 +190,13 @@ public abstract class Fractal extends JPanel
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            Complex c = getComplex(e.getX(),e.getY());
-            DecimalFormat df = new DecimalFormat("#.##");
-            getCLabel().setText("Last selected point: ("+df.format(c.getX())+", "+df.format(c.getY())+")");
+            if(SwingUtilities.isLeftMouseButton(e)){
+                Complex c = getComplex(e.getX(), e.getY());
+                DecimalFormat df = new DecimalFormat("#.##");
+                getCLabel().setText("Last selected point: (" + df.format(c.getX()) + ", " + df.format(c.getY()) + ")");
+                setHovering(false);
+            }else
+                setHovering(!isHovering);
         }
 
         @Override

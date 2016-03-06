@@ -1,6 +1,6 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -13,6 +13,7 @@ public class Favourites
     private List<Complex> fav;
     private BufferedReader br;
     private File file;
+    private JComboBox comboBox;
     //it's a singleton
     public static final Favourites instance = new Favourites();
 
@@ -21,7 +22,7 @@ public class Favourites
         file = new File("favourites");
 
         try {
-            ensureExistance(file);
+            ensureFileExistance(file);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.err.println("Reader: File cannot be found or created");
@@ -34,7 +35,7 @@ public class Favourites
         }
     }
 
-    private void ensureExistance(File file) throws IOException {
+    private void ensureFileExistance(File file) throws IOException {
         if(!file.exists())
             file.createNewFile();
     }
@@ -140,5 +141,16 @@ public class Favourites
      */
     public List<Complex> getFavourites(){
         return fav;
+    }
+
+    //return a representable array of Strings
+    public String[] getStringArray(){
+        String[] lst = new String[getFavourites().size()];
+        int i = 0;
+        for(Complex c : getFavourites()){
+            lst[i] = (c.toString());
+            i++;
+        }
+        return lst;
     }
 }
