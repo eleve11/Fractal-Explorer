@@ -23,7 +23,7 @@ public abstract class FractalGUI extends JFrame
         setFocusable(true);
         this.addKeyListener(new FractKeyLis());
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(width, height);
     }

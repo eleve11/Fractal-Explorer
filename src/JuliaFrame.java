@@ -20,7 +20,7 @@ public class JuliaFrame extends FractalGUI
 
     public void init()
     {
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         Container pane = this.getContentPane();
         JPanel favPanel = new JPanel();
