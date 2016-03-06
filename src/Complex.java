@@ -38,6 +38,13 @@ public class Complex
         return this.getX()==c.getX() && this.getY() == c.getY();
     }
 
+    //returns a string that represents the Complex Number
+    @Override
+    public String toString()
+    {
+        return "("+this.getX()+", "+this.getY()+")";
+    }
+
     /*
      * accessor methods for both real land imaginary part
      */
