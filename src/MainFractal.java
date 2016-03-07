@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 public abstract class MainFractal extends Fractal
 {
     private JuliaFrame juliaFrame;
+    private static boolean isHovering = false;
 
     //complex bound constructor
     public MainFractal(double realLower, double realUpper, double imagLower, double imagUpper){
@@ -43,6 +44,12 @@ public abstract class MainFractal extends Fractal
         juliaFrame.setSize(d);
         juliaFrame.setLocation(location);
     }
+
+    public static void setHovering(boolean hovering) {
+        isHovering = hovering;
+    }
+
+    public boolean isHovering() {return isHovering;}
 
     /**
      * Listener class

@@ -11,7 +11,6 @@ public abstract class Fractal extends JPanel
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
-    private boolean isHovering = false;
 
     //default values
     public static final double REAL_LOW = -2.0;
@@ -148,8 +147,6 @@ public abstract class Fractal extends JPanel
         return palette;
     }
 
-    public boolean isHovering() {return isHovering;}
-
     public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(this);}
 
     //TODO: throw exceptions for edge cases in these settings
@@ -177,10 +174,6 @@ public abstract class Fractal extends JPanel
         this.palette = palette;
     }
 
-    public void setHovering(boolean hovering) {
-        isHovering = hovering;
-    }
-
     //TODO: inner classes are huge, do something!
     /**
      * mouse adapter that zooms
@@ -191,12 +184,9 @@ public abstract class Fractal extends JPanel
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)){
                 Complex c = getComplex(e.getX(), e.getY());
                 getGUI().getSettings().updatePointLabel(c);
-                setHovering(false);
-            }else
-                setHovering(!isHovering);
+                //setHovering(false);
         }
 
         @Override

@@ -48,7 +48,7 @@ public class FractKeyLis extends KeyAdapter
                 break;
 
             case KeyEvent.VK_SHIFT:
-                fractal.setHovering(true);
+                MainFractal.setHovering(true);
                 break;
 
             case KeyEvent.VK_MINUS:
@@ -63,11 +63,10 @@ public class FractKeyLis extends KeyAdapter
         }
     }
 
-    //TODO what shall i do with the shift drag??
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-            fractal.setHovering(false);
+            MainFractal.setHovering(false);
         }
     }
 }
