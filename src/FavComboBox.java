@@ -37,8 +37,8 @@ public class FavComboBox extends JComboBox<String>
             refreshList();
             List<Complex> complexList = Favourites.getInstance().getFavourites();
             Complex target = complexList.get(getSelectedIndex());
-            if(fractal instanceof Mandelbrot)
-                ((Mandelbrot) fractal).startJulia(target);
+            if(fractal instanceof MainFractal)
+                ((MainFractal) fractal).startJulia(target);
             //else
                 //TODO handle when implement Burning ship
         }

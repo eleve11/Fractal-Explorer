@@ -92,7 +92,7 @@ public abstract class Fractal extends JPanel
         return getComplex(p.x,p.y);
     }
 
-    //z should be the value of it escapes the mandelbrot
+    //z should be the value of it escapes the ffractal set
     public double getColorConstant(double iterations, Complex z)
     {
         if(iterations<getMaxIterations())

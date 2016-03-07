@@ -1,14 +1,20 @@
 /**
- * Created by Andrea on 06/03/2016.
+ * Representation of the BurningShip Fractal.
  */
-//TODO do better OOP than extending mandelbrot
-public class BurningShip extends Mandelbrot
+public class BurningShip extends MainFractal
 {
+    /*
+     * draw the burning ship set
+     */
     @Override
     public double functionOfZ(Complex c) {
         return burningShip(c);
     }
 
+    /*
+     * run the burning ship function and
+     * @return the color constant
+     */
     private double burningShip(Complex c)
     {
         Complex z = new Complex(0,0);

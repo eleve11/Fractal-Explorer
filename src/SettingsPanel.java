@@ -40,18 +40,18 @@ public class SettingsPanel extends JPanel
         c = new GridBagConstraints();
 
         c.gridy = 0;
-        this.add(new FractalRadio());
+
+        //radio buttons and favourites list cannot go in JuliaSets
+        if(fractal instanceof MainFractal) {
+            this.add(new FractalRadio(), c);
+            addFavourites();
+        }
         c.gridy = 1;
         this.add(realaxis, c);
         c.gridy = 2;
         this.add(imagaxis, c);
         c.gridy = 3;
         this.add(iterbox, c);
-
-        //can only show favourites if not on a JuliaSet
-        if(!(fractal instanceof JuliaSet))
-            addFavourites();
-
         c.gridy = 7;
         this.add(lastClicked,c);
 

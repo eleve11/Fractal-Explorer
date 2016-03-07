@@ -5,7 +5,7 @@ import java.awt.*;
  */
 public class MainFrame extends FractalGUI
 {
-    Mandelbrot fractal;
+    MainFractal fractal;
     Container pane;
 
     public MainFrame(){
@@ -16,9 +16,9 @@ public class MainFrame extends FractalGUI
         this.setVisible(true);
     }
 
-    public void setFractal(Mandelbrot fractal) {
+    public void setFractal(MainFractal fractal) {
         this.fractal.setVisible(false);
-        setTitle(fractal instanceof BurningShip ? "Burning Ship" : "Mandelbrot Set");
+        setTitle(fractal instanceof BurningShip  ? "Burning Ship" : "Mandelbrot Set");
         this.fractal = fractal;
         this.setSettings(new SettingsPanel(fractal));
         init();
