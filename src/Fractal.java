@@ -31,6 +31,7 @@ public abstract class Fractal extends JPanel
         FractMouseListener fl = new FractMouseListener();
         this.addMouseListener(fl);
         this.addMouseMotionListener(fl);
+        this.addKeyListener(new FractKeyLis(this));
         this.setFocusable(true);
     }
 
@@ -92,7 +93,7 @@ public abstract class Fractal extends JPanel
         return getComplex(p.x,p.y);
     }
 
-    //z should be the value of it escapes the ffractal set
+    //z should be the value of it escapes the fractal set
     public double getColorConstant(double iterations, Complex z)
     {
         if(iterations<getMaxIterations())

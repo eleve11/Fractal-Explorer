@@ -11,11 +11,11 @@ public class FractalRadio extends JPanel {
     private JRadioButton mandelbrot,burningship,other;
     private ButtonGroup bg;
     private JLabel label;
-    private JTextField function;
+    private JTextField function; //this will become useful when added the equation interpreter
     private MainFractal fractal;
 
-    public FractalRadio(MainFractal fractal) {
-        this.fractal = fractal;
+    public FractalRadio(MainFractal preselected) {
+        this.fractal = preselected;
 
         label = new JLabel("Choose a Fractal:");
         label.setFont(label.getFont().deriveFont(Font.BOLD, 15.0f));
@@ -38,6 +38,8 @@ public class FractalRadio extends JPanel {
         this.add(mandelbrot,c);
         c.gridy =2;
         this.add(burningship,c);
+        c.gridy = 3;
+
         //this.add(other);
 
         bg.add(mandelbrot);
@@ -75,6 +77,7 @@ public class FractalRadio extends JPanel {
 
             if(e.getSource().equals(burningship))
                 gui.setFractal(new BurningShip());
+
         }
     }
 }

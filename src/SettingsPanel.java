@@ -68,7 +68,8 @@ public class SettingsPanel extends JPanel
         //Display favourites
         JLabel favLabel = new JLabel("Favourites:");
         favLabel.setFont(favLabel.getFont().deriveFont(Font.BOLD));
-        JComboBox favList = new FavComboBox(fractal);
+        JComboBox favList = Favourites.getInstance().getFavourites();
+        favList.setSelectedIndex(-1);
 
         c.gridy = 5;
         c.weightx = 0.5;
@@ -150,6 +151,7 @@ public class SettingsPanel extends JPanel
             fractal.setMaxIterations(Integer.parseInt(iterations.getText()));
 
             fractal.repaint();
+            fractal.requestFocus();
         }
     }
 }
