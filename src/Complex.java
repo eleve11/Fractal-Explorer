@@ -35,6 +35,15 @@ public class Complex
         return new Complex(real,imaginary);
     }
 
+    /*
+     *returns the corrispondent complex number in the first quadrant
+     *the complex will have the absolute values of the coordinates
+     * as coordinates
+     */
+    public Complex firstQuadrant(){
+        return new Complex(Math.abs(x),Math.abs(y));
+    }
+
     //compare two complex numbers, return true if they are the same
     public boolean equals(Complex c){
         return this.getX()==c.getX() && this.getY() == c.getY();

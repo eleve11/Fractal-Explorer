@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-import java.text.DecimalFormat;
 
 /**
  * represent a fractal on the complex plane.
@@ -13,7 +11,6 @@ public abstract class Fractal extends JPanel
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
-    private Complex lastClickedPoint; //TODO: shouldn't have the label in this class?
     private boolean isHovering = false;
 
     //default values
@@ -152,7 +149,7 @@ public abstract class Fractal extends JPanel
 
     public boolean isHovering() {return isHovering;}
 
-    public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(Fractal.this);}
+    public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(this);}
 
     //TODO: throw exceptions for edge cases in these settings
     public void setRealLow(double realLow) {
@@ -194,8 +191,8 @@ public abstract class Fractal extends JPanel
         @Override
         public void mouseClicked(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)){
-                lastClickedPoint = getComplex(e.getX(), e.getY());
-                getGUI().getSettings().updatePointLabel(lastClickedPoint);
+                Complex c = getComplex(e.getX(), e.getY());
+                getGUI().getSettings().updatePointLabel(c);
                 setHovering(false);
             }else
                 setHovering(!isHovering);
@@ -239,7 +236,7 @@ public abstract class Fractal extends JPanel
             Complex start = getComplex(a);
             Complex end = getComplex(b);
 
-            /* ZOOM ANIMATION NOT WORKING
+            /*/ZOOM ANIMATION NOT WORKING
             Complex topBound = new Complex(getRealLow(),getImagLow());
             Complex botBound = new Complex(getRealUp(),getImagUp());
             double horShiftStart = Math.abs(start.getX() - topBound.getX())/10;
@@ -267,7 +264,8 @@ public abstract class Fractal extends JPanel
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }*/
+            }
+            */
             //finalise zoom
             setRealLow(start.getX());
             setRealUp(end.getX());

@@ -40,10 +40,12 @@ public class SettingsPanel extends JPanel
         c = new GridBagConstraints();
 
         c.gridy = 0;
+        this.add(new FractalRadio());
+        c.gridy = 1;
         this.add(realaxis, c);
         c.gridy = 2;
         this.add(imagaxis, c);
-        c.gridy = 4;
+        c.gridy = 3;
         this.add(iterbox, c);
 
         //can only show favourites if not on a JuliaSet

@@ -45,6 +45,9 @@ public abstract class FractalGUI extends JFrame
         return (SettingsPanel) settings;
     }
 
+    public void setSettings(JPanel settings) {
+        this.settings = settings;
+    }
 
     private class FractKeyLis extends KeyAdapter
     {
