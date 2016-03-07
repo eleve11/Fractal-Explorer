@@ -12,8 +12,11 @@ public class FractalRadio extends JPanel {
     private ButtonGroup bg;
     private JLabel label;
     private JTextField function;
+    private MainFractal fractal;
 
-    public FractalRadio() {
+    public FractalRadio(MainFractal fractal) {
+        this.fractal = fractal;
+
         label = new JLabel("Choose a Fractal:");
         label.setFont(label.getFont().deriveFont(Font.BOLD, 15.0f));
 
@@ -39,13 +42,25 @@ public class FractalRadio extends JPanel {
 
         bg.add(mandelbrot);
         bg.add(burningship);
-        //bg.add(other);
-        bg.setSelected(mandelbrot.getModel(),true); //mandelbrot as default
+        bg.add(other);
+        select(fractal);
 
         ChooseFractalLis lis = new ChooseFractalLis();
         mandelbrot.addActionListener(lis);
         burningship.addActionListener(lis);
 //        other.addActionListener(lis);
+    }
+
+    private void select(MainFractal fractal) {
+        JRadioButton button;
+        if (fractal instanceof Mandelbrot)
+            button = mandelbrot;
+        else if (fractal instanceof BurningShip)
+            button = burningship;
+        else
+            button = other;
+
+        bg.setSelected(button.getModel(), true);
     }
 
     private class ChooseFractalLis implements ActionListener

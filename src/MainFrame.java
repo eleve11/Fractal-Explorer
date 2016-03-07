@@ -20,6 +20,7 @@ public class MainFrame extends FractalGUI
         this.fractal.setVisible(false);
         setTitle(fractal instanceof BurningShip  ? "Burning Ship" : "Mandelbrot Set");
         this.fractal = fractal;
+        getSettings().setVisible(false);
         this.setSettings(new SettingsPanel(fractal));
         init();
     }
