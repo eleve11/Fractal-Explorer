@@ -35,7 +35,7 @@ public class FavButton extends JToggleButton {
      */
     private void updateIcon()
     {
-        String file = isSelected() ? "star.png" : "star_unfilled.png";
+        String file = isSelected() ? "Icons/star.png" : "Icons/star_unfilled.png";
         Image star = new ImageIcon(file).getImage();
         Image scaled = star.getScaledInstance(20,20,Image.SCALE_SMOOTH);
         Icon ico = new ImageIcon(scaled);
@@ -74,6 +74,7 @@ public class FavButton extends JToggleButton {
                     Favourites.getInstance().remove(juliaSet.getC());
                 } catch (Exception e1) {
                     System.err.println(e1.getMessage() + "\n Cannot remove from favourites");
+                    e1.printStackTrace();
                 }
             }
 

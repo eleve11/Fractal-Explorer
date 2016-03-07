@@ -96,7 +96,8 @@ public class Favourites
             throw new IllegalArgumentException("Complex number not found");
 
         //what happens to the combo box when it is removed the item that shows
-        if(favComboBox.getItemAt(favComboBox.getSelectedIndex()).equals(c.toString()))
+        String toRemove = favComboBox.getItemAt(favComboBox.getSelectedIndex());
+        if(toRemove!=null && toRemove.equals(c.toString()))
             favComboBox.setSelectedIndex(-1);
 
         //remove from List

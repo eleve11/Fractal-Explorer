@@ -30,6 +30,7 @@ public class SettingsPanel extends JPanel
         imagLow = new JTextField(fractal.getImagLow().toString(),5);
         iterations = new JTextField(fractal.getMaxIterations().toString(),3);
         lastClicked = new JLabel();
+        lastClicked.setHorizontalAlignment(SwingConstants.CENTER);
 
         //layout components
         this.setLayout(new GridBagLayout());
@@ -54,6 +55,8 @@ public class SettingsPanel extends JPanel
         this.add(iterbox, c);
         c.gridy = 7;
         this.add(lastClicked,c);
+        c.gridy = 8;
+        this.add(new SaveButton(fractal),c);
 
         //add listener to update image
         SettingsListener setListener = new SettingsListener();

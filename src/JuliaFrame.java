@@ -8,6 +8,7 @@ public class JuliaFrame extends FractalGUI
 {
     private JuliaSet julia;
     private FavButton fav;
+    private SaveButton save;
     public static final Dimension DEFAULT_SIZE = new Dimension(400,400);
 
     public JuliaFrame(Complex c){
@@ -15,6 +16,7 @@ public class JuliaFrame extends FractalGUI
         setTitle("Filled Julia Set "+c.toString());
         julia  = (JuliaSet) getFractal();
         fav = new FavButton(julia);
+        save = new SaveButton(julia);
         init();
     }
 
@@ -25,6 +27,7 @@ public class JuliaFrame extends FractalGUI
         Container pane = this.getContentPane();
         JPanel favPanel = new JPanel();
         favPanel.add(fav);
+        favPanel.add(save);
         pane.add(favPanel,BorderLayout.SOUTH);
         pane.add(julia,BorderLayout.CENTER);
         //pane.add(getSettings(),BorderLayout.SOUTH);
@@ -36,6 +39,7 @@ public class JuliaFrame extends FractalGUI
         this.setTitle("Filled Julia Set "+c.toString());
         setFractal(new JuliaSet(c));
         julia = (JuliaSet) getFractal();
+        save.setFractal(julia);
         fav.setJuliaSet(julia);
         init();
     }
