@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Favourites
     private BufferedReader br;
     private File file;
     private JComboBox<String> favComboBox;
+    private List<Complex> favList;
 
     //it's a singleton
     public static final Favourites instance = new Favourites();
@@ -20,6 +23,7 @@ public class Favourites
     public Favourites(){
         file = new File("favourites");
         favComboBox = new JComboBox<String>();
+        favList = new ArrayList<Complex>();
 
         try {
             ensureFileExistance(file);
@@ -47,6 +51,7 @@ public class Favourites
         br = new BufferedReader(new FileReader(file));
         String line;
         favComboBox.removeAllItems();
+        favList.clear();
         if(br.ready()){
             while((line=br.readLine()) != null){
                 if(line.split(":").length>2)
@@ -54,6 +59,7 @@ public class Favourites
                 double real = Double.parseDouble(line.split(":")[0]);
                 double img = Double.parseDouble(line.split(":")[1]);
                 favComboBox.addItem(new Complex(real,img).toString());
+                favList.add(new Complex(real,img));
             }
         }
         br.close();
@@ -71,6 +77,7 @@ public class Favourites
 
         //add to List
         favComboBox.addItem(c.toString());
+        favList.add(c);
 
         //add to file
         BufferedWriter output = new BufferedWriter(new FileWriter(file, true));
@@ -89,8 +96,15 @@ public class Favourites
     {
         if(!this.contains(c))
             throw new IllegalArgumentException("Complex number not found");
+
+        //what happens to the combo box when it is removed the item that shows
+        if(favComboBox.getItemAt(favComboBox.getSelectedIndex()).equals(c.toString()))
+            favComboBox.setSelectedIndex(-1);
+
         //remove from List
         favComboBox.removeItem(c.toString());
+        favList.remove(c);
+
 
         //prepare IO
         File temp = new File("temp");
@@ -138,6 +152,13 @@ public class Favourites
 
     /*
      * return the list of complex number that are favourites
+     */
+    public List<Complex> getFavList() {
+        return favList;
+    }
+
+    /*
+     * return the gui component object that represents the favourites
      */
     public JComboBox<String> getFavourites(){
         return favComboBox;

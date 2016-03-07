@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -70,6 +71,8 @@ public class SettingsPanel extends JPanel
         favLabel.setFont(favLabel.getFont().deriveFont(Font.BOLD));
         JComboBox favList = Favourites.getInstance().getFavourites();
         favList.setSelectedIndex(-1);
+        favList.addActionListener(new ShowFav());
+        favList.setFocusable(false); //allow keylisteners
 
         c.gridy = 5;
         c.weightx = 0.5;
@@ -152,6 +155,22 @@ public class SettingsPanel extends JPanel
 
             fractal.repaint();
             fractal.requestFocus();
+        }
+    }
+
+    /*
+     * action listener for the Favourites ComboBox
+     */
+    private class ShowFav implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //action only if index != -1
+            if(((JComboBox)e.getSource()).getSelectedIndex()!= -1) {
+                List<Complex> complexList = Favourites.getInstance().getFavList();
+                Complex target = complexList.get(((JComboBox) e.getSource()).getSelectedIndex());
+                ((MainFractal) fractal).startJulia(target);
+            }
         }
     }
 }
