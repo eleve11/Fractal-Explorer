@@ -43,6 +43,7 @@ public class SaveButton extends JButton
     {
         private JTextField name;
         private JButton ok,cancel;
+        private JLabel invalid;
 
         private SaveDialog()
         {
@@ -51,7 +52,8 @@ public class SaveButton extends JButton
             this.name = new JTextField(15);
             this.ok = new JButton("Save");
             this.cancel = new JButton("Cancel");
-            this.setSize(300,100);
+            this.invalid = new JLabel();
+            this.setSize(280,120);
             this.setResizable(false);
             this.setLocationRelativeTo(SaveButton.this);
             init();
@@ -64,7 +66,9 @@ public class SaveButton extends JButton
             this.add(name);
             this.add(cancel);
             this.add(ok);
+            this.add(invalid);
 
+            invalid.setForeground(Color.RED);
             ActionListener saveLis = new SaveListener();
             ok.addActionListener(saveLis);
             cancel.addActionListener(saveLis);
@@ -81,20 +85,22 @@ public class SaveButton extends JButton
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if(!e.getSource().equals(cancel))
-                {
+                if(!e.getSource().equals(cancel)) {
                     //paint the fractal on a buffered image
                     BufferedImage bi = new BufferedImage(fractal.getSize().width, fractal.getSize().height, BufferedImage.TYPE_INT_ARGB);
                     Graphics g = bi.createGraphics();
                     fractal.paint(g);
                     g.dispose();
-                    if(name.getText().equals(""))
-                        name.setText("no_name");
+                    //handle illegal cases
+                    if (name.getText().equals("") || name.getText().contains("/")){
+                        invalid.setText("Invalid name. Retry");
+                        return;
+                    }
                     //save it to a png file
-                    try{
-                        ImageIO.write(bi,"png",new File(name.getText()+".png"));}
-                    catch (Exception ex) {
-                     ex.printStackTrace();
+                    try {
+                        ImageIO.write(bi, "png", new File(name.getText() + ".png"));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
                 dispose();
