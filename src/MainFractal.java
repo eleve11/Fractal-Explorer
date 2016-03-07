@@ -25,7 +25,20 @@ public abstract class MainFractal extends Fractal
     }
 
     @Override
-    public abstract double functionOfZ(Complex c);
+    public double compute(Complex c) {
+        Complex z = new Complex(0,0);
+
+        int iterations=0;
+        while(iterations<getMaxIterations() && z.modulusSquare()<4.0) {
+            z = functionOfZ(z,c);
+            iterations++;
+        }
+
+        return getColorConstant(iterations,z);
+    }
+
+    @Override
+    public abstract Complex functionOfZ(Complex z, Complex c);
 
     public void startJulia(Complex c) {
         Point location = new Point(MainFrame.DEFAULT_SIZE.width, 0);

@@ -52,8 +52,8 @@ public abstract class Fractal extends JPanel
             for(int x=0; x<getWidth(); x++)
             {
                 int[][] palette = getPalette();
-                double it = functionOfZ(getComplex(x,y));
-                int itfloor = (int)Math.floor(it);
+                double it = compute(getComplex(x,y));
+                int itfloor = (int)Math.floor(it) + palette.length;
                 int[] color1 = palette[itfloor % palette.length];
                 int[] color2 = palette[(itfloor +1) % palette.length];
                 Color col = RgbLinearInterpolate(color1,color2,it);
@@ -67,13 +67,17 @@ public abstract class Fractal extends JPanel
         }
     }
 
+
+    public abstract double compute(Complex c);
+
     /**
      * this method calls the function of Z that graphically represents
-     * the fractal on the complex plane.
+     * the fractal on the complex plane when computed
      * @param c is the complex variable
-     * @return the color constant according to the number of iterations
+     * @param z is the starting point
+     * @return the resulting complex
      */
-    public abstract double functionOfZ(Complex c);
+    public abstract Complex functionOfZ(Complex z, Complex c);
 
     /*
     * return the point in the complex plane that

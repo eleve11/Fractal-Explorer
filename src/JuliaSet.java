@@ -19,27 +19,27 @@ public class JuliaSet extends Fractal
         this(-2,2,-1.6,1.6,c);
     }
 
-    /*
-     * draw the Julia Set on the Complex plane
-     */
-    @Override
-    public double functionOfZ(Complex z) {
-        return julia(z);
-    }
 
     /*
      * run julia function on Z and
      * return the smooth color constant for that point
      */
-    private double julia(Complex z){
+    @Override
+    public double compute(Complex z) {
         int iterations = 0;
 
         while(iterations<getMaxIterations() && z.modulusSquare()<4.0){
-            z = z.square().add(c);
+            z = functionOfZ(z,c);
             iterations++;
         }
 
         return getColorConstant(iterations,z);
+    }
+
+    //julia set formula
+    @Override
+    public Complex functionOfZ(Complex z, Complex c) {
+        return z.square().add(c);
     }
 
     //Getter method for the constant

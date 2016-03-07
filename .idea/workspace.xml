@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14d32dcc-f6f7-49d8-9786-420f94d58d3e" name="Default" comment="julia live update while shift is pressed">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Icons/save.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/SaveButton.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/star.png" afterPath="$PROJECT_DIR$/Icons/star.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/star_unfilled.png" afterPath="$PROJECT_DIR$/Icons/star_unfilled.png" />
+    <list default="true" id="14d32dcc-f6f7-49d8-9786-420f94d58d3e" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Hexabrot.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Octabrot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Complex.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Complex.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal$FractMouseListener.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal$FractMouseListener.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/JuliaFrame.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/JuliaFrame.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/JuliaSet.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/JuliaSet.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Mandelbrot.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Mandelbrot.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FavButton.java" afterPath="$PROJECT_DIR$/src/FavButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Favourites.java" afterPath="$PROJECT_DIR$/src/Favourites.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/JuliaFrame.java" afterPath="$PROJECT_DIR$/src/JuliaFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SettingsPanel.java" afterPath="$PROJECT_DIR$/src/SettingsPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurningShip.java" afterPath="$PROJECT_DIR$/src/BurningShip.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Complex.java" afterPath="$PROJECT_DIR$/src/Complex.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Fractal.java" afterPath="$PROJECT_DIR$/src/Fractal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FractalRadio.java" afterPath="$PROJECT_DIR$/src/FractalRadio.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/JuliaSet.java" afterPath="$PROJECT_DIR$/src/JuliaSet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainFractal.java" afterPath="$PROJECT_DIR$/src/MainFractal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Mandelbrot.java" afterPath="$PROJECT_DIR$/src/Mandelbrot.java" />
     </list>
     <ignored path="FractalExplorer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,7 +38,107 @@
     <favorites_list name="FractalExplorer" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Fractal.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Fractal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="55" column="66" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Hexabrot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Hexabrot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="69" selection-start-line="7" selection-start-column="69" selection-end-line="7" selection-end-column="69" />
+              <folding>
+                <element signature="e#181#182#0" expanded="true" />
+                <element signature="e#257#258#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BurningShip.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BurningShip.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+              <folding>
+                <element signature="e#216#217#0" expanded="true" />
+                <element signature="e#272#273#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainFractal.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MainFractal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mandelbrot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Mandelbrot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="33" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="33" />
+              <folding>
+                <element signature="e#232#233#0" expanded="true" />
+                <element signature="e#272#273#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JuliaSet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/JuliaSet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding>
+                <element signature="e#1014#1015#0" expanded="true" />
+                <element signature="e#1054#1055#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FractalRadio.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/FractalRadio.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.28082192">
+              <caret line="37" column="50" selection-start-line="37" selection-start-column="50" selection-end-line="37" selection-end-column="50" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Octabrot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Octabrot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="8" column="60" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="60" />
+              <folding>
+                <element signature="e#203#204#0" expanded="true" />
+                <element signature="e#270#271#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -63,26 +164,27 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/favourites" />
-        <option value="$PROJECT_DIR$/src/JuliaSet.java" />
         <option value="$PROJECT_DIR$/src/FractalRadioGroup.java" />
-        <option value="$PROJECT_DIR$/src/BurningShip.java" />
-        <option value="$PROJECT_DIR$/src/Mandelbrot.java" />
         <option value="$PROJECT_DIR$/src/FractalGUI.java" />
         <option value="$PROJECT_DIR$/src/MainFrame.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/Octabrot.java" />
         <option value="$PROJECT_DIR$/src/Ectabrot.java" />
-        <option value="$PROJECT_DIR$/src/FractalRadio.java" />
         <option value="$PROJECT_DIR$/src/FavComboBox.java" />
-        <option value="$PROJECT_DIR$/src/Complex.java" />
-        <option value="$PROJECT_DIR$/src/Fractal.java" />
-        <option value="$PROJECT_DIR$/src/MainFractal.java" />
         <option value="$PROJECT_DIR$/src/FractKeyLis.java" />
         <option value="$PROJECT_DIR$/src/JuliaFrame.java" />
         <option value="$PROJECT_DIR$/src/SettingsPanel.java" />
-        <option value="$PROJECT_DIR$/src/SaveButton.java" />
         <option value="$PROJECT_DIR$/src/FavButton.java" />
         <option value="$PROJECT_DIR$/src/Favourites.java" />
+        <option value="$PROJECT_DIR$/src/SaveButton.java" />
+        <option value="$PROJECT_DIR$/src/Complex.java" />
+        <option value="$PROJECT_DIR$/src/BurningShip.java" />
+        <option value="$PROJECT_DIR$/src/Mandelbrot.java" />
+        <option value="$PROJECT_DIR$/src/MainFractal.java" />
+        <option value="$PROJECT_DIR$/src/JuliaSet.java" />
+        <option value="$PROJECT_DIR$/src/Octabrot.java" />
+        <option value="$PROJECT_DIR$/src/Fractal.java" />
+        <option value="$PROJECT_DIR$/src/Hexabrot.java" />
+        <option value="$PROJECT_DIR$/src/FractalRadio.java" />
       </list>
     </option>
   </component>
@@ -736,7 +838,7 @@
       <workItem from="1457356749452" duration="12000" />
       <workItem from="1457357406774" duration="1056000" />
       <workItem from="1457362308324" duration="695000" />
-      <workItem from="1457364072961" duration="7197000" />
+      <workItem from="1457364072961" duration="12513000" />
     </task>
     <task id="LOCAL-00001" summary="improved Favourites class">
       <created>1457212116449</created>
@@ -834,11 +936,23 @@
       <option name="project" value="LOCAL" />
       <updated>1457370192671</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="added save button">
+      <created>1457375896418</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1457375896418</updated>
+    </task>
+    <task id="LOCAL-00018" summary="handled invalid name case">
+      <created>1457377171507</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1457377171507</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="170886000" />
+    <option name="totallyTimeSpent" value="176202000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -851,7 +965,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1057" y="33" width="758" height="725" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784638" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -860,10 +974,10 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26474622" sideWeight="0.5046854" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328594" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26382306" sideWeight="0.4953146" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26382306" sideWeight="0.4953146" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2150838" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2150838" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -931,7 +1045,9 @@
     <MESSAGE value="updated Favourites, and KeyListener" />
     <MESSAGE value="Favourites working great now" />
     <MESSAGE value="julia live update while shift is pressed" />
-    <option name="LAST_COMMIT_MESSAGE" value="julia live update while shift is pressed" />
+    <MESSAGE value="added save button" />
+    <MESSAGE value="handled invalid name case" />
+    <option name="LAST_COMMIT_MESSAGE" value="handled invalid name case" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -944,13 +1060,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Mandelbrot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/JuliaSet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1178,42 +1287,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BurningShip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Complex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="5" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Fractal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FractalGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mandelbrot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1236,26 +1313,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MainFractal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79452056">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FractalRadio.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58219177">
-          <caret line="60" column="33" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FractKeyLis.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9315069">
@@ -1269,17 +1326,6 @@
         <state vertical-scroll-proportion="0.24657534">
           <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/JuliaSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6232877">
-          <caret line="46" column="17" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="17" />
-          <folding>
-            <element signature="e#1121#1122#0" expanded="true" />
-            <element signature="e#1145#1146#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1301,20 +1347,111 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SaveButton.java">
+    <entry file="file://$PROJECT_DIR$/src/FavButton.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23972602">
-          <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.5205479">
+          <caret line="71" column="18" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FavButton.java">
+    <entry file="file://$PROJECT_DIR$/src/SaveButton.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5205479">
-          <caret line="71" column="18" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Complex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MainFractal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/JuliaSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#1014#1015#0" expanded="true" />
+            <element signature="e#1054#1055#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mandelbrot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="33" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="33" />
+          <folding>
+            <element signature="e#232#233#0" expanded="true" />
+            <element signature="e#272#273#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Fractal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="66" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Octabrot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="60" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="60" />
+          <folding>
+            <element signature="e#203#204#0" expanded="true" />
+            <element signature="e#270#271#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BurningShip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#216#217#0" expanded="true" />
+            <element signature="e#272#273#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Hexabrot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="69" selection-start-line="7" selection-start-column="69" selection-end-line="7" selection-end-column="69" />
+          <folding>
+            <element signature="e#181#182#0" expanded="true" />
+            <element signature="e#257#258#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FractalRadio.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28082192">
+          <caret line="37" column="50" selection-start-line="37" selection-start-column="50" selection-end-line="37" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

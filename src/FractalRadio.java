@@ -8,60 +8,57 @@ import java.awt.event.ActionListener;
  */
 public class FractalRadio extends JPanel {
 
-    private JRadioButton mandelbrot,burningship,other;
     private ButtonGroup bg;
     private JLabel label;
-    private JTextField function; //this will become useful when added the equation interpreter
     private MainFractal fractal;
+    private int yCount = 1;
+    private GridBagConstraints c;
+    private ChooseFractalLis lis;
 
     public FractalRadio(MainFractal preselected) {
         this.fractal = preselected;
+        this.setLayout(new GridBagLayout());
 
         label = new JLabel("Choose a Fractal:");
         label.setFont(label.getFont().deriveFont(Font.BOLD, 15.0f));
 
-        mandelbrot = new JRadioButton("Mandelbrot");
-        burningship = new JRadioButton("Burning Ship");
-        other = new JRadioButton("Other");
         bg = new ButtonGroup();
+        lis = new ChooseFractalLis();
+        c = new GridBagConstraints();
 
-        this.setLayout(new GridBagLayout());
+
         init();
     }
 
     private void init()
     {
-        GridBagConstraints c = new GridBagConstraints();
         c.gridy =0;
         this.add(label,c);
-        c.gridy =1;
-        this.add(mandelbrot,c);
-        c.gridy =2;
-        this.add(burningship,c);
-        c.gridy = 3;
 
-        //this.add(other);
+        //look how easy it is to add new fractals!
+        addButton(new Mandelbrot());
+        addButton(new BurningShip());
+        addButton(new Hexabrot());
+        addButton(new Octabrot());
 
-        bg.add(mandelbrot);
-        bg.add(burningship);
-        bg.add(other);
         select(fractal);
+    }
 
-        ChooseFractalLis lis = new ChooseFractalLis();
-        mandelbrot.addActionListener(lis);
-        burningship.addActionListener(lis);
-//        other.addActionListener(lis);
+    private void addButton(MainFractal fractal){
+        JRadioButton radio = new JRadioButton();
+        radio.setText(fractal.getClass().getName());
+        bg.add(radio);
+        c.gridy = yCount;
+        this.add(radio,c);
+        yCount++;
+        radio.addActionListener(lis);
     }
 
     private void select(MainFractal fractal) {
-        JRadioButton button;
-        if (fractal instanceof Mandelbrot)
-            button = mandelbrot;
-        else if (fractal instanceof BurningShip)
-            button = burningship;
-        else
-            button = other;
-
+        JRadioButton button = new JRadioButton();
+        for(Component c : getComponents())
+            if(c instanceof JRadioButton && ((JRadioButton) c).getText().equals(fractal.getClass().getName()))
+                button = (JRadioButton) c;
         bg.setSelected(button.getModel(), true);
     }
 
@@ -71,13 +68,19 @@ public class FractalRadio extends JPanel {
         public void actionPerformed(ActionEvent e)
         {
             MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalRadio.this);
+            String name = ((JRadioButton)e.getSource()).getText();
 
-            if(e.getSource().equals(mandelbrot))
-                gui.setFractal(new Mandelbrot());
-
-            if(e.getSource().equals(burningship))
-                gui.setFractal(new BurningShip());
-
+            //Woah lots of exceptions
+            try {
+                Class c = Class.forName(name);
+                gui.setFractal((MainFractal)c.newInstance());
+            } catch (ClassNotFoundException e1){
+                e1.printStackTrace();
+            }catch(InstantiationException e2) {
+                e2.printStackTrace();
+            } catch (IllegalAccessException e3) {
+                e3.printStackTrace();
+            }
         }
     }
 }

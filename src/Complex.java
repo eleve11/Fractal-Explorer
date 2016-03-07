@@ -35,6 +35,14 @@ public class Complex
         return new Complex(real,imaginary);
     }
 
+    //return the product between this Complex and parameter
+    public Complex times(Complex z){
+        //(x+yi)(u+vi) = (xu -yv) + (xv + yu)i
+        double real = this.getX()*z.getX() - this.getY()*z.getY();
+        double imaginary = this.getX()*z.getY() + this.getY()*z.getX();
+        return new Complex(real,imaginary);
+    }
+
     /*
      *returns the corrispondent complex number in the first quadrant
      *the complex will have the absolute values of the coordinates
