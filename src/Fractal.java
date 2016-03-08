@@ -6,8 +6,7 @@ import java.awt.event.MouseEvent;
 /**
  * represent a fractal on the complex plane.
  */
-public abstract class Fractal extends JPanel
-{
+public abstract class Fractal extends JPanel {
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
@@ -19,13 +18,11 @@ public abstract class Fractal extends JPanel
     public static final double IMAG_UP = 1.6;
 
     //construct using complex plane constraints
-    public Fractal(double realLower, double realUpper, double imagLower, double imagUpper)
-    {
+    public Fractal(double realLower, double realUpper, double imagLower, double imagUpper) {
         this.realLow = realLower;
         this.realUp = realUpper;
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
-
 
         FractMouseListener fl = new FractMouseListener();
         this.addMouseListener(fl);
@@ -35,8 +32,8 @@ public abstract class Fractal extends JPanel
     }
 
     //default constructor
-    public Fractal(){
-        this(REAL_LOW,REAL_UP,IMAG_LOW,IMAG_UP);
+    public Fractal() {
+        this(REAL_LOW, REAL_UP, IMAG_LOW, IMAG_UP);
     }
 
     /*
@@ -44,26 +41,24 @@ public abstract class Fractal extends JPanel
      * according to the function called by FunctionOfZ
      */
     @Override
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         //loop through each pixel
-        for(int y=0; y<getHeight(); y++){
-            for(int x=0; x<getWidth(); x++)
-            {
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
                 int[][] palette = getPalette();
-                double it = compute(getComplex(x,y));
+                double it = compute(getComplex(x, y));
                 //interpolate between 2 adiacent color in the palette
-                int itfloor = (int)Math.floor(it) + palette.length;
+                int itfloor = (int) Math.floor(it) + palette.length;
                 int[] color1 = palette[itfloor % palette.length];
-                int[] color2 = palette[(itfloor +1) % palette.length];
-                Color col = RgbLinearInterpolate(color1,color2,it);
+                int[] color2 = palette[(itfloor + 1) % palette.length];
+                Color col = RgbLinearInterpolate(color1, color2, it);
            /* other possible colouring
            float hue = (float)mandelbrot(getComplex(x,y))/10;
            Color col = new Color(Color.HSBtoRGB(hue,1,1)); //why the center is not black?
            */
                 //draw pixel
                 g.setColor(col);
-                g.drawLine(x,y,x,y);
+                g.drawLine(x, y, x, y);
             }
         }
     }
@@ -72,6 +67,7 @@ public abstract class Fractal extends JPanel
      * Check if the function of Z escapes the limit
      * computes how close the point is to the fractal
      * should call functionOfZ and getColorConstant
+     *
      * @param c the point on the complex plane we are checking
      * @return colour constant value
      */
@@ -80,6 +76,7 @@ public abstract class Fractal extends JPanel
     /**
      * this method calls the function of Z that graphically represents
      * the fractal on the complex plane when computed
+     *
      * @param c is the complex variable
      * @param z is the starting point
      * @return the resulting complex
@@ -90,30 +87,27 @@ public abstract class Fractal extends JPanel
     * return the point in the complex plane that
     * corresponds to those pixels
     */
-    public Complex getComplex(int x, int y)
-    {
-        double cx = (realUp-realLow)*x/getWidth() + realLow;
+    public Complex getComplex(int x, int y) {
+        double cx = (realUp - realLow) * x / getWidth() + realLow;
         //this is inverted so that the y axis goes in the right way
-        double cy = (imagLow-imagUp)*y/getHeight() +  imagUp;
-        return new Complex(cx,cy);
+        double cy = (imagLow - imagUp) * y / getHeight() + imagUp;
+        return new Complex(cx, cy);
     }
 
     //method overload
-    public Complex getComplex(Point p){
-        return getComplex(p.x,p.y);
+    public Complex getComplex(Point p) {
+        return getComplex(p.x, p.y);
     }
 
     /**
      * Smooth colouring algorithm:
      * guarantees that the colors are continuous and don't create bands
      */
-    public double getColorConstant(double iterations, Complex z)
-    {
-        if(iterations<getMaxIterations())
-        {
-            double log_zn = Math.log(z.modulusSquare())/2;
-            double nu = Math.log(log_zn/Math.log(2)) / Math.log(2);
-            iterations = (iterations + 1 - nu)/(palette.length *3); //divide by a factor to make it smoother
+    public double getColorConstant(double iterations, Complex z) {
+        if (iterations < getMaxIterations()) {
+            double log_zn = Math.log(z.modulusSquare()) / 2;
+            double nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
+            iterations = (iterations + 1 - nu) / (palette.length * 3); //divide by a factor to make it smoother
         }
 
         return iterations;
@@ -121,19 +115,19 @@ public abstract class Fractal extends JPanel
 
     /**
      * interpolate to RGB colors
+     *
      * @param count will be the iterations converted into color constant
      * @return resulting color
      */
-    public static Color RgbLinearInterpolate(int[] start, int[] end, double count)
-    {
+    public static Color RgbLinearInterpolate(int[] start, int[] end, double count) {
         // linear interpolation lerp (r,a,b) = (1-r)*a + r*b = (1-r)*(ax,ay,az) + r*(bx,by,bz)
-        double r =  count - Math.floor(count); //get just decimal part
+        double r = count - Math.floor(count); //get just decimal part
         double nr = 1.0 - r;
         double R = ((nr * start[0]) + (r * end[0])) % 256;
         double G = ((nr * start[1]) + (r * end[1])) % 256;
         double B = ((nr * start[2]) + (r * end[2])) % 256;
 
-        return new Color((int)R,(int)G,(int)B);
+        return new Color((int) R, (int) G, (int) B);
     }
 
     /**
@@ -163,37 +157,39 @@ public abstract class Fractal extends JPanel
         return palette;
     }
 
-    public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(this);}
+    public FractalGUI getGUI() {
+        return (FractalGUI) SwingUtilities.getWindowAncestor(this);
+    }
 
     /*
      * these setters have constraints
      */
     public void setRealLow(double realLow) {
-        if(realLow >= getRealUp())
-            throw  new IllegalArgumentException();
+        if (realLow >= getRealUp())
+            throw new IllegalArgumentException();
         this.realLow = realLow;
     }
 
     public void setRealUp(double realUp) {
-        if(realUp <= getRealLow())
+        if (realUp <= getRealLow())
             throw new IllegalArgumentException();
         this.realUp = realUp;
     }
 
     public void setImagLow(double imagLow) {
-        if(imagLow >= getImagUp())
+        if (imagLow >= getImagUp())
             throw new IllegalArgumentException();
         this.imagLow = imagLow;
     }
 
     public void setImagUp(double imagUp) {
-        if(imagUp <= getImagLow())
+        if (imagUp <= getImagLow())
             throw new IllegalArgumentException();
         this.imagUp = imagUp;
     }
 
     public void setMaxIterations(int maxIterations) {
-        if(maxIterations<1)
+        if (maxIterations < 1)
             throw new IllegalArgumentException();
         this.maxIterations = maxIterations;
     }
@@ -202,6 +198,46 @@ public abstract class Fractal extends JPanel
         this.palette = palette;
     }
 
+    //ZOOM to the rectangle that has the main diagonal passing through the parameter points
+    public void zoom(Point begin, Point finish) {
+        Complex start = getComplex(begin);
+        Complex end = getComplex(finish);
+
+        /*//ZOOM ANIMATION IS NOT THREAD SAFE
+         * TODO: execute the animated zoom on another thread so that it doesn't lag
+        //set the bounds
+        Complex botBound = new Complex(getRealLow(),getImagLow());
+        Complex topBound = new Complex(getRealUp(),getImagUp());
+
+        //zoom by 15% of the total zoom each iteration
+        double horShiftStart = (start.getX() - botBound.getX()) * 0.15;
+        double verShiftStart = (topBound.getY() - start.getY()) * 0.15;
+        double horShiftEnd = (topBound.getX() - end.getX()) * 0.15;
+        double verShiftEnd = (end.getY() - botBound.getY()) * 0.15;
+
+        while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
+            || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
+        {
+            topBound = new Complex(topBound.getX()-horShiftEnd, topBound.getY()-verShiftStart);
+            botBound = new Complex(botBound.getX()+horShiftStart, botBound.getY()+verShiftEnd);
+
+            setRealLow(botBound.getX());
+            setRealUp(topBound.getX());
+            setImagLow(botBound.getY());
+            setImagUp(topBound.getY());
+
+            paint(getGraphics()); //HORRIBLE CODE (never call directly the paint method)
+        }
+        */
+
+        //not animated zoom
+        setRealLow(start.getX());
+        setRealUp(end.getX());
+        setImagUp(start.getY());
+        setImagLow(end.getY());
+
+        repaint();
+    }
 
     /**
      * mouse adapter that handles the zoom feature
@@ -211,12 +247,12 @@ public abstract class Fractal extends JPanel
         private Point startDrag, endDrag;
 
         /*
-         * on mouse click show clicked coordinates
+         * on mouse click update clicked coordinates
          */
         @Override
         public void mouseClicked(MouseEvent e) {
-                Complex c = getComplex(e.getX(), e.getY());
-                getGUI().getSettings().updatePointLabel(c);
+            Complex c = getComplex(e.getX(), e.getY());
+            getGUI().getSettings().updatePointLabel(c);
         }
 
         /*
@@ -224,7 +260,7 @@ public abstract class Fractal extends JPanel
          */
         @Override
         public void mousePressed(MouseEvent e) {
-            startDrag = new Point(e.getX(),e.getY());
+            startDrag = new Point(e.getX(), e.getY());
             endDrag = startDrag;
         }
 
@@ -232,11 +268,10 @@ public abstract class Fractal extends JPanel
          * when mouse is released, zoom if it was dragged
          */
         @Override
-        public void mouseReleased(MouseEvent e)
-        {
-            if(endDrag!=startDrag){
+        public void mouseReleased(MouseEvent e) {
+            if (endDrag != startDrag) {
                 alignValues();
-                zoom(startDrag,endDrag);
+                zoom(startDrag, endDrag);
                 getGUI().getSettings().updateSet();
             }
 
@@ -244,9 +279,13 @@ public abstract class Fractal extends JPanel
             endDrag = null;
         }
 
+        /*
+         * when the mouse is dragged draw the zooming area rectangle
+         */
         @Override
-        public void mouseDragged(MouseEvent e) {
-            endDrag = new Point(e.getX(),e.getY());
+        public void mouseDragged(MouseEvent e)
+        {
+            endDrag = new Point(e.getX(), e.getY());
 
             //set rectangle constants
             int width = Math.abs(startDrag.x - endDrag.x);
@@ -254,65 +293,26 @@ public abstract class Fractal extends JPanel
             int x = Math.min(startDrag.x, endDrag.x);
             int y = Math.min(startDrag.y, endDrag.y);
 
-            //draw the rectangle for the zooming area
-            Graphics2D g = (Graphics2D) getGraphics();
-            g.setColor(Color.WHITE);
-            Rectangle r = new Rectangle(x,y,width, height);
-            g.setStroke(new BasicStroke(2));
-            g.draw(r);
+            //draw rectangle
+            Rectangle r = new Rectangle(x, y, width, height);
+            Graphics2D g2 = (Graphics2D) getGraphics();
+            g2.setStroke(new BasicStroke(2));
+            g2.setColor(Color.WHITE);
+            g2.draw(r);
             repaint(r);
         }
 
-        //ZOOM ANIMATION WORKING BUT NOT THREAD SAFE CODE !
-        private void zoom(Point a, Point b){
-            Complex start = getComplex(a);
-            Complex end = getComplex(b);
-
-            //set the bounds
-            Complex botBound = new Complex(getRealLow(),getImagLow());
-            Complex topBound = new Complex(getRealUp(),getImagUp());
-
-            //zoom by 15% of the total zoom each iteration
-            double horShiftStart = (start.getX() - botBound.getX()) * 0.15;
-            double verShiftStart = (topBound.getY() - start.getY()) * 0.15;
-            double horShiftEnd = (topBound.getX() - end.getX()) * 0.15;
-            double verShiftEnd = (end.getY() - botBound.getY()) * 0.15;
-
-            while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
-                || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
-            {
-                topBound = new Complex(topBound.getX()-horShiftEnd, topBound.getY()-verShiftStart);
-                botBound = new Complex(botBound.getX()+horShiftStart, botBound.getY()+verShiftEnd);
-
-                setRealLow(botBound.getX());
-                setRealUp(topBound.getX());
-                setImagLow(botBound.getY());
-                setImagUp(topBound.getY());
-
-                paint(getGraphics()); //HORRIBLE CODE (never call directly the paint method)
-            }
-
-//            //not animated (comment out the animated) zoom
-//            setRealLow(start.getX());
-//            setRealUp(end.getX());
-//            setImagUp(start.getY());
-//            setImagLow(end.getY());
-//
-//            repaint();
-        }
-
         //make sure the rectangle startDrag is top left
-        private void alignValues()
-        {
+        private void alignValues() {
             Point tmp = new Point();
 
-            if(startDrag.x>endDrag.x) {
+            if (startDrag.x > endDrag.x) {
                 tmp.x = endDrag.x;
                 endDrag.x = startDrag.x;
                 startDrag.x = tmp.x;
             }
-            
-            if(startDrag.y>endDrag.y){
+
+            if (startDrag.y > endDrag.y) {
                 tmp.y = endDrag.y;
                 endDrag.y = startDrag.y;
                 startDrag.y = tmp.y;

@@ -58,6 +58,7 @@ public class FractKeyLis extends KeyAdapter
                 iterationShift = -iterationShift;
                 if (fractal.getMaxIterations() == 100) //prevent user from going under 100 iterations
                     break;
+            case KeyEvent.VK_PLUS:
             case KeyEvent.VK_EQUALS: //using equals instead of plus
                 fractal.setMaxIterations(fractal.getMaxIterations() + iterationShift);
                 fractal.getGUI().getSettings().updateSet();
