@@ -198,46 +198,7 @@ public abstract class Fractal extends JPanel {
         this.palette = palette;
     }
 
-    //ZOOM to the rectangle that has the main diagonal passing through the parameter points
-    public void zoom(Point begin, Point finish) {
-        Complex start = getComplex(begin);
-        Complex end = getComplex(finish);
 
-        /*//ZOOM ANIMATION IS NOT THREAD SAFE
-         * TODO: execute the animated zoom on another thread so that it doesn't lag
-        //set the bounds
-        Complex botBound = new Complex(getRealLow(),getImagLow());
-        Complex topBound = new Complex(getRealUp(),getImagUp());
-
-        //zoom by 15% of the total zoom each iteration
-        double horShiftStart = (start.getX() - botBound.getX()) * 0.15;
-        double verShiftStart = (topBound.getY() - start.getY()) * 0.15;
-        double horShiftEnd = (topBound.getX() - end.getX()) * 0.15;
-        double verShiftEnd = (end.getY() - botBound.getY()) * 0.15;
-
-        while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
-            || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
-        {
-            topBound = new Complex(topBound.getX()-horShiftEnd, topBound.getY()-verShiftStart);
-            botBound = new Complex(botBound.getX()+horShiftStart, botBound.getY()+verShiftEnd);
-
-            setRealLow(botBound.getX());
-            setRealUp(topBound.getX());
-            setImagLow(botBound.getY());
-            setImagUp(topBound.getY());
-
-            paint(getGraphics()); //HORRIBLE CODE (never call directly the paint method)
-        }
-        */
-
-        //not animated zoom
-        setRealLow(start.getX());
-        setRealUp(end.getX());
-        setImagUp(start.getY());
-        setImagLow(end.getY());
-
-        repaint();
-    }
 
     /**
      * mouse adapter that handles the zoom feature
@@ -271,8 +232,7 @@ public abstract class Fractal extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if (endDrag != startDrag) {
                 alignValues();
-                zoom(startDrag, endDrag);
-                getGUI().getSettings().updateSet();
+                new Thread(new ZoomRun(startDrag,endDrag)).start();
             }
 
             startDrag = null;
@@ -303,7 +263,8 @@ public abstract class Fractal extends JPanel {
         }
 
         //make sure the rectangle startDrag is top left
-        private void alignValues() {
+        private void alignValues()
+        {
             Point tmp = new Point();
 
             if (startDrag.x > endDrag.x) {
@@ -316,6 +277,55 @@ public abstract class Fractal extends JPanel {
                 tmp.y = endDrag.y;
                 endDrag.y = startDrag.y;
                 startDrag.y = tmp.y;
+            }
+        }
+    }
+
+    /**
+     * Runnable that runs the zoom animation
+     */
+    class ZoomRun implements Runnable
+    {
+        private Complex start,end, topBound, botBound;
+        //it will run 50 iterations to finish the zoom
+        //the higher the smoother yet slower zoom animation
+        private final double ITERATIONS = 50;
+
+        //the constructor sets the bounds and destination points
+        public ZoomRun(Point start, Point end){
+            this.start = getComplex(start);
+            this.end = getComplex(end);
+            this.botBound = new Complex(getRealLow(),getImagLow());
+            this.topBound = new Complex(getRealUp(),getImagUp());
+        }
+
+        //zoom by 2% of the total zoom each iteration
+        @Override
+        public void run()
+        {
+            //set the shift constants so that it look like it speeds up in the  end
+            double horShiftStart = (start.getX() - botBound.getX()) / ITERATIONS;
+            double verShiftStart = (topBound.getY() - start.getY()) / ITERATIONS;
+            double horShiftEnd = (topBound.getX() - end.getX()) / ITERATIONS;
+            double verShiftEnd = (end.getY() - botBound.getY()) / ITERATIONS;
+
+            while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
+                || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
+            {
+                topBound = new Complex(topBound.getX() - horShiftEnd, topBound.getY() - verShiftStart);
+                botBound = new Complex(botBound.getX() + horShiftStart, botBound.getY() + verShiftEnd);
+
+                setRealLow(botBound.getX());
+                setRealUp(topBound.getX());
+                setImagLow(botBound.getY());
+                setImagUp(topBound.getY());
+
+                repaint();
+                getGUI().getSettings().updateSet();
+
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {}
             }
         }
     }
