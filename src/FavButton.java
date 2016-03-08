@@ -31,7 +31,7 @@ public class FavButton extends JToggleButton {
     }
 
     /*
-     * set the right icon when status chacnges
+     * set the right icon when status changes
      */
     private void updateIcon()
     {
@@ -40,14 +40,6 @@ public class FavButton extends JToggleButton {
         Image scaled = star.getScaledInstance(20,20,Image.SCALE_SMOOTH);
         Icon ico = new ImageIcon(scaled);
         setIcon(ico);
-    }
-
-    /*
-     * setter used when updating the JuliaSet
-     */
-    public void setJuliaSet(JuliaSet juliaSet) {
-        this.juliaSet = juliaSet;
-        updateStatus();
     }
 
     /**

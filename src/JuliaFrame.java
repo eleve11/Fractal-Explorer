@@ -7,40 +7,61 @@ import java.awt.*;
 public class JuliaFrame extends FractalGUI
 {
     private JuliaSet julia;
-    private FavButton fav;
-    private SaveButton save;
+    private JPanel toolBar;
+
     public static final Dimension DEFAULT_SIZE = new Dimension(400,400);
 
-    public JuliaFrame(Complex c){
-        super("Filled Julia Set", new JuliaSet(c),DEFAULT_SIZE.width,DEFAULT_SIZE.height);
-        setTitle("Filled Julia Set "+c.toString());
+    //let the frame be a singleton
+    private static JuliaFrame instance = new JuliaFrame();
+
+    //private constructor because is a singleton
+    private JuliaFrame(){
+        super("Filled Julia Set", new JuliaSet(new Complex(0,0)) ,DEFAULT_SIZE.width,DEFAULT_SIZE.height);
+        setTitle("Filled Julia Set");
         julia  = (JuliaSet) getFractal();
-        fav = new FavButton(julia);
-        save = new SaveButton(julia);
+        this.setLocation(MainFrame.DEFAULT_SIZE.width, 0);
         init();
     }
 
+    //initialise the JFrame
     public void init()
     {
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
         Container pane = this.getContentPane();
-        JPanel favPanel = new JPanel();
-        favPanel.add(fav);
-        favPanel.add(save);
-        pane.add(favPanel,BorderLayout.SOUTH);
+        setToolBar(julia);
+        pane.add(toolBar,BorderLayout.SOUTH);
         pane.add(julia,BorderLayout.CENTER);
-        //pane.add(getSettings(),BorderLayout.SOUTH);
-        //add(getLastPoint(),BorderLayout.NORTH);
+        //pane.add(getSettings(),BorderLayout.WEST);
+    }
+
+    private void setToolBar(JuliaSet juliaSet){
+        toolBar = new JPanel();
+        FavButton fav = new FavButton(juliaSet);
+        SaveButton save = new SaveButton(juliaSet);
+        toolBar.add(fav);
+        toolBar.add(save);
+    }
+
+    /*
+     * updates the julia frame with a new JuliaSet and toolbar
+     * basically a second initialisation  that updates the screen
+     * for when the frame gets activated
+     */
+    public void updateJulia(Complex c)
+    {
+        this.setTitle("Filled Julia Set "+c.toString());
+        //hide what was before
+        getFractal().setVisible(false);
+        toolBar.setVisible(false);
+        //replace with what is new
+        setFractal(new JuliaSet(c));
+        julia = (JuliaSet) getFractal();
+        init();
         setVisible(true);
     }
 
-    public void liveJulia(Complex c){
-        this.setTitle("Filled Julia Set "+c.toString());
-        setFractal(new JuliaSet(c));
-        julia = (JuliaSet) getFractal();
-        save.setFractal(julia);
-        fav.setJuliaSet(julia);
-        init();
+    //return the instance of the singleton
+    public static JuliaFrame getInstance() {
+        return instance;
     }
 }

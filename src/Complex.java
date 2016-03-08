@@ -44,9 +44,10 @@ public class Complex
     }
 
     /*
-     *returns the corrispondent complex number in the first quadrant
+     *returns the respective complex number in the first quadrant
      *the complex will have the absolute values of the coordinates
      * as coordinates
+     * used to calculate the burning ship
      */
     public Complex firstQuadrant(){
         return new Complex(Math.abs(x),Math.abs(y));
@@ -74,13 +75,5 @@ public class Complex
 
     public double getY() {
         return y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 }

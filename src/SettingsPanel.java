@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 /**
  * Panel that manages the settigs of the complex plane.
  */
-//TODO: comments
 public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
@@ -15,15 +14,18 @@ public class SettingsPanel extends JPanel
     private Fractal fractal;
     private GridBagConstraints c;
 
+    //construct
     public SettingsPanel(Fractal fractal){
         this.fractal = fractal;
+        this.setLayout(new GridBagLayout());
         init();
         this.setVisible(true);
     }
 
+    //initialise
     private void init()
     {
-        //display current settings
+        //initialise components
         realUp = new JTextField(fractal.getRealUp().toString(),5);
         realLow = new JTextField(fractal.getRealLow().toString(),5);
         imagUp = new JTextField(fractal.getImagUp().toString(),5);
@@ -32,8 +34,7 @@ public class SettingsPanel extends JPanel
         lastClicked = new JLabel();
         lastClicked.setHorizontalAlignment(SwingConstants.CENTER);
 
-        //layout components
-        this.setLayout(new GridBagLayout());
+        //prepare inner panels
         JPanel realaxis = getBoundPanel(new JLabel("R-axis bounds:"),realLow,realUp);
         JPanel imagaxis = getBoundPanel(new JLabel("I-axis bounds:"),imagLow,imagUp);
         JPanel iterbox = getIterPanel(new JLabel("Iterations:"),iterations);
@@ -42,11 +43,16 @@ public class SettingsPanel extends JPanel
         c = new GridBagConstraints();
 
         c.gridy = 0;
-        //radio buttons and favourites list cannot go in JuliaSets
+
+        //radio buttons and favourites list cannot go in JuliaFrames
         if(fractal instanceof MainFractal) {
-            this.add(new FractalRadio((MainFractal) fractal), c);
+            FractalChoose fc = new FractalChoose((MainFractal) fractal);
+            this.add(fc,c);
+
             addFavourites();
         }
+
+        //add other settings componentss
         c.gridy = 1;
         this.add(realaxis, c);
         c.gridy = 2;
@@ -68,15 +74,21 @@ public class SettingsPanel extends JPanel
         iterations.addActionListener(setListener);
     }
 
+    /*
+     * add favourites to the settings panel
+     */
     private void addFavourites(){
-        //Display favourites
-        JLabel favLabel = new JLabel("Favourites:");
+        //favourites label
+        JLabel favLabel = new JLabel("Favourite Julia Sets:");
         favLabel.setFont(favLabel.getFont().deriveFont(Font.BOLD));
-        JComboBox favList = Favourites.getInstance().getFavourites();
-        favList.setSelectedIndex(-1);
-        favList.addActionListener(new ShowFav());
-        favList.setFocusable(false); //allow keylisteners
 
+        // display favourites
+        JComboBox favList = Favourites.getInstance().getFavourites();
+        favList.setSelectedIndex(-1); //set initial value
+        favList.addActionListener(new ShowFav());
+        favList.setFocusable(false); //don't allow key type
+
+        //add to panel
         c.gridy = 5;
         c.weightx = 0.5;
         this.add(favLabel,c);
@@ -85,7 +97,12 @@ public class SettingsPanel extends JPanel
         this.add(favList,c);
     }
 
-    private JPanel getBoundPanel(JLabel label, JTextField lower, JTextField upper){
+    /*
+     * return a panel that handles the bounds, given 3 necessary components
+     */
+    private JPanel getBoundPanel(JLabel label, JTextField lower, JTextField upper)
+    {
+        //init
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints panConstr = new GridBagConstraints();
@@ -93,6 +110,7 @@ public class SettingsPanel extends JPanel
         JLabel min = new JLabel("Min:");
         JLabel max = new JLabel("Max:");
 
+        //ADD to subpanel
         //set GridBagLayouot Constraints
         panConstr.gridwidth = 2;
         panConstr.gridx = 0;
@@ -115,10 +133,15 @@ public class SettingsPanel extends JPanel
         return panel;
     }
 
-    private JPanel getIterPanel(JLabel label,JTextField value){
+    //return the panel that manages and displays current maxIterations
+    private JPanel getIterPanel(JLabel label,JTextField value)
+    {
+        //init
         GridBagConstraints constr = new GridBagConstraints();
         JPanel panel = new JPanel();
         label.setFont(label.getFont().deriveFont(Font.BOLD));
+
+        //add
         constr.gridy = 0;
         constr.gridx = 0;
         constr.weightx = 0.5;
@@ -128,8 +151,9 @@ public class SettingsPanel extends JPanel
         return panel;
     }
 
+    //update the last clicked point label
     public void updatePointLabel(Complex lastPoint){
-        //nasty label text is using HTML tags because
+        //label text is using HTML tags because
         //JLabels don't like going to a new line :(
         if(lastPoint!=null)
             lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
@@ -145,8 +169,12 @@ public class SettingsPanel extends JPanel
         iterations.setText(fractal.getMaxIterations().toString());
     }
 
+    /*
+     * listens to the texFields, when pressed enter it updates the fractal
+     */
     private class SettingsListener implements ActionListener
     {
+        //update fractal when a setting is confirmed
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -166,13 +194,15 @@ public class SettingsPanel extends JPanel
      */
     private class ShowFav implements ActionListener
     {
+        //Display a Julia Frame containing the selected favourite Julia set
         @Override
         public void actionPerformed(ActionEvent e) {
-            //action only if index != -1
+            //action only if index != -1 (initial condition)
             if(((JComboBox)e.getSource()).getSelectedIndex()!= -1) {
                 List<Complex> complexList = Favourites.getInstance().getFavList();
                 Complex target = complexList.get(((JComboBox) e.getSource()).getSelectedIndex());
-                ((MainFractal) fractal).startJulia(target);
+
+                JuliaFrame.getInstance().updateJulia(target);
             }
         }
     }

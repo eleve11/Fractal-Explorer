@@ -15,10 +15,11 @@ public class Favourites
     private JComboBox<String> favComboBox;
     private List<Complex> favList;
 
-    //it's a singleton
-    public static final Favourites instance = new Favourites();
+    //it's a singleton because there should only be one instance of it in this app
+    private static final Favourites instance = new Favourites();
 
-    public Favourites(){
+    //private constructor because is a singleton
+    private Favourites(){
         file = new File("favourites");
         favComboBox = new JComboBox<String>();
         favList = new ArrayList<Complex>();
@@ -37,6 +38,7 @@ public class Favourites
         }
     }
 
+    //guarantees that the file exists by creating it
     private void ensureFileExistance(File file) throws IOException {
         if(!file.exists())
             file.createNewFile();
@@ -81,6 +83,7 @@ public class Favourites
         BufferedWriter output = new BufferedWriter(new FileWriter(file, true));
         output.write(c.getX()+":"+c.getY());
         output.newLine();
+        output.flush();
         output.close(); //close stream
         return true;
     }
@@ -123,6 +126,7 @@ public class Favourites
             }
         }
         //close streams
+        bw.flush();
         bw.close();
         br.close();
 

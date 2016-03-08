@@ -10,6 +10,7 @@ public abstract class FractalGUI extends JFrame
     private JPanel settings;
     public static final Dimension DEFAULT_SIZE = new Dimension(750,500);
 
+    //constructor
     public FractalGUI(String title, Fractal fractal,int width,int height)
     {
         super(title);
@@ -17,7 +18,7 @@ public abstract class FractalGUI extends JFrame
         this.fractal = fractal;
         this.settings = new SettingsPanel(fractal);
 
-        //TODO not sure i want these 2 here
+        // not sure i want these 2 lines here as well as in the Fractal
         this.setFocusable(true);
         this.addKeyListener(new FractKeyLis(fractal));
 
@@ -26,13 +27,20 @@ public abstract class FractalGUI extends JFrame
         this.setSize(width, height);
     }
 
+    //short constructor
     public FractalGUI(String title, Fractal fractal){
         this(title, fractal, DEFAULT_SIZE.width
                 ,DEFAULT_SIZE.height);
     }
 
+    /**
+     * subclasses need to initialise the frame
+     */
     public abstract void init();
 
+    /*
+     * getters and setters
+     */
     public Fractal getFractal() {
         return fractal;
     }

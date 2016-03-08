@@ -43,7 +43,6 @@ public abstract class Fractal extends JPanel
      * draw the Fractal set on the complex plane
      * according to the function called by FunctionOfZ
      */
-    //TODO: document how i calculate the colours -- see wikipedia for mandelbrot
     @Override
     public void paint(Graphics g)
     {
@@ -53,21 +52,29 @@ public abstract class Fractal extends JPanel
             {
                 int[][] palette = getPalette();
                 double it = compute(getComplex(x,y));
+                //interpolate between 2 adiacent color in the palette
                 int itfloor = (int)Math.floor(it) + palette.length;
                 int[] color1 = palette[itfloor % palette.length];
                 int[] color2 = palette[(itfloor +1) % palette.length];
                 Color col = RgbLinearInterpolate(color1,color2,it);
-           /*
+           /* other possible colouring
            float hue = (float)mandelbrot(getComplex(x,y))/10;
            Color col = new Color(Color.HSBtoRGB(hue,1,1)); //why the center is not black?
            */
+                //draw pixel
                 g.setColor(col);
                 g.drawLine(x,y,x,y);
             }
         }
     }
 
-
+    /**
+     * Check if the function of Z escapes the limit
+     * computes how close the point is to the fractal
+     * should call functionOfZ and getColorConstant
+     * @param c the point on the complex plane we are checking
+     * @return colour constant value
+     */
     public abstract double compute(Complex c);
 
     /**
@@ -96,7 +103,10 @@ public abstract class Fractal extends JPanel
         return getComplex(p.x,p.y);
     }
 
-    //z should be the value of it escapes the fractal set
+    /**
+     * Smooth colouring algorithm:
+     * guarantees that the colors are continuous and don't create bands
+     */
     public double getColorConstant(double iterations, Complex z)
     {
         if(iterations<getMaxIterations())
@@ -110,7 +120,9 @@ public abstract class Fractal extends JPanel
     }
 
     /**
-     * interpolate formula inspired from wikipedia
+     * interpolate to RGB colors
+     * @param count will be the iterations converted into color constant
+     * @return resulting color
      */
     public static Color RgbLinearInterpolate(int[] start, int[] end, double count)
     {
@@ -153,24 +165,36 @@ public abstract class Fractal extends JPanel
 
     public FractalGUI getGUI(){return (FractalGUI) SwingUtilities.getWindowAncestor(this);}
 
-    //TODO: throw exceptions for edge cases in these settings
+    /*
+     * these setters have constraints
+     */
     public void setRealLow(double realLow) {
+        if(realLow >= getRealUp())
+            throw  new IllegalArgumentException();
         this.realLow = realLow;
     }
 
     public void setRealUp(double realUp) {
+        if(realUp <= getRealLow())
+            throw new IllegalArgumentException();
         this.realUp = realUp;
     }
 
     public void setImagLow(double imagLow) {
+        if(imagLow >= getImagUp())
+            throw new IllegalArgumentException();
         this.imagLow = imagLow;
     }
 
     public void setImagUp(double imagUp) {
+        if(imagUp <= getImagLow())
+            throw new IllegalArgumentException();
         this.imagUp = imagUp;
     }
 
     public void setMaxIterations(int maxIterations) {
+        if(maxIterations<1)
+            throw new IllegalArgumentException();
         this.maxIterations = maxIterations;
     }
 
@@ -178,45 +202,59 @@ public abstract class Fractal extends JPanel
         this.palette = palette;
     }
 
-    //TODO: inner classes are huge, do something!
+
     /**
-     * mouse adapter that zooms
+     * mouse adapter that handles the zoom feature
      */
     private class FractMouseListener extends MouseAdapter
     {
         private Point startDrag, endDrag;
 
+        /*
+         * on mouse click show clicked coordinates
+         */
         @Override
         public void mouseClicked(MouseEvent e) {
                 Complex c = getComplex(e.getX(), e.getY());
                 getGUI().getSettings().updatePointLabel(c);
-                //setHovering(false);
         }
 
+        /*
+         * on mouse pressed start prepare for drag
+         */
         @Override
         public void mousePressed(MouseEvent e) {
             startDrag = new Point(e.getX(),e.getY());
             endDrag = startDrag;
         }
 
+        /*
+         * when mouse is released, zoom if it was dragged
+         */
         @Override
-        public void mouseReleased(MouseEvent e) {
-            if(endDrag!=startDrag)
+        public void mouseReleased(MouseEvent e)
+        {
+            if(endDrag!=startDrag){
+                alignValues();
                 zoom(startDrag,endDrag);
+                getGUI().getSettings().updateSet();
+            }
+
             startDrag = null;
             endDrag = null;
-            getGUI().getSettings().updateSet();
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
             endDrag = new Point(e.getX(),e.getY());
 
-            //draw the transparent  rectangle
+            //set rectangle constants
             int width = Math.abs(startDrag.x - endDrag.x);
             int height = Math.abs(startDrag.y - endDrag.y);
             int x = Math.min(startDrag.x, endDrag.x);
             int y = Math.min(startDrag.y, endDrag.y);
+
+            //draw the rectangle for the zooming area
             Graphics2D g = (Graphics2D) getGraphics();
             g.setColor(Color.WHITE);
             Rectangle r = new Rectangle(x,y,width, height);
@@ -225,52 +263,45 @@ public abstract class Fractal extends JPanel
             repaint(r);
         }
 
-        //zoom
+        //ZOOM ANIMATION WORKING BUT NOT THREAD SAFE CODE !
         private void zoom(Point a, Point b){
-            alignValues();
             Complex start = getComplex(a);
             Complex end = getComplex(b);
 
-            /*/ZOOM ANIMATION NOT WORKING
-            Complex topBound = new Complex(getRealLow(),getImagLow());
-            Complex botBound = new Complex(getRealUp(),getImagUp());
-            double horShiftStart = Math.abs(start.getX() - topBound.getX())/10;
-            double verShiftStart = Math.abs(start.getY() - topBound.getY())/10;
-            double horShiftEnd = Math.abs(end.getX() - botBound.getX())/10;
-            double verShiftEnd = Math.abs(end.getY() - botBound.getY())/10;
+            //set the bounds
+            Complex botBound = new Complex(getRealLow(),getImagLow());
+            Complex topBound = new Complex(getRealUp(),getImagUp());
 
-            while ((topBound.getX()<start.getX() && topBound.getY()<start.getY())
-                || (botBound.getX()>end.getX() && botBound.getY()>end.getY()))
+            //zoom by 15% of the total zoom each iteration
+            double horShiftStart = (start.getX() - botBound.getX()) * 0.15;
+            double verShiftStart = (topBound.getY() - start.getY()) * 0.15;
+            double horShiftEnd = (topBound.getX() - end.getX()) * 0.15;
+            double verShiftEnd = (end.getY() - botBound.getY()) * 0.15;
+
+            while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
+                || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
             {
-                topBound.setX(topBound.getX()+horShiftStart);
-                topBound.setY(topBound.getY()+verShiftStart);
-                botBound.setX(botBound.getX()-horShiftEnd);
-                botBound.setY(botBound.getY()-verShiftEnd);
+                topBound = new Complex(topBound.getX()-horShiftEnd, topBound.getY()-verShiftStart);
+                botBound = new Complex(botBound.getX()+horShiftStart, botBound.getY()+verShiftEnd);
 
-                setRealLow(topBound.getX());
-                setRealUp(botBound.getX());
-                setImagUp(topBound.getY());
+                setRealLow(botBound.getX());
+                setRealUp(topBound.getX());
                 setImagLow(botBound.getY());
-                System.out.println("zoom");
-                repaint();
+                setImagUp(topBound.getY());
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                paint(getGraphics()); //HORRIBLE CODE (never call directly the paint method)
             }
-            */
-            //finalise zoom
-            setRealLow(start.getX());
-            setRealUp(end.getX());
-            setImagUp(start.getY());
-            setImagLow(end.getY());
 
-            repaint();
+//            //not animated (comment out the animated) zoom
+//            setRealLow(start.getX());
+//            setRealUp(end.getX());
+//            setImagUp(start.getY());
+//            setImagLow(end.getY());
+//
+//            repaint();
         }
 
-        //make sure the rectangle starts at startDrag point
+        //make sure the rectangle startDrag is top left
         private void alignValues()
         {
             Point tmp = new Point();

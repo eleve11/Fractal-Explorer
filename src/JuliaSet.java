@@ -19,7 +19,6 @@ public class JuliaSet extends Fractal
         this(-2,2,-1.6,1.6,c);
     }
 
-
     /*
      * run julia function on Z and
      * return the smooth color constant for that point

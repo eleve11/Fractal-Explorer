@@ -8,11 +8,14 @@ public class FractKeyLis extends KeyAdapter
 {
     private Fractal fractal;
 
+    //construct the keyListener
     public FractKeyLis(Fractal fractal){
         this.fractal = fractal;
     }
+
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e)
+    {
         //shift 5% of current range
         double horizontalShift = (fractal.getRealUp() - fractal.getRealLow()) / 20;
         double verticalShift = (fractal.getImagUp() - fractal.getImagLow()) / 20;
