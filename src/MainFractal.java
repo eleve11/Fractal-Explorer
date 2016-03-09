@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -64,17 +65,37 @@ public abstract class MainFractal extends Fractal
      */
     private class FractMouseLis extends MouseAdapter
     {
-        //show julia
+        //show julia, do the julia on a separate thread for efficiency
         @Override
-        public void mouseClicked(MouseEvent e) {
-            JuliaFrame.getInstance().updateJulia(getComplex(e.getX(), e.getY()));
+        public void mouseClicked(MouseEvent e)
+        {
+            Complex c = getComplex(e.getX(), e.getY());
+            SwingUtilities.invokeLater(new JuliaLive(c));
         }
 
-        //if hovering live update julia
+        //if hovering live update julia on a separate thread
         @Override
-        public void mouseMoved(MouseEvent e) {
-            if (isHovering())
-                JuliaFrame.getInstance().updateJulia(getComplex(e.getX(), e.getY()));
+        public void mouseMoved(MouseEvent e)
+        {
+            Complex c = getComplex(e.getX(), e.getY());
+
+            if(isHovering())
+                SwingUtilities.invokeLater(new JuliaLive(c));
+        }
+    }
+
+    /**
+     * runnable that updates/shows the julia set
+     */
+    private class JuliaLive implements Runnable
+    {
+        private Complex c;
+        private JuliaLive(Complex c){
+            this.c = c;
+        }
+        @Override
+        public void run() {
+            JuliaFrame.getInstance().updateJulia(c);
         }
     }
 }

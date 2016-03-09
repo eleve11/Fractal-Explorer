@@ -165,25 +165,25 @@ public abstract class Fractal extends JPanel {
      * these setters have constraints
      */
     public void setRealLow(double realLow) {
-        if (realLow >= getRealUp())
+        if (realLow > getRealUp())
             throw new IllegalArgumentException();
         this.realLow = realLow;
     }
 
     public void setRealUp(double realUp) {
-        if (realUp <= getRealLow())
+        if (realUp < getRealLow())
             throw new IllegalArgumentException();
         this.realUp = realUp;
     }
 
     public void setImagLow(double imagLow) {
-        if (imagLow >= getImagUp())
+        if (imagLow > getImagUp())
             throw new IllegalArgumentException();
         this.imagLow = imagLow;
     }
 
     public void setImagUp(double imagUp) {
-        if (imagUp <= getImagLow())
+        if (imagUp < getImagLow())
             throw new IllegalArgumentException();
         this.imagUp = imagUp;
     }
@@ -325,7 +325,9 @@ public abstract class Fractal extends JPanel {
 
                 try {
                     Thread.sleep(50);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
