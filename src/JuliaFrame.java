@@ -26,6 +26,7 @@ public class JuliaFrame extends FractalGUI
     //initialise the JFrame
     public void init()
     {
+        this.requestFocus();
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Container pane = this.getContentPane();
         setToolBar(julia);
@@ -58,6 +59,7 @@ public class JuliaFrame extends FractalGUI
         julia = (JuliaSet) getFractal();
         init();
         setVisible(true);
+        julia.requestFocus();
     }
 
     //return the instance of the singleton

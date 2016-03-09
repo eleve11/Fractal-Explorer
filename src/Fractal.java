@@ -46,11 +46,11 @@ public abstract class Fractal extends JPanel {
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
                 int[][] palette = getPalette();
-                double it = compute(getComplex(x, y));
+                double it = getMaxIterations() - compute(getComplex(x, y));
                 //interpolate between 2 adiacent color in the palette
-                int itfloor = (int) Math.floor(it) + palette.length;
+                int itfloor = (int) Math.floor(it);
                 int[] color1 = palette[itfloor % palette.length];
-                int[] color2 = palette[(itfloor + 1) % palette.length];
+                int[] color2 = palette[(itfloor+1) % palette.length];
                 Color col = RgbLinearInterpolate(color1, color2, it);
            /* other possible colouring
            float hue = (float)mandelbrot(getComplex(x,y))/10;
@@ -289,7 +289,7 @@ public abstract class Fractal extends JPanel {
         private Complex start,end, topBound, botBound;
         //it will run 50 iterations to finish the zoom
         //the higher the smoother yet slower zoom animation
-        private final double ITERATIONS = 50;
+        private final double ITERATIONS = 50; //must be greater than 0
 
         //the constructor sets the bounds and destination points
         public ZoomRun(Point start, Point end){
