@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,9 @@ public class FractalChoose extends JPanel {
         //look how easy it is to add new fractals!
         addButton(new Mandelbrot());
         addButton(new BurningShip());
-        addButton(new Octabrot());
+
+        //for the multibrots I created a custom component
+        this.add(new FRadioText());
 
         select(fractal);
     }
@@ -52,9 +55,11 @@ public class FractalChoose extends JPanel {
     //preselect the main fractal
     private void select(MainFractal fractal) {
         JRadioButton button = new JRadioButton();
-        for(Component c : getComponents())
-            if(c instanceof JRadioButton && ((JRadioButton) c).getText().equals(fractal.getClass().getName()))
+        for(Component c : getComponents()) {
+            if (c instanceof FRadioText) c = ((FRadioText) c).button;
+            if (c instanceof JRadioButton && ((JRadioButton) c).getText().equals(fractal.getClass().getName()))
                 button = (JRadioButton) c;
+        }
         bg.setSelected(button.getModel(), true);
     }
 
@@ -70,17 +75,70 @@ public class FractalChoose extends JPanel {
             MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalChoose.this);
             String name = ((JRadioButton)e.getSource()).getText();
 
+
             //Woah lots of exceptions
             try {
                 Class c = Class.forName(name);
-                gui.setFractal((MainFractal)c.newInstance());
-            } catch (ClassNotFoundException e1){
+                gui.setFractal((MainFractal) c.newInstance());
+            } catch (ClassNotFoundException e1) {
                 e1.printStackTrace();
-            }catch(InstantiationException e2) {
+            } catch (InstantiationException e2) {
                 e2.printStackTrace();
             } catch (IllegalAccessException e3) {
                 e3.printStackTrace();
             }
+
+        }
+    }
+
+    /**
+     * custom JComponent to allow multibrots
+     */
+    private class FRadioText extends JPanel
+    {
+        private JRadioButton button;
+        private JFormattedTextField text;
+        private NumberFormatter nf; //to format the jTexField
+
+        //default constructor
+        public FRadioText()
+        {
+            this.button = new JRadioButton("Multibrot");
+
+            nf = new NumberFormatter();
+            nf.setValueClass(Integer.class);
+            nf.setMinimum(1);//get illegal argument otherwise
+            nf.setMaximum(100);//can't handle more than that
+
+            this.text = new JFormattedTextField(nf);
+            text.setColumns(2);
+
+            this.setLayout(new GridLayout(1,2));
+            init();
+        }
+
+        private void init()
+        {
+            //add the components
+            bg.add(button);
+            this.add(button);
+            this.add(text);
+
+            //update textfield
+            if(fractal instanceof Multibrot)
+                text.setText(((Multibrot) fractal).getN().toString());
+
+            //textfield action listener draws the multibrot if the button is selected
+            text.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalChoose.this);
+
+                    if(button.isSelected())
+                        gui.setFractal(new Multibrot(Integer.parseInt(text.getText())));
+                }
+            });
         }
     }
 }
