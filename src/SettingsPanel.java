@@ -202,7 +202,7 @@ public class SettingsPanel extends JPanel
                 List<Complex> complexList = Favourites.getInstance().getFavList();
                 Complex target = complexList.get(((JComboBox) e.getSource()).getSelectedIndex());
 
-                JuliaFrame.getInstance().updateJulia(target);
+                JuliaFrame.getInstance().updateJulia(target,(MainFractal)fractal);
             }
         }
     }

@@ -95,7 +95,7 @@ public abstract class MainFractal extends Fractal
         }
         @Override
         public void run() {
-            JuliaFrame.getInstance().updateJulia(c);
+            JuliaFrame.getInstance().updateJulia(c,MainFractal.this);
         }
     }
 }

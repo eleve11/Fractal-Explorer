@@ -16,7 +16,7 @@ public class JuliaFrame extends FractalGUI
 
     //private constructor because is a singleton
     private JuliaFrame(){
-        super("Filled Julia Set", new JuliaSet(new Complex(0,0)) ,DEFAULT_SIZE.width,DEFAULT_SIZE.height);
+        super("Filled Julia Set", new JuliaSet(new Complex(0,0),new Mandelbrot()) ,DEFAULT_SIZE.width,DEFAULT_SIZE.height);
         setTitle("Filled Julia Set");
         julia  = (JuliaSet) getFractal();
         this.setLocation(MainFrame.DEFAULT_SIZE.width, 0);
@@ -48,14 +48,14 @@ public class JuliaFrame extends FractalGUI
      * basically a second initialisation  that updates the screen
      * for when the frame gets activated
      */
-    public void updateJulia(Complex c)
+    public void updateJulia(Complex c, MainFractal generator)
     {
         this.setTitle("Filled Julia Set "+c.toString());
         //hide what was before
         getFractal().setVisible(false);
         toolBar.setVisible(false);
         //replace with what is new
-        setFractal(new JuliaSet(c));
+        setFractal(new JuliaSet(c,generator));
         julia = (JuliaSet) getFractal();
         init();
         setVisible(true);
