@@ -169,6 +169,11 @@ public class SettingsPanel extends JPanel
         iterations.setText(fractal.getMaxIterations().toString());
     }
 
+    public void setFractal(Fractal fractal){
+        this.fractal = fractal;
+        updateSet();
+    }
+
     /*
      * listens to the texFields, when pressed enter it updates the fractal
      */

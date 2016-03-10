@@ -39,9 +39,8 @@ public class MainFrame extends FractalGUI
         this.setTitle(((MainFractal) fractal).getTitle());
 
         //update settings
-        getSettings().setVisible(false);
+        getSettings().setFractal(fractal);
 
-        this.setSettings(new SettingsPanel(fractal));
         init();
     }
 }

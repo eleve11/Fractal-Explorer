@@ -36,6 +36,7 @@ public class FractalChoose extends JPanel {
         //look how easy it is to add new fractals!
         addButton(new Mandelbrot());
         addButton(new BurningShip());
+        addButton(new Buffalo());
 
         //for the multibrots I created a custom component
         this.add(new FRadioText());

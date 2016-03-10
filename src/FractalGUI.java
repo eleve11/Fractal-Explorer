@@ -52,8 +52,4 @@ public abstract class FractalGUI extends JFrame
     public SettingsPanel getSettings() {
         return (SettingsPanel) settings;
     }
-
-    public void setSettings(JPanel settings) {
-        this.settings = settings;
-    }
 }

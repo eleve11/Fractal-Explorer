@@ -35,6 +35,13 @@ public class Complex
         return new Complex(real,imaginary);
     }
 
+    //return the difference between this and the argument
+    public Complex subtract(Complex z){
+        double real = this.getX() - z.getX();
+        double imaginary = this.getY() - z.getY();
+        return new Complex(real,imaginary);
+    }
+
     //return the product between this Complex and parameter
     public Complex times(Complex z){
         //(x+yi)(u+vi) = (xu -yv) + (xv + yu)i
