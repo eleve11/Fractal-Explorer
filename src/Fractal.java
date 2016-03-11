@@ -6,10 +6,14 @@ import java.awt.event.MouseEvent;
 /**
  * represent a fractal on the complex plane.
  */
+//TODO: fix drag rectangle
+//TODO: fix color error for buffalo
+//TODO fix color error in general
 public abstract class Fractal extends JPanel {
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
+    private double colorOffset = 0;
 
     //default values
     public static final double REAL_LOW = -2.0;
@@ -48,7 +52,7 @@ public abstract class Fractal extends JPanel {
                 int[][] palette = getPalette();
                 double it = getMaxIterations() - compute(getComplex(x, y));
                 //interpolate between 2 adiacent color in the palette
-                int itfloor = (int) Math.floor(it);
+                int itfloor = (int) Math.floor(it + palette.length);
                 int[] color1 = palette[itfloor % palette.length];
                 int[] color2 = palette[(itfloor+1) % palette.length];
                 Color col = RgbLinearInterpolate(color1, color2, it);
@@ -103,18 +107,19 @@ public abstract class Fractal extends JPanel {
      * Smooth colouring algorithm:
      * guarantees that the colors are continuous and don't create bands
      */
-    public double getColorConstant(double iterations, Complex z) {
-        if (iterations < getMaxIterations()) {
+    public double getColorConstant(double iterations, Complex z)
+    {
+        if (iterations < getMaxIterations()+Math.ceil(getColorOffset())) {
             double log_zn = Math.log(z.modulusSquare()) / 2;
             double nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
-            iterations = (iterations + 1 - nu) / (palette.length * 3); //divide by a factor to make it smoother
+            iterations = (iterations + 1 - nu) / (palette.length*3); //divide by a factor to make it smoother
         }
 
-        return iterations;
+        return iterations - getColorOffset();
     }
 
     /**
-     * interpolate to RGB colors
+     * interpolate two RGB colors
      *
      * @param count will be the iterations converted into color constant
      * @return resulting color
@@ -157,6 +162,8 @@ public abstract class Fractal extends JPanel {
         return palette;
     }
 
+    public double getColorOffset(){return colorOffset;}
+
     public FractalGUI getGUI() {
         return (FractalGUI) SwingUtilities.getWindowAncestor(this);
     }
@@ -192,6 +199,12 @@ public abstract class Fractal extends JPanel {
         if (maxIterations < 1)
             throw new IllegalArgumentException();
         this.maxIterations = maxIterations;
+    }
+
+    public void setColorOffset(double offset){
+        if(offset<0||offset>palette.length)
+            throw new IllegalArgumentException();
+        this.colorOffset = offset;
     }
 
     public void setPalette(int[][] palette) {
@@ -232,6 +245,7 @@ public abstract class Fractal extends JPanel {
         public void mouseReleased(MouseEvent e) {
             if (endDrag != startDrag) {
                 alignValues();
+                //run on a separate thread because EDT would skip to the final repaint call
                 new Thread(new ZoomRun(startDrag,endDrag)).start();
             }
 

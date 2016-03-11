@@ -14,7 +14,7 @@ public abstract class MainFractal extends Fractal
     public MainFractal(double realLower, double realUpper, double imagLower, double imagUpper){
         super(realLower,realUpper,imagLower,imagUpper);
         this.title = this.getClass().getName();
-        setPalette(new int[][]{ {0, 0, 0}, {255,140,0}, {255,255,255}, {0, 255, 255}, {0, 0, 255} });
+        setPalette(new int[][]{ {0, 0, 0},{255,140,0}, {255,255,255}, {0, 255, 255}, {0, 0, 255} });
         this.addMouseListener(new FractMouseLis());
         this.addMouseMotionListener(new FractMouseLis());
     }

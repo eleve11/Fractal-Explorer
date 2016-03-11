@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
     private JLabel lastClicked;
+    private JSlider colorslider;
     private Fractal fractal;
     private GridBagConstraints c;
 
@@ -33,6 +36,7 @@ public class SettingsPanel extends JPanel
         iterations = new JTextField(fractal.getMaxIterations().toString(),3);
         lastClicked = new JLabel();
         lastClicked.setHorizontalAlignment(SwingConstants.CENTER);
+        colorslider = getColorSlider();
 
         //prepare inner panels
         JPanel realaxis = getBoundPanel(new JLabel("R-axis bounds:"),realLow,realUp);
@@ -60,8 +64,10 @@ public class SettingsPanel extends JPanel
         c.gridy = 3;
         this.add(iterbox, c);
         c.gridy = 7;
-        this.add(lastClicked,c);
+        this.add(colorslider,c);
         c.gridy = 8;
+        this.add(lastClicked,c);
+        c.gridy = 9;
         this.add(new SaveButton(fractal),c);
 
         //add listener to update image
@@ -159,6 +165,20 @@ public class SettingsPanel extends JPanel
             lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
     }
 
+    private JSlider getColorSlider(){
+        JSlider color = new JSlider(0,fractal.getPalette().length*100);
+        color.setFocusable(false);
+        color.setValue((int) fractal.getColorOffset()*100);
+        color.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                fractal.setColorOffset((double)((JSlider)e.getSource()).getValue()/100);
+                fractal.repaint();
+            }
+        });
+        return color;
+    }
+
     //update the settings panel when someone interacts with the fractal
     public void updateSet()
     {
@@ -167,6 +187,7 @@ public class SettingsPanel extends JPanel
         imagLow.setText(fractal.getImagLow().toString());
         imagUp.setText(fractal.getImagUp().toString());
         iterations.setText(fractal.getMaxIterations().toString());
+        colorslider.setValue((int)(fractal.getColorOffset()*100));
     }
 
     public void setFractal(Fractal fractal){

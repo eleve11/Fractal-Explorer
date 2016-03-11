@@ -76,7 +76,6 @@ public class FractalChoose extends JPanel {
             MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalChoose.this);
             String name = ((JRadioButton)e.getSource()).getText();
 
-
             //Woah lots of exceptions
             try {
                 Class c = Class.forName(name);
@@ -129,17 +128,18 @@ public class FractalChoose extends JPanel {
             if(fractal instanceof Multibrot)
                 text.setText(((Multibrot) fractal).getN().toString());
 
-            //textfield action listener draws the multibrot if the button is selected
-            text.addActionListener(new ActionListener() {
+            ActionListener radioTextLis = new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e)
-                {
+                public void actionPerformed(ActionEvent e) {
                     MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalChoose.this);
 
-                    if(button.isSelected())
+                    if(button.isSelected() && !text.getText().equals(""))
                         gui.setFractal(new Multibrot(Integer.parseInt(text.getText())));
                 }
-            });
+            };
+
+            text.addActionListener(radioTextLis);
+            button.addActionListener(radioTextLis);
         }
     }
 }
