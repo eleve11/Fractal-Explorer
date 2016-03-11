@@ -9,12 +9,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Buffalo.java" afterPath="$PROJECT_DIR$/src/Buffalo.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Fractal.java" afterPath="$PROJECT_DIR$/src/Fractal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FractalChoose.java" afterPath="$PROJECT_DIR$/src/FractalChoose.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FractalGUI.java" afterPath="$PROJECT_DIR$/src/FractalGUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainFractal.java" afterPath="$PROJECT_DIR$/src/MainFractal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SettingsPanel.java" afterPath="$PROJECT_DIR$/src/SettingsPanel.java" />
     </list>
     <ignored path="FractalExplorer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,8 +45,8 @@
       <file leaf-file-name="Fractal.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Fractal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.13667426">
-              <caret line="114" column="66" selection-start-line="114" selection-start-column="66" selection-end-line="114" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.17084283">
+              <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -831,7 +826,7 @@
       <workItem from="1457637686926" duration="2268000" />
       <workItem from="1457641257973" duration="1238000" />
       <workItem from="1457650205463" duration="924000" />
-      <workItem from="1457655353253" duration="1916000" />
+      <workItem from="1457655353253" duration="1952000" />
     </task>
     <task id="LOCAL-00001" summary="improved Favourites class">
       <created>1457212116449</created>
@@ -995,11 +990,17 @@
       <option name="project" value="LOCAL" />
       <updated>1457619008535</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="color changing slider">
+      <created>1457657294118</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1457657294118</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="239104000" />
+    <option name="totallyTimeSpent" value="239140000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1051,7 +1052,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fav icon and keylistener" />
     <MESSAGE value="added live update of julia set" />
     <MESSAGE value="overridden to strinig method for Complex" />
     <MESSAGE value="redesigned UI, added FavComboBox to select favourites" />
@@ -1076,7 +1076,8 @@
     <MESSAGE value="user can choose multibrots" />
     <MESSAGE value="julia set now is relative to the main fractal that generates it" />
     <MESSAGE value="added buffalo fractal" />
-    <option name="LAST_COMMIT_MESSAGE" value="added buffalo fractal" />
+    <MESSAGE value="color changing slider" />
+    <option name="LAST_COMMIT_MESSAGE" value="color changing slider" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1453,8 +1454,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Fractal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.13667426">
-          <caret line="114" column="66" selection-start-line="114" selection-start-column="66" selection-end-line="114" selection-end-column="66" />
+        <state vertical-scroll-proportion="0.17084283">
+          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
           <folding />
         </state>
       </provider>

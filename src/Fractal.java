@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
  * represent a fractal on the complex plane.
  */
 //TODO: fix drag rectangle
-//TODO: fix color error for buffalo
-//TODO fix color error in general
 public abstract class Fractal extends JPanel {
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
