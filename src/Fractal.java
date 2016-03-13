@@ -7,11 +7,13 @@ import java.awt.event.MouseEvent;
  * represent a fractal on the complex plane.
  */
 //TODO: fix drag rectangle
-public abstract class Fractal extends JPanel {
+public abstract class Fractal extends JPanel
+{
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations = 100;
     private int[][] palette;
     private double colorOffset = 0;
+    private FractMouseListener fl;
 
     //default values
     public static final double REAL_LOW = -2.0;
@@ -26,7 +28,7 @@ public abstract class Fractal extends JPanel {
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
 
-        FractMouseListener fl = new FractMouseListener();
+        fl = new FractMouseListener();
         this.addMouseListener(fl);
         this.addMouseMotionListener(fl);
         this.addKeyListener(new FractKeyLis(this));
@@ -50,7 +52,7 @@ public abstract class Fractal extends JPanel {
                 int[][] palette = getPalette();
                 double it = getMaxIterations() - compute(getComplex(x, y));
                 //interpolate between 2 adiacent color in the palette
-                int itfloor = (int) Math.floor(it + palette.length);
+                int itfloor = (int) Math.floor(it);
                 int[] color1 = palette[itfloor % palette.length];
                 int[] color2 = palette[(itfloor+1) % palette.length];
                 Color col = RgbLinearInterpolate(color1, color2, it);
@@ -62,6 +64,16 @@ public abstract class Fractal extends JPanel {
                 g.setColor(col);
                 g.drawLine(x, y, x, y);
             }
+        }
+
+        // draw the zoom rectangle if dragging
+        if (fl.startDrag != null && fl.endDrag != null) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setPaint(Color.WHITE);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
+            g2.draw(fl.r);
+            g2.setPaint(Color.LIGHT_GRAY);
+            g2.fill(fl.r);
         }
     }
 
@@ -107,13 +119,13 @@ public abstract class Fractal extends JPanel {
      */
     public double getColorConstant(double iterations, Complex z)
     {
-        if (iterations < getMaxIterations()+Math.ceil(getColorOffset())) {
+        if (iterations < getMaxIterations()) {
             double log_zn = Math.log(z.modulusSquare()) / 2;
             double nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
             iterations = (iterations + 1 - nu) / (palette.length*3); //divide by a factor to make it smoother
         }
 
-        return iterations - getColorOffset();
+        return iterations;
     }
 
     /**
@@ -217,6 +229,7 @@ public abstract class Fractal extends JPanel {
     private class FractMouseListener extends MouseAdapter
     {
         private Point startDrag, endDrag;
+        private Rectangle r;
 
         /*
          * on mouse click update clicked coordinates
@@ -240,7 +253,8 @@ public abstract class Fractal extends JPanel {
          * when mouse is released, zoom if it was dragged
          */
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent e)
+        {
             if (endDrag != startDrag) {
                 alignValues();
                 //run on a separate thread because EDT would skip to the final repaint call
@@ -264,14 +278,9 @@ public abstract class Fractal extends JPanel {
             int height = Math.abs(startDrag.y - endDrag.y);
             int x = Math.min(startDrag.x, endDrag.x);
             int y = Math.min(startDrag.y, endDrag.y);
+            r = new Rectangle(x, y, width, height);
 
-            //draw rectangle
-            Rectangle r = new Rectangle(x, y, width, height);
-            Graphics2D g2 = (Graphics2D) getGraphics();
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.WHITE);
-            g2.draw(r);
-            repaint(r);
+            repaint();
         }
 
         //make sure the rectangle startDrag is top left
