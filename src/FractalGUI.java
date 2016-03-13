@@ -8,6 +8,7 @@ public abstract class FractalGUI extends JFrame
 {
     private Fractal fractal;
     private SettingsPanel settings;
+    private JScrollPane scroll;
     public static final Dimension DEFAULT_SIZE = new Dimension(800,520);
 
     //constructor
@@ -17,6 +18,8 @@ public abstract class FractalGUI extends JFrame
 
         this.fractal = fractal;
         this.settings = new SettingsPanel(fractal);
+        this.scroll = new JScrollPane(settings);
+        this.scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         // not sure i want these 2 lines here as well as in the Fractal
         this.setFocusable(true);
@@ -51,5 +54,9 @@ public abstract class FractalGUI extends JFrame
 
     public SettingsPanel getSettings() {
         return settings;
+    }
+
+    public JScrollPane getScrollSets() {
+        return scroll;
     }
 }

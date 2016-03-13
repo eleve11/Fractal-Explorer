@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14d32dcc-f6f7-49d8-9786-420f94d58d3e" name="Default" comment="updated gui design">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal$FractMouseListener.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal$FractMouseListener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/Fractal.class" />
+    <list default="true" id="14d32dcc-f6f7-49d8-9786-420f94d58d3e" name="Default" comment="minor ui updates">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/FractalGUI.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/FractalGUI.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$1.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel$SettingsListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" afterPath="$PROJECT_DIR$/out/production/FractalExplorer/SettingsPanel.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Fractal.java" afterPath="$PROJECT_DIR$/src/Fractal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FractalChoose.java" afterPath="$PROJECT_DIR$/src/FractalChoose.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FractalGUI.java" afterPath="$PROJECT_DIR$/src/FractalGUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Multibrot.java" afterPath="$PROJECT_DIR$/src/Multibrot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainFrame.java" afterPath="$PROJECT_DIR$/src/MainFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SettingsPanel.java" afterPath="$PROJECT_DIR$/src/SettingsPanel.java" />
     </list>
     <ignored path="FractalExplorer.iws" />
@@ -32,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Fractal.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Fractal.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Fractal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33178654">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="77" column="9" selection-start-line="77" selection-start-column="9" selection-end-line="77" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -46,7 +46,34 @@
         <entry file="file://$PROJECT_DIR$/src/SettingsPanel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
+              <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FractalGUI.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/FractalGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6612529">
+              <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+              <folding>
+                <element signature="e#1546#1547#0" expanded="true" />
+                <element signature="e#1577#1578#0" expanded="true" />
+                <element signature="e#1619#1620#0" expanded="true" />
+                <element signature="e#1648#1649#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainFrame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MainFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -96,13 +123,13 @@
         <option value="$PROJECT_DIR$/src/JuliaSet.java" />
         <option value="$PROJECT_DIR$/src/JuliaFrame.java" />
         <option value="$PROJECT_DIR$/src/Complex.java" />
-        <option value="$PROJECT_DIR$/src/MainFrame.java" />
         <option value="$PROJECT_DIR$/src/Buffalo.java" />
         <option value="$PROJECT_DIR$/src/Fractal.java" />
         <option value="$PROJECT_DIR$/src/Multibrot.java" />
         <option value="$PROJECT_DIR$/src/MainFractal.java" />
         <option value="$PROJECT_DIR$/src/FractalChoose.java" />
         <option value="$PROJECT_DIR$/src/SettingsPanel.java" />
+        <option value="$PROJECT_DIR$/src/MainFrame.java" />
         <option value="$PROJECT_DIR$/src/FractalGUI.java" />
       </list>
     </option>
@@ -791,7 +818,7 @@
       <workItem from="1457698860050" duration="1480000" />
       <workItem from="1457713151730" duration="300000" />
       <workItem from="1457869668142" duration="1601000" />
-      <workItem from="1457882084348" duration="8437000" />
+      <workItem from="1457882084348" duration="9840000" />
     </task>
     <task id="LOCAL-00001" summary="improved Favourites class">
       <created>1457212116449</created>
@@ -973,11 +1000,17 @@
       <option name="project" value="LOCAL" />
       <updated>1457870945582</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="updated gui design">
+      <created>1457902282610</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1457902282610</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254986000" />
+    <option name="totallyTimeSpent" value="256389000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1395,18 +1428,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MainFrame.java">
+    <entry file="file://$PROJECT_DIR$/src/Fractal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4617169">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="77" column="9" selection-start-line="77" selection-start-column="9" selection-end-line="77" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FractalGUI.java">
+    <entry file="file://$PROJECT_DIR$/src/MainFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7215777">
-          <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1414,16 +1447,23 @@
     <entry file="file://$PROJECT_DIR$/src/SettingsPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
-          <folding />
+          <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Fractal.java">
+    <entry file="file://$PROJECT_DIR$/src/FractalGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33178654">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.6612529">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding>
+            <element signature="e#1546#1547#0" expanded="true" />
+            <element signature="e#1577#1578#0" expanded="true" />
+            <element signature="e#1619#1620#0" expanded="true" />
+            <element signature="e#1648#1649#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

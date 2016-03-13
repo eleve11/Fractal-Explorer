@@ -19,7 +19,7 @@ public class SettingsPanel extends JPanel
     //construct
     public SettingsPanel(Fractal fractal){
         this.fractal = fractal;
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         init();
         this.setVisible(true);
     }
@@ -50,24 +50,27 @@ public class SettingsPanel extends JPanel
         //radio buttons and favourites list cannot go in JuliaFrames
         if(fractal instanceof MainFractal) {
             FractalChoose fc = new FractalChoose((MainFractal) fractal);
-            this.add(fc,c);
+            this.add(fc);
 
             addFavourites();
         }
 
         //add other settings componentss
         c.gridy = 1;
-        this.add(realaxis, c);
+        this.add(realaxis);
         c.gridy = 2;
-        this.add(imagaxis, c);
+        this.add(imagaxis);
         c.gridy = 3;
-        this.add(iterbox, c);
+        this.add(iterbox);
         c.gridy = 7;
 //        this.add(colorslider,c);
         c.gridy = 8;
-        this.add(lastClicked,c);
+        lastClicked.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.add(lastClicked);
         c.gridy = 9;
-        this.add(new SaveButton(fractal),c);
+        JButton save = new SaveButton(fractal);
+        save.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.add(save);
 
         //add listener to update image
         SettingsListener setListener = new SettingsListener();
@@ -94,7 +97,7 @@ public class SettingsPanel extends JPanel
 
         c.weightx = 1;
         c.gridy = 6;
-        this.add(favList,c);
+        this.add(favList);
     }
 
     /*
@@ -131,14 +134,11 @@ public class SettingsPanel extends JPanel
 
     //update the last clicked point label
     public void updatePointLabel(Complex lastPoint){
-        //label text is using HTML tags because
-        //JLabels don't like going to a new line :(
+
         if(lastPoint!=null){
             lastClicked.setBorder(new TitledBorder("Last Clicked:"));
-            lastClicked.setSize(this.getWidth(),lastClicked.getHeight());
             lastClicked.setText(lastPoint.toString());
         }
-            //lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
     }
 
 //    private JSlider getColorSlider(){

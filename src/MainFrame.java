@@ -22,7 +22,7 @@ public class MainFrame extends FractalGUI
     public void init()
     {
         pane.add(fractal,BorderLayout.CENTER);
-        pane.add(getSettings(),BorderLayout.WEST);
+        pane.add(getScrollSets(),BorderLayout.WEST);
         this.fractal.requestFocus();
     }
 
