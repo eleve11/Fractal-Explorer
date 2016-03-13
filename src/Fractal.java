@@ -46,6 +46,7 @@ public abstract class Fractal extends JPanel
      */
     @Override
     public void paint(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
         //loop through each pixel
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
@@ -57,19 +58,19 @@ public abstract class Fractal extends JPanel
                 int[] color2 = palette[(itfloor+1) % palette.length];
                 Color col = RgbLinearInterpolate(color1, color2, it);
            /* other possible colouring
-           float hue = (float)mandelbrot(getComplex(x,y))/10;
+           float hue = (float)compute(getComplex(x,y))/10;
            Color col = new Color(Color.HSBtoRGB(hue,1,1)); //why the center is not black?
            */
                 //draw pixel
-                g.setColor(col);
-                g.drawLine(x, y, x, y);
+                g2.setColor(col);
+                g2.drawLine(x, y, x, y);
             }
         }
 
         // draw the zoom rectangle if dragging
         if (fl.startDrag != null && fl.endDrag != null) {
-            Graphics2D g2 = (Graphics2D) g;
             g2.setPaint(Color.WHITE);
+            //set transparency
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
             g2.draw(fl.r);
             g2.setPaint(Color.LIGHT_GRAY);
@@ -266,7 +267,7 @@ public abstract class Fractal extends JPanel
         }
 
         /*
-         * when the mouse is dragged draw the zooming area rectangle
+         * while the mouse is being dragged draw the zooming area rectangle
          */
         @Override
         public void mouseDragged(MouseEvent e)

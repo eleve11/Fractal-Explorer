@@ -7,7 +7,6 @@ public class Multibrot extends MainFractal
     //construct multibrot using number of tails
     public Multibrot(int n){
         this.setN(n);
-
         //little trick to handle big Ns
         if(n>20)
             setMaxIterations(getMaxIterations()- n/2);

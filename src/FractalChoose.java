@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,17 +12,15 @@ import java.awt.event.ActionListener;
 public class FractalChoose extends JPanel {
 
     private ButtonGroup bg;
-    private JLabel label;
     private MainFractal fractal;
     private ChooseFractalLis lis;
 
     //constructor need the fractal that is preselected
     public FractalChoose(MainFractal preselected) {
         this.fractal = preselected;
-        this.setLayout(new GridLayout(5,1));
+        this.setLayout(new GridLayout(4,1));
 
-        label = new JLabel("Choose a Fractal:");
-        label.setFont(label.getFont().deriveFont(Font.BOLD, 14.0f));
+        setBorder(new TitledBorder("Choose a Fractal"));
 
         bg = new ButtonGroup();
         lis = new ChooseFractalLis();
@@ -31,8 +30,6 @@ public class FractalChoose extends JPanel {
 
     private void init()
     {
-        this.add(label);
-
         //look how easy it is to add new fractals!
         addButton(new Mandelbrot());
         addButton(new BurningShip());

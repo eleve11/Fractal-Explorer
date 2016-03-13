@@ -1,6 +1,5 @@
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -13,7 +12,7 @@ public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
     private JLabel lastClicked;
-    private JSlider colorslider;
+//    private JSlider colorslider;
     private Fractal fractal;
     private GridBagConstraints c;
 
@@ -29,18 +28,18 @@ public class SettingsPanel extends JPanel
     private void init()
     {
         //initialise components
-        realUp = new JTextField(fractal.getRealUp().toString(),5);
-        realLow = new JTextField(fractal.getRealLow().toString(),5);
-        imagUp = new JTextField(fractal.getImagUp().toString(),5);
-        imagLow = new JTextField(fractal.getImagLow().toString(),5);
-        iterations = new JTextField(fractal.getMaxIterations().toString(),3);
+        realUp = new JTextField(fractal.getRealUp().toString(),6);
+        realLow = new JTextField(fractal.getRealLow().toString(),6);
+        imagUp = new JTextField(fractal.getImagUp().toString(),6);
+        imagLow = new JTextField(fractal.getImagLow().toString(),6);
+        iterations = new JTextField(fractal.getMaxIterations().toString(),6);
         lastClicked = new JLabel();
         lastClicked.setHorizontalAlignment(SwingConstants.CENTER);
-        colorslider = getColorSlider();
+//        colorslider = getColorSlider();
 
         //prepare inner panels
-        JPanel realaxis = getBoundPanel(new JLabel("R-axis bounds:"),realLow,realUp);
-        JPanel imagaxis = getBoundPanel(new JLabel("I-axis bounds:"),imagLow,imagUp);
+        JPanel realaxis = getBoundPanel("Real axis bounds",realLow,realUp);
+        JPanel imagaxis = getBoundPanel("Imaginary axis bounds",imagLow,imagUp);
         JPanel iterbox = getIterPanel(new JLabel("Iterations:"),iterations);
 
         //GridBagLayout settings
@@ -64,7 +63,7 @@ public class SettingsPanel extends JPanel
         c.gridy = 3;
         this.add(iterbox, c);
         c.gridy = 7;
-        this.add(colorslider,c);
+//        this.add(colorslider,c);
         c.gridy = 8;
         this.add(lastClicked,c);
         c.gridy = 9;
@@ -83,21 +82,16 @@ public class SettingsPanel extends JPanel
     /*
      * add favourites to the settings panel
      */
-    private void addFavourites(){
-        //favourites label
-        JLabel favLabel = new JLabel("Favourite Julia Sets:");
-        favLabel.setFont(favLabel.getFont().deriveFont(Font.BOLD));
-
+    private void addFavourites()
+    {
         // display favourites
         JComboBox favList = Favourites.getInstance().getFavourites();
         favList.setSelectedIndex(-1); //set initial value
         favList.addActionListener(new ShowFav());
         favList.setFocusable(false); //don't allow key type
 
-        //add to panel
-        c.gridy = 5;
-        c.weightx = 0.5;
-        this.add(favLabel,c);
+        favList.setBorder(new TitledBorder("Favourite Julia Sets"));
+
         c.weightx = 1;
         c.gridy = 6;
         this.add(favList,c);
@@ -106,36 +100,19 @@ public class SettingsPanel extends JPanel
     /*
      * return a panel that handles the bounds, given 3 necessary components
      */
-    private JPanel getBoundPanel(JLabel label, JTextField lower, JTextField upper)
+    private JPanel getBoundPanel(String title,JTextField lower, JTextField upper)
     {
         //init
         JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints panConstr = new GridBagConstraints();
-        label.setFont(label.getFont().deriveFont(Font.BOLD,14.0f));
+        panel.setLayout(new GridLayout(2,2));
+        panel.setBorder(new TitledBorder(title));
         JLabel min = new JLabel("Min:");
         JLabel max = new JLabel("Max:");
-
         //ADD to subpanel
-        //set GridBagLayouot Constraints
-        panConstr.gridwidth = 2;
-        panConstr.gridx = 0;
-        panConstr.gridy = 0;
-        panel.add(label,panConstr);
-
-        panConstr.gridwidth =1;
-        panConstr.weightx = 0.5;
-        panConstr.gridy = 1;
-        panConstr.gridx = 0;
-        panel.add(min,panConstr);
-        panConstr.gridx = 1;
-        panel.add(lower,panConstr);
-
-        panConstr.gridy = 2;
-        panConstr.gridx = 0;
-        panel.add(max,panConstr);
-        panConstr.gridx = 1;
-        panel.add(upper,panConstr);
+        panel.add(min);
+        panel.add(lower);
+        panel.add(max);
+        panel.add(upper);
         return panel;
     }
 
@@ -143,17 +120,12 @@ public class SettingsPanel extends JPanel
     private JPanel getIterPanel(JLabel label,JTextField value)
     {
         //init
-        GridBagConstraints constr = new GridBagConstraints();
         JPanel panel = new JPanel();
-        label.setFont(label.getFont().deriveFont(Font.BOLD));
-
+        panel.setLayout(new GridLayout(1,2));
+        panel.setBorder(new TitledBorder("Max Iterations:"));
         //add
-        constr.gridy = 0;
-        constr.gridx = 0;
-        constr.weightx = 0.5;
-        panel.add(label,constr);
-        constr.gridx = 1;
-        panel.add(value,constr);
+        panel.add(label);
+        panel.add(value);
         return panel;
     }
 
@@ -161,23 +133,28 @@ public class SettingsPanel extends JPanel
     public void updatePointLabel(Complex lastPoint){
         //label text is using HTML tags because
         //JLabels don't like going to a new line :(
-        if(lastPoint!=null)
-            lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
+        if(lastPoint!=null){
+            lastClicked.setBorder(new TitledBorder("Last Clicked:"));
+            lastClicked.setSize(this.getWidth(),lastClicked.getHeight());
+            lastClicked.setText(lastPoint.toString());
+        }
+            //lastClicked.setText("<html>Last Selected Point:<br>"+lastPoint.toString()+"</html>");
     }
 
-    private JSlider getColorSlider(){
-        JSlider color = new JSlider(0,fractal.getPalette().length*100);
-        color.setFocusable(false);
-        color.setValue((int) fractal.getColorOffset()*100);
-        color.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                fractal.setColorOffset((double)((JSlider)e.getSource()).getValue()/100);
-                fractal.repaint();
-            }
-        });
-        return color;
-    }
+//    private JSlider getColorSlider(){
+//        JSlider color = new JSlider(0,fractal.getPalette().length*100);
+//        color.setFocusable(false);
+//        color.setBorder(new TitledBorder("Color"));
+//        color.setValue((int) fractal.getColorOffset()*100);
+//        color.addChangeListener(new ChangeListener() {
+//            @Override
+//            public void stateChanged(ChangeEvent e) {
+//                fractal.setColorOffset((double)((JSlider)e.getSource()).getValue()/100);
+//                fractal.repaint();
+//            }
+//        });
+//        return color;
+//    }
 
     //update the settings panel when someone interacts with the fractal
     public void updateSet()
@@ -187,7 +164,7 @@ public class SettingsPanel extends JPanel
         imagLow.setText(fractal.getImagLow().toString());
         imagUp.setText(fractal.getImagUp().toString());
         iterations.setText(fractal.getMaxIterations().toString());
-        colorslider.setValue((int)(fractal.getColorOffset()*100));
+//        colorslider.setValue((int)(fractal.getColorOffset()*100));
     }
 
     public void setFractal(Fractal fractal){

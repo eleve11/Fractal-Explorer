@@ -7,8 +7,8 @@ import java.awt.*;
 public abstract class FractalGUI extends JFrame
 {
     private Fractal fractal;
-    private JPanel settings;
-    public static final Dimension DEFAULT_SIZE = new Dimension(720,480);
+    private SettingsPanel settings;
+    public static final Dimension DEFAULT_SIZE = new Dimension(800,520);
 
     //constructor
     public FractalGUI(String title, Fractal fractal,int width,int height)
@@ -50,6 +50,6 @@ public abstract class FractalGUI extends JFrame
     }
 
     public SettingsPanel getSettings() {
-        return (SettingsPanel) settings;
+        return settings;
     }
 }
