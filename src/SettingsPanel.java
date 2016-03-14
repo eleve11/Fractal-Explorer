@@ -14,12 +14,16 @@ public class SettingsPanel extends JPanel
     private JLabel lastClicked;
 //    private JSlider colorslider;
     private Fractal fractal;
-    private GridBagConstraints c;
 
     //construct
     public SettingsPanel(Fractal fractal){
         this.fractal = fractal;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+
+        TitledBorder title = new TitledBorder("Settings");
+        title.setTitleFont(title.getTitleFont().deriveFont(Font.BOLD));
+        this.setBorder(title);
+
         init();
         this.setVisible(true);
     }
@@ -42,11 +46,6 @@ public class SettingsPanel extends JPanel
         JPanel imagaxis = getBoundPanel("Imaginary axis bounds",imagLow,imagUp);
         JPanel iterbox = getIterPanel(new JLabel("Iterations:"),iterations);
 
-        //GridBagLayout settings
-        c = new GridBagConstraints();
-
-        c.gridy = 0;
-
         //radio buttons and favourites list cannot go in JuliaFrames
         if(fractal instanceof MainFractal) {
             FractalChoose fc = new FractalChoose((MainFractal) fractal);
@@ -56,18 +55,13 @@ public class SettingsPanel extends JPanel
         }
 
         //add other settings componentss
-        c.gridy = 1;
         this.add(realaxis);
-        c.gridy = 2;
         this.add(imagaxis);
-        c.gridy = 3;
         this.add(iterbox);
-        c.gridy = 7;
 //        this.add(colorslider,c);
-        c.gridy = 8;
         lastClicked.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(lastClicked);
-        c.gridy = 9;
+
         JButton save = new SaveButton(fractal);
         save.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(save);
@@ -94,9 +88,6 @@ public class SettingsPanel extends JPanel
         favList.setFocusable(false); //don't allow key type
 
         favList.setBorder(new TitledBorder("Favourite Julia Sets"));
-
-        c.weightx = 1;
-        c.gridy = 6;
         this.add(favList);
     }
 

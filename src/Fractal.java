@@ -6,11 +6,10 @@ import java.awt.event.MouseEvent;
 /**
  * represent a fractal on the complex plane.
  */
-//TODO: fix drag rectangle
 public abstract class Fractal extends JPanel
 {
     private Double realLow, realUp, imagLow, imagUp;
-    private int maxIterations = 100;
+    private int maxIterations;
     private int[][] palette;
     private double colorOffset = 0;
     private FractMouseListener fl;
@@ -20,6 +19,7 @@ public abstract class Fractal extends JPanel
     public static final double REAL_UP = 2.0;
     public static final double IMAG_LOW = -1.6;
     public static final double IMAG_UP = 1.6;
+    public static final int MAX_ITERATIONS = 100;
 
     //construct using complex plane constraints
     public Fractal(double realLower, double realUpper, double imagLower, double imagUpper) {
@@ -27,6 +27,7 @@ public abstract class Fractal extends JPanel
         this.realUp = realUpper;
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
+        this.maxIterations = MAX_ITERATIONS;
 
         fl = new FractMouseListener();
         this.addMouseListener(fl);
@@ -45,7 +46,8 @@ public abstract class Fractal extends JPanel
      * according to the function called by FunctionOfZ
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         Graphics2D g2 = (Graphics2D) g;
         //loop through each pixel
         for (int y = 0; y < getHeight(); y++) {
@@ -144,6 +146,26 @@ public abstract class Fractal extends JPanel
         double B = ((nr * start[2]) + (r * end[2])) % 256;
 
         return new Color((int) R, (int) G, (int) B);
+    }
+
+    //perform, non animated
+    public void zoom(int SCALE,boolean in)
+    {
+        double xShift = (getRealUp() - getRealLow())/SCALE;
+        double yShift = (getImagUp() - getImagLow())/SCALE;
+
+        if(in){
+            xShift = -xShift;
+            yShift = -yShift;
+        }
+
+        setRealLow(getRealLow() - xShift);
+        setRealUp(getRealUp() + xShift);
+        setImagLow(getImagLow() - yShift);
+        setImagUp(getImagUp() + yShift);
+
+        getGUI().getSettings().updateSet();
+        repaint();
     }
 
     /**

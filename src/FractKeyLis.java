@@ -17,8 +17,9 @@ public class FractKeyLis extends KeyAdapter
     public void keyPressed(KeyEvent e)
     {
         //shift 5% of current range
-        double horizontalShift = (fractal.getRealUp() - fractal.getRealLow()) / 20;
-        double verticalShift = (fractal.getImagUp() - fractal.getImagLow()) / 20;
+        int SCALE = 20;
+        double horizontalShift = (fractal.getRealUp() - fractal.getRealLow()) / SCALE;
+        double verticalShift = (fractal.getImagUp() - fractal.getImagLow()) / SCALE;
         int iterationShift = 100;
 
         switch (e.getKeyCode()) {
@@ -27,9 +28,17 @@ public class FractKeyLis extends KeyAdapter
                 fractal.setRealUp(Fractal.REAL_UP);
                 fractal.setImagLow(Fractal.IMAG_LOW);
                 fractal.setImagUp(Fractal.IMAG_UP);
-                fractal.setMaxIterations(100);
+                fractal.setMaxIterations(Fractal.MAX_ITERATIONS);
                 fractal.getGUI().getSettings().updateSet();
                 fractal.repaint();
+                break;
+
+            //zoom in and out
+            case KeyEvent.VK_I:
+                fractal.zoom(SCALE,true);
+                break;
+            case KeyEvent.VK_O:
+                fractal.zoom(SCALE,false);
                 break;
 
             case KeyEvent.VK_LEFT:
@@ -56,7 +65,7 @@ public class FractKeyLis extends KeyAdapter
 
             case KeyEvent.VK_MINUS:
                 iterationShift = -iterationShift;
-                if (fractal.getMaxIterations() <= 150) //prevent user from going under 100 iterations
+                if (fractal.getMaxIterations() < 150) //prevent user from going under 50 iterations
                     break;
             case KeyEvent.VK_PLUS:
             case KeyEvent.VK_EQUALS: //using equals instead of plus
