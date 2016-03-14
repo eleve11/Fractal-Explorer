@@ -34,12 +34,12 @@ public abstract class MainFractal extends Fractal
         Complex z = new Complex(0,0);
 
         int iterations=0;
-        while(iterations<getMaxIterations() && z.modulusSquare()<4.0) {
+        while(iterations<getMaxIterations() && z.modulusSquare()<BAILOUT*BAILOUT) {
             z = functionOfZ(z,c);
             iterations++;
         }
 
-        return getColorConstant(iterations,z);
+        return getSmoothIterations(iterations,z);
     }
 
     //function that represents the formula for the fractal

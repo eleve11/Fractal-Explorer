@@ -2,8 +2,8 @@ import java.text.DecimalFormat;
 
 /**
  * Complex numbers are two dimensional number
- * thus they have x,y coordinates
- * bear in mind y also represents the coefficient of i
+ * thus they have x,y coordinates.
+ * y also represents the coefficient of i
  * where i^2=-1.
  */
 public class Complex
@@ -42,7 +42,7 @@ public class Complex
         return new Complex(real,imaginary);
     }
 
-    //return the product between this Complex and parameter
+    //return the product between this Complex and argument
     public Complex times(Complex z){
         //(x+yi)(u+vi) = (xu -yv) + (xv + yu)i
         double real = this.getX()*z.getX() - this.getY()*z.getY();
@@ -50,11 +50,20 @@ public class Complex
         return new Complex(real,imaginary);
     }
 
+    //return the resulting complex number when dividing this by the argument
+    public Complex divideBy(Complex z){
+        //(a+bi)/(c+di) = ((ac+bd)/(c^2+d^2) + (bc-ad)/(c^2+d^2)i)
+        double realNum = this.getX()*z.getX() + this.getY()*z.getY();
+        double imagNum = this.getY()*z.getX() - this.getX()*z.getY();
+        double denum = z.getX()*z.getX() + z.getY()*z.getY();
+        return new Complex(realNum/denum,imagNum/denum);
+    }
+
     /*
-     *returns the respective complex number in the first quadrant
-     *the complex will have the absolute values of the coordinates
+     * returns the respective complex number in the first quadrant
+     * the complex will have the absolute values of the coordinates
      * as coordinates
-     * used to calculate the burning ship
+     * [used to calculate the burning ship]
      */
     public Complex firstQuadrant(){
         return new Complex(Math.abs(x),Math.abs(y));

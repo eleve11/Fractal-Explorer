@@ -29,12 +29,12 @@ public class JuliaSet extends Fractal
     public double compute(Complex z) {
         int iterations = 0;
 
-        while(iterations<getMaxIterations() && z.modulusSquare()<4.0){
+        while(iterations<getMaxIterations() && z.modulusSquare()<BAILOUT*BAILOUT){
             z = functionOfZ(z,c);
             iterations++;
         }
 
-        return getColorConstant(iterations,z);
+        return getSmoothIterations(iterations,z);
     }
 
     //julia set formula

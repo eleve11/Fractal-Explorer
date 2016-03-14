@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represent the Favourite list using a JComboBox
- * is a singleton class that manages the favourite juliaSets
- * by reading and writing on a file
+ * Represent the Favourite list using a JComboBox.
+ * Favourites is a singleton class that manages the favourite
+ * juliaSets by reading and writing on a file
  */
 public class Favourites
 {
@@ -19,7 +19,8 @@ public class Favourites
     private static final Favourites instance = new Favourites();
 
     //private constructor because is a singleton
-    private Favourites(){
+    private Favourites()
+    {
         file = new File("favourites");
         favComboBox = new JComboBox<String>();
         favList = new ArrayList<Complex>();
@@ -44,28 +45,38 @@ public class Favourites
             file.createNewFile();
     }
 
-    /*
+    /**
      * update the list reading from the file
      */
-    private void updateList() throws IOException, IllegalArgumentException{
+    private void updateList() throws IOException, IllegalArgumentException
+    {
         br = new BufferedReader(new FileReader(file));
         String line;
+        //clear lists to avoid duplicates
         favComboBox.removeAllItems();
         favList.clear();
+
+        //read each line
         if(br.ready()){
-            while((line=br.readLine()) != null){
-                if(line.split(":").length>2)
+            while((line=br.readLine()) != null)
+            {
+                if(line.split(":").length!=2)
                     throw new IllegalArgumentException("The favourites is formatted incorrectly");
+
+                //parse the Complex
                 double real = Double.parseDouble(line.split(":")[0]);
                 double img = Double.parseDouble(line.split(":")[1]);
-                favComboBox.addItem(new Complex(real,img).toString());
-                favList.add(new Complex(real,img));
+                Complex z = new Complex(real,img);
+
+                //add to list
+                favComboBox.addItem(z.toString());
+                favList.add(z);
             }
         }
         br.close();
     }
 
-    /*
+    /**
      * add a complex number to the favourite file
      * and update the list
      */
@@ -83,12 +94,13 @@ public class Favourites
         BufferedWriter output = new BufferedWriter(new FileWriter(file, true));
         output.write(c.getX()+":"+c.getY());
         output.newLine();
+
         output.flush();
         output.close(); //close stream
         return true;
     }
 
-    /*
+    /**
      * remove Complex number from list
      * it copies all the non matching lines to a temp file then
      * replaces the main file with the temp
@@ -98,10 +110,10 @@ public class Favourites
         if(!this.contains(c))
             throw new IllegalArgumentException("Complex number not found");
 
-        //what happens to the combo box when it is removed the item that shows
+        //what happens when the selected item is removed
         String toRemove = favComboBox.getItemAt(favComboBox.getSelectedIndex());
         if(toRemove!=null && toRemove.equals(c.toString()))
-            favComboBox.setSelectedIndex(-1);
+            favComboBox.setSelectedIndex(-1); //select the null item
 
         //remove from List
         favComboBox.removeItem(c.toString());
@@ -120,11 +132,12 @@ public class Favourites
          */
         String delete = c.getX()+":"+c.getY();
         String line;
+        //read each line
         while((line=br.readLine())!=null){
-            if(!line.trim().equals(delete)) {
+            if(!line.trim().equals(delete))
                 bw.write(line + System.getProperty("line.separator"));
-            }
         }
+
         //close streams
         bw.flush();
         bw.close();
@@ -135,7 +148,7 @@ public class Favourites
     }
 
 
-    /*
+    /**
      * return true if the complex number is in the Favourites List
      */
     public boolean contains(Complex c){

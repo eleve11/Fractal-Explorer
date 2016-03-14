@@ -38,6 +38,11 @@ public class SaveButton extends JButton
         return fractal;
     }
 
+    //set the fractal
+    public void setFractal(Fractal fractal) {
+        this.fractal = fractal;
+    }
+
     /**
      * Use a JFileChooser to let the user save the
      * fractal png image at his preferred location

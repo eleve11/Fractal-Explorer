@@ -35,9 +35,12 @@ public class FavButton extends JToggleButton {
      */
     private void updateIcon()
     {
+        //gete right image
         String file = isSelected() ? "Icons/star.png" : "Icons/star_unfilled.png";
         Image star = new ImageIcon(file).getImage();
+        //scale icon to 20x20
         Image scaled = star.getScaledInstance(20,20,Image.SCALE_SMOOTH);
+
         Icon ico = new ImageIcon(scaled);
         setIcon(ico);
     }
@@ -50,7 +53,7 @@ public class FavButton extends JToggleButton {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            //add to favourites if selected
+            //Add to favourites if selected
             if(((JToggleButton) e.getSource()).isSelected()) {
                 try {
                     Favourites.getInstance().add(juliaSet.getC());

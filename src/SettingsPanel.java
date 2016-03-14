@@ -14,6 +14,7 @@ public class SettingsPanel extends JPanel
     private JLabel lastClicked;
     private JPanel pointPanel;
     private Fractal fractal;
+    private SaveButton save;
 
     //construct
     public SettingsPanel(Fractal fractal){
@@ -61,7 +62,7 @@ public class SettingsPanel extends JPanel
         lastClicked.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(pointPanel);
 
-        JButton save = new SaveButton(fractal);
+        save = new SaveButton(fractal);
         save.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(save);
 
@@ -150,6 +151,7 @@ public class SettingsPanel extends JPanel
 
     public void setFractal(Fractal fractal){
         this.fractal = fractal;
+        this.save.setFractal(fractal);
         updateSet();
     }
 

@@ -11,7 +11,6 @@ public abstract class Fractal extends JPanel
     private Double realLow, realUp, imagLow, imagUp;
     private int maxIterations;
     private int[][] palette;
-    private double colorOffset = 0;
     private FractMouseListener fl;
 
     //default values
@@ -20,6 +19,7 @@ public abstract class Fractal extends JPanel
     public static final double IMAG_LOW = -1.6;
     public static final double IMAG_UP = 1.6;
     public static final int MAX_ITERATIONS = 100;
+    public static final int BAILOUT = 2;
 
     //construct using complex plane constraints
     public Fractal(double realLower, double realUpper, double imagLower, double imagUpper) {
@@ -41,28 +41,28 @@ public abstract class Fractal extends JPanel
         this(REAL_LOW, REAL_UP, IMAG_LOW, IMAG_UP);
     }
 
-    /*
-     * draw the Fractal set on the complex plane
+    /**
+     * draw the Fractal on the complex plane
      * according to the function called by FunctionOfZ
      */
     @Override
     public void paint(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
+
         //loop through each pixel
         for (int y = 0; y < getHeight(); y++) {
-            for (int x = 0; x < getWidth(); x++) {
+            for (int x = 0; x < getWidth(); x++)
+            {
                 int[][] palette = getPalette();
                 double it = getMaxIterations() - compute(getComplex(x, y));
+
                 //interpolate between 2 adiacent color in the palette
                 int itfloor = (int) Math.floor(it);
                 int[] color1 = palette[itfloor % palette.length];
                 int[] color2 = palette[(itfloor+1) % palette.length];
                 Color col = RgbLinearInterpolate(color1, color2, it);
-           /* other possible colouring
-           float hue = (float)compute(getComplex(x,y))/10;
-           Color col = new Color(Color.HSBtoRGB(hue,1,1)); //why the center is not black?
-           */
+
                 //draw pixel
                 g2.setColor(col);
                 g2.drawLine(x, y, x, y);
@@ -70,29 +70,30 @@ public abstract class Fractal extends JPanel
         }
 
         // draw the zoom rectangle if dragging
-        if (fl.startDrag != null && fl.endDrag != null) {
-            g2.setPaint(Color.WHITE);
+        if (fl.startDrag != null && fl.endDrag != null)
+        {
             //set transparency
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.40f));
+            g2.setStroke(new BasicStroke(2));
+            g2.setPaint(Color.WHITE);
             g2.draw(fl.r);
-            g2.setPaint(Color.LIGHT_GRAY);
             g2.fill(fl.r);
         }
     }
 
     /**
-     * Check if the function of Z escapes the limit
-     * computes how close the point is to the fractal
-     * should call functionOfZ and getColorConstant
+     * Check if the function of Z escapes the BAILOUT limit.
+     * Computes how close the point c is to the set.
+     * should call functionOfZ and getSmoothIteration
      *
      * @param c the point on the complex plane we are checking
-     * @return colour constant value
+     * @return smooth iteration value
      */
     public abstract double compute(Complex c);
 
     /**
-     * this method calls the function of Z that graphically represents
-     * the fractal on the complex plane when computed
+     * this method calls the function of Z that defines the
+     * fractal set on the complex plane
      *
      * @param c is the complex variable
      * @param z is the starting point
@@ -102,7 +103,7 @@ public abstract class Fractal extends JPanel
 
     /*
     * return the point in the complex plane that
-    * corresponds to those pixels
+    * corresponds to a given pixel
     */
     public Complex getComplex(int x, int y) {
         double cx = (realUp - realLow) * x / getWidth() + realLow;
@@ -111,7 +112,7 @@ public abstract class Fractal extends JPanel
         return new Complex(cx, cy);
     }
 
-    //method overload
+    //overload of getComplex(x,y) with point
     public Complex getComplex(Point p) {
         return getComplex(p.x, p.y);
     }
@@ -119,13 +120,34 @@ public abstract class Fractal extends JPanel
     /**
      * Smooth colouring algorithm:
      * guarantees that the colors are continuous and don't create bands
+     * used the algorithm as found on the wikipedia page f the mandelbrot set
+     * and tweaked by me to obtain the desired effect
+     *
+     * @param iterations the number of computed iterations before escaping
+     * @param z the final magnitude before exiting the loop
+     * @return a double value between iterations-1 and iterations
+     * divided by a constant factor that is used to make the colors cycle slowly
      */
-    public double getColorConstant(double iterations, Complex z)
+    public double getSmoothIterations(double iterations, Complex z)
     {
+        //EXP is the exponent in the function of Z which represents the divergence
+        int EXP = 2; //exp is 2 because most functions have .square on z
+        if (this instanceof Multibrot)
+            EXP = ((Multibrot)this).getN() + 1;
+
+        /*
+         * divide by this factor to make the palette cycle slowly
+         * I designed this equation studying the curve of Bailout*log(EXP)
+         * knowing that I would have obtained the effect i wanted multiplying
+         * the full length of a palette by a fraction of it
+         */
+        int slow = palette.length * (int)Math.ceil(palette.length/(BAILOUT*Math.log(EXP)));
+
+        //the algorithm suggested by wikipedia
         if (iterations < getMaxIterations()) {
-            double log_zn = Math.log(z.modulusSquare()) / 2;
-            double nu = Math.log(log_zn / Math.log(2)) / Math.log(2);
-            iterations = (iterations + 1 - nu) / (palette.length*3); //divide by a factor to make it smoother
+            double log_zn = Math.log(z.modulusSquare()) / EXP;
+            double nu = Math.log(log_zn / Math.log(BAILOUT)) / Math.log(EXP);
+            iterations = (iterations - nu) / slow; //divided by slow factor to slow the color cycle
         }
 
         return iterations;
@@ -134,13 +156,14 @@ public abstract class Fractal extends JPanel
     /**
      * interpolate two RGB colors
      *
-     * @param count will be the iterations converted into color constant
+     * @param smoothIteration the smooth value of iterations
      * @return resulting color
      */
-    public static Color RgbLinearInterpolate(int[] start, int[] end, double count) {
+    public static Color RgbLinearInterpolate(int[] start, int[] end, double smoothIteration) {
         // linear interpolation lerp (r,a,b) = (1-r)*a + r*b = (1-r)*(ax,ay,az) + r*(bx,by,bz)
-        double r = count - Math.floor(count); //get just decimal part
+        double r = smoothIteration - Math.floor(smoothIteration); //get just decimal part
         double nr = 1.0 - r;
+        //add the modulus to guarantee it's an acceptable colour
         double R = ((nr * start[0]) + (r * end[0])) % 256;
         double G = ((nr * start[1]) + (r * end[1])) % 256;
         double B = ((nr * start[2]) + (r * end[2])) % 256;
@@ -148,28 +171,36 @@ public abstract class Fractal extends JPanel
         return new Color((int) R, (int) G, (int) B);
     }
 
-    //perform, non animated
+    /**
+     * perform static zoom
+     * @param SCALE , the higher the shortest distance zoom
+     * @param in specifies the direction of the zoom
+     */
     public void zoom(int SCALE,boolean in)
     {
+        //set shifts
         double xShift = (getRealUp() - getRealLow())/SCALE;
         double yShift = (getImagUp() - getImagLow())/SCALE;
 
+        //check direction
         if(in){
             xShift = -xShift;
             yShift = -yShift;
         }
 
+        //set bounds
         setRealLow(getRealLow() - xShift);
         setRealUp(getRealUp() + xShift);
         setImagLow(getImagLow() - yShift);
         setImagUp(getImagUp() + yShift);
 
+        //update gui
         getGUI().getSettings().updateSet();
         repaint();
     }
 
-    /**
-     * getters and setters
+    /*
+     * accessor methods
      */
     public Double getRealLow() {
         return realLow;
@@ -194,8 +225,6 @@ public abstract class Fractal extends JPanel
     public int[][] getPalette() {
         return palette;
     }
-
-    public double getColorOffset(){return colorOffset;}
 
     public FractalGUI getGUI() {
         return (FractalGUI) SwingUtilities.getWindowAncestor(this);
@@ -234,12 +263,6 @@ public abstract class Fractal extends JPanel
         this.maxIterations = maxIterations;
     }
 
-    public void setColorOffset(double offset){
-        if(offset<0||offset>palette.length)
-            throw new IllegalArgumentException();
-        this.colorOffset = offset;
-    }
-
     public void setPalette(int[][] palette) {
         this.palette = palette;
     }
@@ -264,7 +287,7 @@ public abstract class Fractal extends JPanel
         }
 
         /*
-         * on mouse pressed start prepare for drag
+         * on mouse pressed prepare for drag
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -274,6 +297,7 @@ public abstract class Fractal extends JPanel
 
         /*
          * when mouse is released, zoom if it was dragged
+         * then reset drag constants
          */
         @Override
         public void mouseReleased(MouseEvent e)
@@ -343,11 +367,11 @@ public abstract class Fractal extends JPanel
             this.topBound = new Complex(getRealUp(),getImagUp());
         }
 
-        //zoom by 2% of the total zoom each iteration
+        //zoom by 1/ITERATIONS of the total zoom each iteration
         @Override
         public void run()
         {
-            //set the shift constants so that it look like it speeds up in the  end
+            //set the shift constants
             double horShiftStart = (start.getX() - botBound.getX()) / ITERATIONS;
             double verShiftStart = (topBound.getY() - start.getY()) / ITERATIONS;
             double horShiftEnd = (topBound.getX() - end.getX()) / ITERATIONS;
@@ -359,11 +383,13 @@ public abstract class Fractal extends JPanel
                 topBound = new Complex(topBound.getX() - horShiftEnd, topBound.getY() - verShiftStart);
                 botBound = new Complex(botBound.getX() + horShiftStart, botBound.getY() + verShiftEnd);
 
+                //set new bounds
                 setRealLow(botBound.getX());
                 setRealUp(topBound.getX());
                 setImagLow(botBound.getY());
                 setImagUp(topBound.getY());
 
+                //update ui
                 repaint();
                 getGUI().getSettings().updateSet();
 
