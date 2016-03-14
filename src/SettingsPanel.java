@@ -12,7 +12,7 @@ public class SettingsPanel extends JPanel
 {
     private JTextField realLow,realUp,imagLow,imagUp,iterations;
     private JLabel lastClicked;
-//    private JSlider colorslider;
+    private JPanel pointPanel;
     private Fractal fractal;
 
     //construct
@@ -39,7 +39,7 @@ public class SettingsPanel extends JPanel
         iterations = new JTextField(fractal.getMaxIterations().toString(),6);
         lastClicked = new JLabel();
         lastClicked.setHorizontalAlignment(SwingConstants.CENTER);
-//        colorslider = getColorSlider();
+        pointPanel = getPointPanel();
 
         //prepare inner panels
         JPanel realaxis = getBoundPanel("Real axis bounds",realLow,realUp);
@@ -54,13 +54,12 @@ public class SettingsPanel extends JPanel
             addFavourites();
         }
 
-        //add other settings componentss
+        //add other settings components
         this.add(realaxis);
         this.add(imagaxis);
         this.add(iterbox);
-//        this.add(colorslider,c);
         lastClicked.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(lastClicked);
+        this.add(pointPanel);
 
         JButton save = new SaveButton(fractal);
         save.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -125,27 +124,19 @@ public class SettingsPanel extends JPanel
 
     //update the last clicked point label
     public void updatePointLabel(Complex lastPoint){
-
         if(lastPoint!=null){
-            lastClicked.setBorder(new TitledBorder("Last Clicked:"));
             lastClicked.setText(lastPoint.toString());
+            pointPanel.setVisible(true);
         }
     }
 
-//    private JSlider getColorSlider(){
-//        JSlider color = new JSlider(0,fractal.getPalette().length*100);
-//        color.setFocusable(false);
-//        color.setBorder(new TitledBorder("Color"));
-//        color.setValue((int) fractal.getColorOffset()*100);
-//        color.addChangeListener(new ChangeListener() {
-//            @Override
-//            public void stateChanged(ChangeEvent e) {
-//                fractal.setColorOffset((double)((JSlider)e.getSource()).getValue()/100);
-//                fractal.repaint();
-//            }
-//        });
-//        return color;
-//    }
+    private JPanel getPointPanel(){
+        JPanel point = new JPanel();
+        point.setBorder(new TitledBorder("Last Clicked Point"));
+        point.add(lastClicked);
+        point.setVisible(false);
+        return point;
+    }
 
     //update the settings panel when someone interacts with the fractal
     public void updateSet()
@@ -155,7 +146,6 @@ public class SettingsPanel extends JPanel
         imagLow.setText(fractal.getImagLow().toString());
         imagUp.setText(fractal.getImagUp().toString());
         iterations.setText(fractal.getMaxIterations().toString());
-//        colorslider.setValue((int)(fractal.getColorOffset()*100));
     }
 
     public void setFractal(Fractal fractal){
