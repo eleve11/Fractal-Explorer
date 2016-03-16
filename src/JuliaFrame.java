@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * GUI that shows the Julia Set
+ * Singleton GUI that shows the Julia Set
  */
 public class JuliaFrame extends FractalGUI
 {
@@ -32,9 +32,9 @@ public class JuliaFrame extends FractalGUI
         setToolBar(julia);
         pane.add(toolBar,BorderLayout.SOUTH);
         pane.add(julia,BorderLayout.CENTER);
-        //pane.add(getSettings(),BorderLayout.WEST);
     }
 
+    //updates the toolbar to the fractal
     private void setToolBar(JuliaSet juliaSet){
         toolBar = new JPanel();
         FavButton fav = new FavButton(juliaSet);
@@ -45,8 +45,7 @@ public class JuliaFrame extends FractalGUI
 
     /*
      * updates the julia frame with a new JuliaSet and toolbar
-     * basically a second initialisation  that updates the screen
-     * for when the frame gets activated
+     * basically a second initialisation that updates the screen
      */
     public void updateJulia(Complex c, MainFractal generator)
     {

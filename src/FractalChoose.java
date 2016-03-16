@@ -12,12 +12,10 @@ import java.awt.event.ActionListener;
 public class FractalChoose extends JPanel {
 
     private ButtonGroup bg;
-    private MainFractal fractal;
     private ChooseFractalLis lis;
 
-    //constructor need the fractal that is preselected
-    public FractalChoose(MainFractal preselected) {
-        this.fractal = preselected;
+    //constructor
+    public FractalChoose() {
         this.setLayout(new GridLayout(4,1));
 
         setBorder(new TitledBorder("Choose a Fractal"));
@@ -28,6 +26,7 @@ public class FractalChoose extends JPanel {
         init();
     }
 
+    //add components to the panel
     private void init()
     {
         //look how easy it is to add new fractals!
@@ -36,9 +35,11 @@ public class FractalChoose extends JPanel {
         addButton(new Buffalo());
 
         //for the multibrots I created a custom component
-        this.add(new FRadioText());
+        this.add(new FRadioText("Multibrot"));
 
-        select(fractal);
+        //autoselect the first item in the group
+        if(bg.getButtonCount()>0)
+            bg.setSelected(bg.getElements().nextElement().getModel(),true);
     }
 
     //add a radio button representing the fractal
@@ -50,19 +51,8 @@ public class FractalChoose extends JPanel {
         radio.addActionListener(lis);
     }
 
-    //preselect the main fractal
-    private void select(MainFractal fractal) {
-        JRadioButton button = new JRadioButton();
-        for(Component c : getComponents()) {
-            if (c instanceof FRadioText) c = ((FRadioText) c).button;
-            if (c instanceof JRadioButton && ((JRadioButton) c).getText().equals(fractal.getClass().getName()))
-                button = (JRadioButton) c;
-        }
-        bg.setSelected(button.getModel(), true);
-    }
-
     /**
-     * set the gui fractal to a new instance of the fractal represented
+     * set the displayed fractal to a new instance of the fractal represented
      * by the JRadioButton that has been selected
      */
     private class ChooseFractalLis implements ActionListener
@@ -73,7 +63,7 @@ public class FractalChoose extends JPanel {
             MainFrame gui = (MainFrame) SwingUtilities.getWindowAncestor(FractalChoose.this);
             String name = ((JRadioButton)e.getSource()).getText();
 
-            //Woah lots of exceptions
+            //Create a new fractal based on the name of the button
             try {
                 Class c = Class.forName(name);
                 gui.setFractal((MainFractal) c.newInstance());
@@ -98,9 +88,9 @@ public class FractalChoose extends JPanel {
         private NumberFormatter nf; //to format the jTexField
 
         //default constructor
-        public FRadioText()
+        public FRadioText(String title)
         {
-            this.button = new JRadioButton("Multibrot");
+            this.button = new JRadioButton(title);
 
             nf = new NumberFormatter();
             nf.setValueClass(Integer.class);
@@ -121,10 +111,7 @@ public class FractalChoose extends JPanel {
             this.add(button);
             this.add(text);
 
-            //update textfield
-            if(fractal instanceof Multibrot)
-                text.setText(((Multibrot) fractal).getN().toString());
-
+            //update fractal when both is selected and has a number input
             ActionListener radioTextLis = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -135,6 +122,7 @@ public class FractalChoose extends JPanel {
                 }
             };
 
+            //attach listeners
             text.addActionListener(radioTextLis);
             button.addActionListener(radioTextLis);
         }

@@ -49,7 +49,7 @@ public class SettingsPanel extends JPanel
 
         //radio buttons and favourites list cannot go in JuliaFrames
         if(fractal instanceof MainFractal) {
-            FractalChoose fc = new FractalChoose((MainFractal) fractal);
+            FractalChoose fc = new FractalChoose();
             this.add(fc);
 
             addFavourites();
@@ -64,7 +64,9 @@ public class SettingsPanel extends JPanel
 
         save = new SaveButton(fractal);
         save.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(save);
+        //julia sets have the toolbar with the save button, no nneed to repeat it
+        if(fractal instanceof MainFractal)
+            this.add(save);
 
         //add listener to update image
         SettingsListener setListener = new SettingsListener();

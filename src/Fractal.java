@@ -330,7 +330,7 @@ public abstract class Fractal extends JPanel
             repaint();
         }
 
-        //make sure the rectangle startDrag is top left
+        //make sure the zoom rectangle startDrag is top left
         private void alignValues()
         {
             Point tmp = new Point();

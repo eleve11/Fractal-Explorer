@@ -5,13 +5,13 @@ import java.awt.*;
  */
 public class MainFrame extends FractalGUI
 {
-    MainFractal fractal;
-    Container pane;
+    private MainFractal fractal;
+    private Container pane;
 
-    //default constructor
+    //default constructor starts a mandelbrot
     public MainFrame(){
         super("Mandelbrot",new Mandelbrot());
-        fractal = (Mandelbrot) getFractal();
+        fractal = (MainFractal) getFractal();
         pane = this.getContentPane();
         init();
         this.setVisible(true);
@@ -23,24 +23,28 @@ public class MainFrame extends FractalGUI
     {
         pane.add(fractal,BorderLayout.CENTER);
         pane.add(getScrollSets(),BorderLayout.WEST);
-        this.fractal.requestFocus();
+        this.fractal.requestFocus(); //for the keyLis
     }
 
     //override set fractal : updates the whole frame
     @Override
     public void setFractal(Fractal fractal)
     {
+        //cannot set a julia fractal
         if(!(fractal instanceof MainFractal))
             throw new IllegalArgumentException();
+
+        //hide old fractal
         this.fractal.setVisible(false);
 
         //update fractal
         this.fractal = (MainFractal) fractal;
         this.setTitle(((MainFractal) fractal).getTitle());
+        pane.add(fractal,BorderLayout.CENTER);
 
         //update settings
         getSettings().setFractal(fractal);
 
-        init();
+        this.fractal.requestFocus(); //for the keyListener
     }
 }

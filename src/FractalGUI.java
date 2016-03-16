@@ -9,6 +9,7 @@ public abstract class FractalGUI extends JFrame
     private Fractal fractal;
     private SettingsPanel settings;
     private JScrollPane scroll;
+
     public static final Dimension DEFAULT_SIZE = new Dimension(800,520);
 
     //constructor
@@ -17,11 +18,13 @@ public abstract class FractalGUI extends JFrame
         super(title);
 
         this.fractal = fractal;
+
+        //set the settings panel scrollable only vertically
         this.settings = new SettingsPanel(fractal);
         this.scroll = new JScrollPane(settings);
         this.scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        // not sure i want these 2 lines here as well as in the Fractal
+        // these make the keylistener work at launch
         this.setFocusable(true);
         this.addKeyListener(new FractKeyLis(fractal));
 
@@ -30,19 +33,19 @@ public abstract class FractalGUI extends JFrame
         this.setSize(width, height);
     }
 
-    //short constructor
+    //default constructor
     public FractalGUI(String title, Fractal fractal){
         this(title, fractal, DEFAULT_SIZE.width
                 ,DEFAULT_SIZE.height);
     }
 
     /**
-     * subclasses need to initialise the frame
+     * subclasses need to initialise the frame and add components
      */
     public abstract void init();
 
     /*
-     * getters and setters
+     * accessor methods
      */
     public Fractal getFractal() {
         return fractal;
@@ -50,6 +53,7 @@ public abstract class FractalGUI extends JFrame
 
     public void setFractal(Fractal fractal) {
         this.fractal = fractal;
+        getSettings().setFractal(fractal); //update settings as well
     }
 
     public SettingsPanel getSettings() {

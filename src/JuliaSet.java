@@ -1,5 +1,3 @@
-import java.awt.*;
-
 /**
  * Filled Julia Set
  */
@@ -11,7 +9,9 @@ public class JuliaSet extends Fractal
     //complex plane bounds constructor
     public JuliaSet(double realLower, double realUpper, double imagLower, double imagUpper, Complex c, MainFractal generator){
         super(realLower,realUpper,imagLower,imagUpper);
+        //set the colours
         setPalette(new int[][]{{70, 0, 20}, {100, 0, 100}, {255, 0, 0}, {255, 200, 0} });
+
         this.c=c;
         this.generator = generator;
     }
@@ -24,11 +24,12 @@ public class JuliaSet extends Fractal
     /*
      * run julia function on Z and
      * return the smooth color constant for that point
-     */
+     */     //TODO try to avoid this code repetition
     @Override
     public double compute(Complex z) {
         int iterations = 0;
 
+        //run function until escapes or done enough iterations
         while(iterations<getMaxIterations() && z.modulusSquare()<BAILOUT*BAILOUT){
             z = functionOfZ(z,c);
             iterations++;
@@ -46,10 +47,5 @@ public class JuliaSet extends Fractal
     //Getter method for the constant
     public Complex getC() {
         return c;
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        return super.getGraphics();
     }
 }

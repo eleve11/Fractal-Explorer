@@ -20,9 +20,11 @@ public class FractKeyLis extends KeyAdapter
         int SCALE = 20;
         double horizontalShift = (fractal.getRealUp() - fractal.getRealLow()) / SCALE;
         double verticalShift = (fractal.getImagUp() - fractal.getImagLow()) / SCALE;
-        int iterationShift = 100;
+        int iterationShift = 100; //increase/decrease iterations by 100
 
-        switch (e.getKeyCode()) {
+        switch (e.getKeyCode())
+        {
+            //reset to default when ESC
             case KeyEvent.VK_ESCAPE:
                 fractal.setRealLow(Fractal.REAL_LOW);
                 fractal.setRealUp(Fractal.REAL_UP);
@@ -33,7 +35,7 @@ public class FractKeyLis extends KeyAdapter
                 fractal.repaint();
                 break;
 
-            //zoom in and out
+            //zoom in and out when pressing I or O
             case KeyEvent.VK_I:
                 fractal.zoom(SCALE,true);
                 break;
@@ -41,6 +43,7 @@ public class FractKeyLis extends KeyAdapter
                 fractal.zoom(SCALE,false);
                 break;
 
+            //Move horizontally with left and right arrows
             case KeyEvent.VK_LEFT:
                 horizontalShift = -horizontalShift;
             case KeyEvent.VK_RIGHT:
@@ -50,6 +53,7 @@ public class FractKeyLis extends KeyAdapter
                 fractal.repaint();
                 break;
 
+            //move vertically with up and down arrows
             case KeyEvent.VK_DOWN:
                 verticalShift = -verticalShift;
             case KeyEvent.VK_UP:
@@ -59,14 +63,18 @@ public class FractKeyLis extends KeyAdapter
                 fractal.repaint();
                 break;
 
+            //start liveJulia mode when shift is down
             case KeyEvent.VK_SHIFT:
                 MainFractal.setHovering(true);
                 break;
 
+            //reduce iterations when pressed -
             case KeyEvent.VK_MINUS:
-                iterationShift = -iterationShift;
-                if (fractal.getMaxIterations() < 150) //prevent user from going under 50 iterations
+                //prevent user from setting lower than 50% of iterationShift
+                if (fractal.getMaxIterations() < (iterationShift*3/2))
                     break;
+                iterationShift = -iterationShift;
+                //increase iterations when pressed + or = which are the same key (on the english keyboard)
             case KeyEvent.VK_PLUS:
             case KeyEvent.VK_EQUALS: //using equals instead of plus
                 fractal.setMaxIterations(fractal.getMaxIterations() + iterationShift);
@@ -76,6 +84,7 @@ public class FractKeyLis extends KeyAdapter
         }
     }
 
+    //exit liveJulia mode when shift is released
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {

@@ -3,7 +3,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * abstract Fractal that has privileges over the Julia sets.
+ * abstract Fractal that has more features than the Julia sets.
  */
 public abstract class MainFractal extends Fractal
 {
@@ -14,7 +14,11 @@ public abstract class MainFractal extends Fractal
     public MainFractal(double realLower, double realUpper, double imagLower, double imagUpper){
         super(realLower,realUpper,imagLower,imagUpper);
         this.title = this.getClass().getName();
+
+        //set colors
         setPalette(new int[][]{ {0, 0, 0},{255,140,0}, {255,255,255}, {0, 255, 255}, {0, 0, 255} });
+
+        //attach listeners
         this.addMouseListener(new FractMouseLis());
         this.addMouseMotionListener(new FractMouseLis());
     }
@@ -26,11 +30,12 @@ public abstract class MainFractal extends Fractal
 
     /*
      * loop the function of z until it escapes or reaches max iterations
-     * then get the smooth color constant
+     * then return the smooth color constant
      */
     @Override
     public double compute(Complex c)
     {
+        //z starts at 0
         Complex z = new Complex(0,0);
 
         int iterations=0;
@@ -53,7 +58,7 @@ public abstract class MainFractal extends Fractal
         isHovering = hovering;
     }
 
-    public boolean isHovering() {return isHovering;}
+    public static boolean isHovering() {return isHovering;}
 
     public String getTitle() {
         return title;
@@ -62,10 +67,11 @@ public abstract class MainFractal extends Fractal
     /**
      * Listener class
      * click on set and create a new JuliaFrame
+     * hover to update the current JuliaSet
      */
     private class FractMouseLis extends MouseAdapter
     {
-        //show julia, do the julia on a separate thread for efficiency
+        //show julia, run the julia on EDT
         @Override
         public void mouseClicked(MouseEvent e)
         {
@@ -73,14 +79,14 @@ public abstract class MainFractal extends Fractal
             SwingUtilities.invokeLater(new JuliaLive(c));
         }
 
-        //if hovering live update julia on a separate thread
+        //if hovering live update julia on EDT
         @Override
         public void mouseMoved(MouseEvent e)
         {
-            Complex c = getComplex(e.getX(), e.getY());
-
-            if(isHovering())
+            if(isHovering()) {
+                Complex c = getComplex(e.getX(), e.getY());
                 SwingUtilities.invokeLater(new JuliaLive(c));
+            }
         }
     }
 
