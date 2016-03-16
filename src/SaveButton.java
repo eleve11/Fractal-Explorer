@@ -65,10 +65,7 @@ public class SaveButton extends JButton
                 File image = new File(fileName);
 
                 //prepare image
-                BufferedImage bi = new BufferedImage(getFractal().getWidth(), getFractal().getHeight(), BufferedImage.TYPE_INT_ARGB);
-                Graphics g = bi.createGraphics();
-                getFractal().paint(g); //paint the fractal on the image
-                g.dispose();
+                BufferedImage bi = getFractal().getImage();
 
                 //save it to a png file
                 try {
