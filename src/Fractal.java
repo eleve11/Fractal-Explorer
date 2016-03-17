@@ -441,9 +441,9 @@ public abstract class Fractal extends JPanel
     private class ZoomRun implements Runnable
     {
         private Complex start,end, topBound, botBound;
-        //it will run 50 iterations to finish the zoom
+        //it will run 40 iterations to finish the zoom
         //the higher the smoother yet slower zoom animation
-        private final double ITERATIONS = 50; //must be greater than 0
+        private final double ITERATIONS = 40; //must be greater than 0
 
         //the constructor sets the bounds and destination points
         public ZoomRun(Point start, Point end){
@@ -463,6 +463,7 @@ public abstract class Fractal extends JPanel
             double horShiftEnd = (topBound.getX() - end.getX()) / ITERATIONS;
             double verShiftEnd = (end.getY() - botBound.getY()) / ITERATIONS;
 
+            //zoom until it matches the bounds
             while ((topBound.getX()>end.getX() && topBound.getY()>start.getY())
                 || (botBound.getX()<start.getX() && botBound.getY()<end.getY()))
             {

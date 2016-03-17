@@ -44,8 +44,10 @@ public class FractKeyLis extends KeyAdapter
                 break;
 
             //Move horizontally with left and right arrows
+            case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
                 horizontalShift = -horizontalShift;
+            case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
                 fractal.setRealLow(fractal.getRealLow() + horizontalShift);
                 fractal.setRealUp(fractal.getRealUp() + horizontalShift);
@@ -54,8 +56,10 @@ public class FractKeyLis extends KeyAdapter
                 break;
 
             //move vertically with up and down arrows
+            case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
                 verticalShift = -verticalShift;
+            case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
                 fractal.setImagLow(fractal.getImagLow() + verticalShift);
                 fractal.setImagUp(fractal.getImagUp() + verticalShift);
