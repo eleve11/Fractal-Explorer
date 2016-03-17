@@ -22,7 +22,9 @@ public abstract class Fractal extends JPanel
     public static final double IMAG_UP = 1.6;
     public static final int MAX_ITERATIONS = 100;
     public static final int BAILOUT = 2;
-    public final int RENDERING_THREADS = 3;
+
+    private int threadsCompleted=0;
+    public final int RENDERING_THREADS = 10;
     private Thread[] threads = new Thread[RENDERING_THREADS];
 
     //construct using complex plane constraints
@@ -83,8 +85,16 @@ public abstract class Fractal extends JPanel
             threads[i].start();
         }
 
-        for(Thread t : threads)
-            while(t.isAlive());
+        synchronized (image){
+            while(threadsCompleted<RENDERING_THREADS){
+                try{
+                    image.wait();
+                }catch (InterruptedException e){
+                    break;
+                }
+            }
+            threadsCompleted = 0;
+        }
     }
 
     private class RenderThread implements Runnable
@@ -110,6 +120,8 @@ public abstract class Fractal extends JPanel
                         image.setRGB(x, y, col.getRGB());
                     }
             }
+            synchronized (image){threadsCompleted++;
+            image.notify();}
         }
     }
 
