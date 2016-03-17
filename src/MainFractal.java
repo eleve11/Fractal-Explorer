@@ -76,7 +76,7 @@ public abstract class MainFractal extends Fractal
         public void mouseClicked(MouseEvent e)
         {
             Complex c = getComplex(e.getX(), e.getY());
-            SwingUtilities.invokeLater(new JuliaLive(c));
+            JuliaFrame.getInstance().updateJulia(c,MainFractal.this);
         }
 
         //if hovering live update julia on EDT
@@ -85,23 +85,8 @@ public abstract class MainFractal extends Fractal
         {
             if(isHovering()) {
                 Complex c = getComplex(e.getX(), e.getY());
-                SwingUtilities.invokeLater(new JuliaLive(c));
+                JuliaFrame.getInstance().updateJulia(c,MainFractal.this);
             }
-        }
-    }
-
-    /**
-     * runnable that updates/shows the julia set
-     */
-    private class JuliaLive implements Runnable
-    {
-        private Complex c;
-        private JuliaLive(Complex c){
-            this.c = c;
-        }
-        @Override
-        public void run() {
-            JuliaFrame.getInstance().updateJulia(c,MainFractal.this);
         }
     }
 }

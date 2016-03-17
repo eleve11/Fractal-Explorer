@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 /**
- * represent a fractal on the complex plane.
+ * represent a fractal on the complex plane using a BufferedImage.
  */
 public abstract class Fractal extends JPanel
 {
@@ -14,6 +14,8 @@ public abstract class Fractal extends JPanel
     private int[][] palette;
     private FractMouseListener fl;
     private BufferedImage image;
+    private int threadsCompleted;
+    private Thread[] threads;
 
     //default values
     public static final double REAL_LOW = -2.0;
@@ -22,10 +24,7 @@ public abstract class Fractal extends JPanel
     public static final double IMAG_UP = 1.6;
     public static final int MAX_ITERATIONS = 100;
     public static final int BAILOUT = 2;
-
-    private int threadsCompleted=0;
-    public final int RENDERING_THREADS = 10;
-    private Thread[] threads = new Thread[RENDERING_THREADS];
+    public final int RENDERING_THREADS = Runtime.getRuntime().availableProcessors();
 
     //construct using complex plane constraints
     public Fractal(double realLower, double realUpper, double imagLower, double imagUpper) {
@@ -34,6 +33,8 @@ public abstract class Fractal extends JPanel
         this.imagLow = imagLower;
         this.imagUp = imagUpper;
         this.maxIterations = MAX_ITERATIONS;
+
+        this.threads = new Thread[RENDERING_THREADS];
 
         fl = new FractMouseListener();
         this.addMouseListener(fl);
@@ -49,7 +50,7 @@ public abstract class Fractal extends JPanel
     }
 
     /**
-     * draw the Fractal on the complex plane
+     * draw the Fractal image on the complex plane
      * according to the function called by FunctionOfZ
      */
     @Override
@@ -57,9 +58,11 @@ public abstract class Fractal extends JPanel
     {
         Graphics2D g2 = (Graphics2D) g;
 
+        //do not render if dragging on it and the panel is visible
         if(fl.endDrag==fl.startDrag)
             render();
 
+        //draw the image after gaining the lock
         synchronized (image){
             g2.drawImage(image,0,0,null);
         }
@@ -76,57 +79,40 @@ public abstract class Fractal extends JPanel
         }
     }
 
-    public void render()
+    /**
+     * Renders the image splitting the calculations between
+     * a number of threads.
+     */
+    private void render()
     {
+        //initialise image
         image = new BufferedImage(getWidth(),getHeight(),BufferedImage.TYPE_INT_ARGB);
 
+        //start threads
         for (int i = 0; i < RENDERING_THREADS; i++) {
             threads[i] = new Thread(new RenderThread(i));
             threads[i].start();
         }
 
-        synchronized (image){
+        /*
+         * motivate the garbage collector so that it puts more
+         * effort in removing unused threads or images
+         */
+        Runtime.getRuntime().gc();
+
+        //wait until all threads are done
+        synchronized (image)
+        {
             while(threadsCompleted<RENDERING_THREADS){
                 try{
                     image.wait();
                 }catch (InterruptedException e){
-                    break;
+                    e.printStackTrace();
+                    break; //exit the loop if interrupted
                 }
             }
             threadsCompleted = 0;
         }
-    }
-
-    private class RenderThread implements Runnable
-    {
-        int i;
-        public RenderThread(int i){this.i = i;}
-        @Override
-        public void run() {
-            //loop through each pixel
-            for (int y = 0; y < getHeight(); y++) {
-                if (y % RENDERING_THREADS == i)
-                    for (int x = 0; x < getWidth(); x++) {
-                        int[][] palette = getPalette();
-                        double it = getMaxIterations() - compute(getComplex(x, y));
-
-                        //interpolate between 2 adiacent color in the palette
-                        int itfloor = (int) Math.floor(it);
-                        int[] color1 = palette[itfloor % palette.length];
-                        int[] color2 = palette[(itfloor + 1) % palette.length];
-                        Color col = RgbLinearInterpolate(color1, color2, it);
-
-                        //draw pixel
-                        image.setRGB(x, y, col.getRGB());
-                    }
-            }
-            synchronized (image){threadsCompleted++;
-            image.notify();}
-        }
-    }
-
-    public BufferedImage getImage() {
-        return image;
     }
 
     /**
@@ -148,22 +134,6 @@ public abstract class Fractal extends JPanel
      * @return the resulting complex
      */
     public abstract Complex functionOfZ(Complex z, Complex c);
-
-    /*
-    * return the point in the complex plane that
-    * corresponds to a given pixel
-    */
-    public Complex getComplex(int x, int y) {
-        double cx = (realUp - realLow) * x / getWidth() + realLow;
-        //this is inverted so that the y axis goes in the right way
-        double cy = (imagLow - imagUp) * y / getHeight() + imagUp;
-        return new Complex(cx, cy);
-    }
-
-    //overload of getComplex(x,y) with point
-    public Complex getComplex(Point p) {
-        return getComplex(p.x, p.y);
-    }
 
     /**
      * Smooth colouring algorithm:
@@ -207,7 +177,7 @@ public abstract class Fractal extends JPanel
      * @param smoothIteration the smooth value of iterations
      * @return resulting color
      */
-    public static Color RgbLinearInterpolate(int[] start, int[] end, double smoothIteration) {
+    public Color RgbLinearInterpolate(int[] start, int[] end, double smoothIteration) {
         // linear interpolation lerp (r,a,b) = (1-r)*a + r*b = (1-r)*(ax,ay,az) + r*(bx,by,bz)
         double r = smoothIteration - Math.floor(smoothIteration); //get just decimal part
         double nr = 1.0 - r;
@@ -248,6 +218,22 @@ public abstract class Fractal extends JPanel
     }
 
     /*
+     * return the point in the complex plane that
+     * corresponds to a given pixel
+     */
+    public Complex getComplex(int x, int y) {
+        double cx = (realUp - realLow) * x / getWidth() + realLow;
+        //this is inverted so that the y axis goes in the right way
+        double cy = (imagLow - imagUp) * y / getHeight() + imagUp;
+        return new Complex(cx, cy);
+    }
+
+    //overload of getComplex(x,y) with point
+    public Complex getComplex(Point p) {
+        return getComplex(p.x, p.y);
+    }
+
+    /*
      * accessor methods
      */
     public Double getRealLow() {
@@ -272,6 +258,10 @@ public abstract class Fractal extends JPanel
 
     public int[][] getPalette() {
         return palette;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public FractalGUI getGUI() {
@@ -315,7 +305,43 @@ public abstract class Fractal extends JPanel
         this.palette = palette;
     }
 
+    /**
+     * Runnable that calculates part of the image according to the given index
+     * It only draws the lines that return the same modulo value of the index
+     * of the Thread
+     */
+    private class RenderThread implements Runnable
+    {
+        int i; //index
+        public RenderThread(int i){this.i = i;}
 
+        @Override
+        public void run() {
+            //loop through each row
+            for (int y = 0; y < getHeight(); y++) {
+                //just draw the rows that the thread has to
+                if (y % RENDERING_THREADS == i)
+                    for (int x = 0; x < getWidth(); x++)
+                    {
+                        int[][] palette = getPalette();
+                        //compute running the function of Z
+                        double it = getMaxIterations() - compute(getComplex(x, y));
+
+                        //interpolate between 2 adiacent color in the palette
+                        int itfloor = (int) Math.floor(it);
+                        int[] color1 = palette[itfloor % palette.length];
+                        int[] color2 = palette[(itfloor + 1) % palette.length];
+                        Color col = RgbLinearInterpolate(color1, color2, it);
+
+                        //draw pixel on image
+                        image.setRGB(x, y, col.getRGB());
+                    }
+            }
+            //increment completed threads and wake main thread
+            threadsCompleted++;
+            synchronized (image){image.notify();}
+        }
+    }
 
     /**
      * mouse adapter that handles the zoom feature
@@ -400,7 +426,7 @@ public abstract class Fractal extends JPanel
     /**
      * Runnable that runs the zoom animation
      */
-    class ZoomRun implements Runnable
+    private class ZoomRun implements Runnable
     {
         private Complex start,end, topBound, botBound;
         //it will run 50 iterations to finish the zoom
@@ -442,7 +468,7 @@ public abstract class Fractal extends JPanel
                 getGUI().getSettings().updateSet();
 
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -110,6 +110,7 @@ public class FractalChoose extends JPanel {
             bg.add(button);
             this.add(button);
             this.add(text);
+            button.setFocusable(false);
 
             //update fractal when both is selected and has a number input
             ActionListener radioTextLis = new ActionListener() {

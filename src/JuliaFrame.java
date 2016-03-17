@@ -58,6 +58,7 @@ public class JuliaFrame extends FractalGUI
     {
         JCheckBox toggle = new JCheckBox("Show Settings");
         toggle.setSelected(showSettings);
+        toggle.setFocusable(false);
         //attach listener
         toggle.addItemListener(new ItemListener() {
 
