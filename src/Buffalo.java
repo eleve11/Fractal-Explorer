@@ -9,6 +9,7 @@ public class Buffalo extends MainFractal
     @Override
     public Complex functionOfZ(Complex z, Complex c) {
         z = z.firstQuadrant();
-        return z.square().subtract(z).add(c);
+        //the image is flipped by .conjugate to make the buffalo identifiable ;)
+        return z.square().subtract(z).conjugate().add(c);
     }
 }

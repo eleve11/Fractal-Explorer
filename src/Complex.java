@@ -69,6 +69,16 @@ public class Complex
         return new Complex(Math.abs(x),Math.abs(y));
     }
 
+    //return opposite complex
+    public Complex opposite(){
+        return new Complex(-this.getX(),-this.getY());
+    }
+
+    //return the conjugate complex
+    public Complex conjugate(){
+        return new Complex(this.getX(), -this.getY());
+    }
+
     //compare two complex numbers, return true if they are the same
     public boolean equals(Complex c){
         return this.getX()==c.getX() && this.getY() == c.getY();

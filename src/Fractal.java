@@ -14,8 +14,8 @@ public abstract class Fractal extends JPanel
     private int[][] palette;
     private FractMouseListener fl;
     private BufferedImage image;
-    private int threadsCompleted;
     private Thread[] threads;
+    private int threadsCompleted;
 
     //default values
     public static final double REAL_LOW = -2.0;
@@ -41,7 +41,6 @@ public abstract class Fractal extends JPanel
         this.addMouseMotionListener(fl);
         this.addKeyListener(new FractKeyLis(this));
         this.setFocusable(true);
-
     }
 
     //default constructor
@@ -52,14 +51,15 @@ public abstract class Fractal extends JPanel
     /**
      * draw the Fractal image on the complex plane
      * according to the function called by FunctionOfZ
+     * draw the zoomRectangle if dragging
      */
     @Override
     public void paint(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
 
-        //do not render if dragging on it and the panel is visible
-        if(fl.endDrag==fl.startDrag)
+        //do not re-render if dragging on it
+        if(!isDragging())
             render();
 
         //draw the image after gaining the lock
@@ -68,27 +68,29 @@ public abstract class Fractal extends JPanel
         }
 
         // draw the zoom rectangle if dragging
-        if (fl.startDrag != null && fl.endDrag != null)
+        if (isDragging())
         {
             //set transparency
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.40f));
             g2.setStroke(new BasicStroke(2));
             g2.setPaint(Color.WHITE);
+
             g2.draw(fl.r);
             g2.fill(fl.r);
         }
     }
 
     /**
-     * Renders the image splitting the calculations between
-     * a number of threads.
+     * Start anumber of threads to
+     * render the image splitting it
+     * evenly between the threads
      */
     private void render()
     {
         //initialise image
         image = new BufferedImage(getWidth(),getHeight(),BufferedImage.TYPE_INT_ARGB);
 
-        //start threads
+        //start rendering threads
         for (int i = 0; i < RENDERING_THREADS; i++) {
             threads[i] = new Thread(new RenderThread(i));
             threads[i].start();
@@ -96,11 +98,11 @@ public abstract class Fractal extends JPanel
 
         /*
          * motivate the garbage collector so that it puts more
-         * effort in removing unused threads or images
+         * effort in removing unused threads or images ;)
          */
         Runtime.getRuntime().gc();
 
-        //wait until all threads are done
+        //Wait until all threads are done
         synchronized (image)
         {
             while(threadsCompleted<RENDERING_THREADS){
@@ -108,7 +110,8 @@ public abstract class Fractal extends JPanel
                     image.wait();
                 }catch (InterruptedException e){
                     e.printStackTrace();
-                    break; //exit the loop if interrupted
+                    //exit the loop if interrupted so the whole program doesn't crash
+                    break;
                 }
             }
             threadsCompleted = 0;
@@ -190,7 +193,50 @@ public abstract class Fractal extends JPanel
     }
 
     /**
-     * perform static zoom
+     * Runnable that calculates part of the image.
+     * It only draws the lines that return the same modulo
+     * value of the index of the Thread that is executing it.
+     */
+    private class RenderThread implements Runnable
+    {
+        //construct by index
+        int i;
+        public RenderThread(int i){this.i = i;}
+
+        @Override
+        public void run()
+        {
+            //loop through each row
+            for (int y = 0; y < getHeight(); y++) {
+                //only draw the rows that the thread has to
+                if (y % RENDERING_THREADS == i)
+                    for (int x = 0; x < getWidth(); x++)
+                    {
+                        int[][] palette = getPalette();
+
+                        //compute running the function of Z
+                        double it = getMaxIterations() - compute(getComplex(x, y));
+
+                        //prepare interpolation
+                        int itfloor = (int) Math.floor(it);
+                        int[] color1 = palette[itfloor % palette.length];
+                        int[] color2 = palette[(itfloor + 1) % palette.length];
+
+                        //interpolate between 2 adiacent color in the palette
+                        Color col = RgbLinearInterpolate(color1, color2, it);
+
+                        //draw pixel on image
+                        image.setRGB(x, y, col.getRGB());
+                    }
+            }
+            //increment completed threads and wake main thread
+            threadsCompleted++;
+            synchronized (image){image.notify();}
+        }
+    }
+
+    /**
+     * do static zoom
      * @param SCALE , the higher the shortest distance zoom
      * @param in specifies the direction of the zoom
      */
@@ -268,6 +314,9 @@ public abstract class Fractal extends JPanel
         return (FractalGUI) SwingUtilities.getWindowAncestor(this);
     }
 
+    //return true if the user started dragging
+    public boolean isDragging(){return fl.startDrag != fl.endDrag && fl.endDrag != null;}
+
     /*
      * these setters have constraints
      */
@@ -305,43 +354,6 @@ public abstract class Fractal extends JPanel
         this.palette = palette;
     }
 
-    /**
-     * Runnable that calculates part of the image according to the given index
-     * It only draws the lines that return the same modulo value of the index
-     * of the Thread
-     */
-    private class RenderThread implements Runnable
-    {
-        int i; //index
-        public RenderThread(int i){this.i = i;}
-
-        @Override
-        public void run() {
-            //loop through each row
-            for (int y = 0; y < getHeight(); y++) {
-                //just draw the rows that the thread has to
-                if (y % RENDERING_THREADS == i)
-                    for (int x = 0; x < getWidth(); x++)
-                    {
-                        int[][] palette = getPalette();
-                        //compute running the function of Z
-                        double it = getMaxIterations() - compute(getComplex(x, y));
-
-                        //interpolate between 2 adiacent color in the palette
-                        int itfloor = (int) Math.floor(it);
-                        int[] color1 = palette[itfloor % palette.length];
-                        int[] color2 = palette[(itfloor + 1) % palette.length];
-                        Color col = RgbLinearInterpolate(color1, color2, it);
-
-                        //draw pixel on image
-                        image.setRGB(x, y, col.getRGB());
-                    }
-            }
-            //increment completed threads and wake main thread
-            threadsCompleted++;
-            synchronized (image){image.notify();}
-        }
-    }
 
     /**
      * mouse adapter that handles the zoom feature

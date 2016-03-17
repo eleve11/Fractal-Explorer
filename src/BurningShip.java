@@ -4,10 +4,11 @@
 public class BurningShip extends MainFractal
 {
     /*
-     * draw the burning ship set
+     * draw the burning ship set flipped
      */
     @Override
     public Complex functionOfZ(Complex z, Complex c) {
-        return z.firstQuadrant().square().add(c);
+        //.conjugate flips the i-value so the ship doesn't "look upside down"
+        return z.firstQuadrant().square().conjugate().add(c);
     }
 }
