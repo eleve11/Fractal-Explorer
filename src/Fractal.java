@@ -63,7 +63,8 @@ public abstract class Fractal extends JPanel
             render();
 
         //draw the image
-        g2.drawImage(image,0,0,null);
+        g2.drawImage(image, 0, 0, null);
+
 
         // draw the zoom rectangle if dragging
         if (isDragging())
@@ -106,8 +107,8 @@ public abstract class Fractal extends JPanel
                     break;
                 }
             }
+            threadsCompleted = 0;
         }
-        threadsCompleted = 0;
     }
 
     /**
@@ -222,8 +223,10 @@ public abstract class Fractal extends JPanel
                     }
             }
             //increment completed threads and wake main thread
-            threadsCompleted++;
-            synchronized (Fractal.this){Fractal.this.notify();}
+            synchronized (Fractal.this){
+                threadsCompleted++;
+                Fractal.this.notify();
+            }
         }
     }
 
