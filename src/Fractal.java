@@ -62,10 +62,8 @@ public abstract class Fractal extends JPanel
         if(!isDragging())
             render();
 
-        //draw the image after gaining the lock
-        synchronized (image){
-            g2.drawImage(image,0,0,null);
-        }
+        //draw the image
+        g2.drawImage(image,0,0,null);
 
         // draw the zoom rectangle if dragging
         if (isDragging())
@@ -92,30 +90,24 @@ public abstract class Fractal extends JPanel
 
         //start rendering threads
         for (int i = 0; i < RENDERING_THREADS; i++) {
-            threads[i] = new Thread(new RenderThread(i));
+            threads[i] = new Thread(new RenderThread(i),"Rendering Thread "+i+1);
             threads[i].start();
         }
 
-        /*
-         * motivate the garbage collector so that it puts more
-         * effort in removing unused threads or images ;)
-         */
-        Runtime.getRuntime().gc();
-
         //Wait until all threads are done
-        synchronized (image)
+        synchronized (this)
         {
             while(threadsCompleted<RENDERING_THREADS){
                 try{
-                    image.wait();
+                    this.wait();
                 }catch (InterruptedException e){
                     e.printStackTrace();
                     //exit the loop if interrupted so the whole program doesn't crash
                     break;
                 }
             }
-            threadsCompleted = 0;
         }
+        threadsCompleted = 0;
     }
 
     /**
@@ -231,7 +223,7 @@ public abstract class Fractal extends JPanel
             }
             //increment completed threads and wake main thread
             threadsCompleted++;
-            synchronized (image){image.notify();}
+            synchronized (Fractal.this){Fractal.this.notify();}
         }
     }
 
@@ -391,7 +383,7 @@ public abstract class Fractal extends JPanel
             if (endDrag != startDrag) {
                 alignValues();
                 //run on a separate thread because EDT would skip to the final repaint call
-                new Thread(new ZoomRun(startDrag,endDrag)).start();
+                new Thread(new ZoomRun(startDrag,endDrag),"Zoom Thread").start();
             }
 
             startDrag = null;

@@ -8,7 +8,7 @@ public class BurningShip extends MainFractal
      */
     @Override
     public Complex functionOfZ(Complex z, Complex c) {
-        //.conjugate flips the i-value so the ship doesn't "look upside down"
+        //.conjugate method flips the i-value so the ship doesn't "look upside down"
         return z.firstQuadrant().square().conjugate().add(c);
     }
 }
